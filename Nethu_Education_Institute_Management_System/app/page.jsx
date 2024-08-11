@@ -1,5 +1,6 @@
-import Navbar from "@components/nav"
-import Who from "@components/who"
+import Navbar from "@components/nav";
+import Who from "@components/who";
+import Login from "@components/login";
 
 const Home = () => {
   return (
@@ -7,10 +8,10 @@ const Home = () => {
       <div>
         <Navbar />
         <Who />
+        <Login />
       </div>
     </>
-    
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
