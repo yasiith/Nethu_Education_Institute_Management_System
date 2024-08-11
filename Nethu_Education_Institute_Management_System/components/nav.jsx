@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LoginPage from "@app/loginPage";
 const Navbar = () => {
   return (
     <>
@@ -8,7 +9,7 @@ const Navbar = () => {
             NEIMS
           </span>
           <div className="flex md:order-2 space-x-3 md:space-x-0">
-            <Link href={"../app/loginPage.jsx"}>
+            <Link href="/Nethu_Education_Institute_Management_System/app/loginPage">
               <button
                 type="button"
                 className="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-3xl text-lg px-10 py-2 pt-2 text-center"

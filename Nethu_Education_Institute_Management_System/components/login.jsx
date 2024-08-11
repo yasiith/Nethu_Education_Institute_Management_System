@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import LoginImage from "@public/assets/images/Login_page_image.svg";
-import HomeBut from "@app/page";
+import HomePage from "@app/page";
 
 const LoginPage = () => {
   return (
@@ -15,7 +15,7 @@ const LoginPage = () => {
       <div className="w-1/2 bg-white flex flex-col justify-center items-center p-10 relative">
         {/* Home Button */}
         <Link
-          href={"../app/page.jsx"}
+          href="/"
           className="absolute top-5 right-6 flex justify-center items-center"
         >
           <button
