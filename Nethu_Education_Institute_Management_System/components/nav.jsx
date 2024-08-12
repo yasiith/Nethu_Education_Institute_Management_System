@@ -3,7 +3,7 @@ import Link from 'next/link';
 const Navbar = () => {
     return (
         <>
-            <nav className='bg-gray-400 backdrop-blur-sm  start-0 fixed w-full z-20 top-0 border-b border-gray-200'>
+            <nav className='bg-blue-950 backdrop-blur-sm  start-0 fixed w-full z-20 top-0 border-b '>
                 <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
                     <span className='text-white self-center text-2xl font-semibold whitespace-nowrap'>NEIMS</span>
                     <div className='flex md:order-2 space-x-3 md:space-x-0'>
@@ -12,10 +12,10 @@ const Navbar = () => {
                         </button>
                     </div>
                     <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id="navbar-sticky">
-                        <ul className='flex flex-col p-4 md:p-0 font-medium border border-gray-100 rounded-lg bg-gray-500 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-400 md:dark:bg-gray-400 dark:border-gray-400">'>
+                        <ul className='flex flex-col p-4 md:p-0 font-medium  rounded-lg bg-blue-950 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-blue-950 md:dark:bg-blue-950 dark:border-gray-400">'>
                             <li>
                                 <Link 
-                                    href='/'
+                                    href='#home_section'
                                     className='block py-2 px-3 text-white md:hover:text-blue-700 md:p-0 ' aria-current="page">
                                     Home
                                 </Link>
@@ -23,31 +23,31 @@ const Navbar = () => {
                             <li>
                                 <Link
                                     href='/'
-                                    className='"block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 md:dark:hover:text-gray-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"'
+                                    className='"block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 md:dark:hover:text-blue-400 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"'
                                     >
                                     Gallery
                                 </Link>
                             </li>
                             <li>
                                 <Link
-                                    href='/'
-                                    className='"block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 md:dark:hover:text-gray-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"'
+                                    href='#classes_section'
+                                    className='"block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 md:dark:hover:text-blue-400 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"'
                                     >
                                     Classes
                                 </Link>
                             </li>
                             <li>
                                 <Link
-                                    href='/'
-                                    className='"block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 md:dark:hover:text-gray-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"'
+                                    href='#teachers_section'
+                                    className='"block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 md:dark:hover:text-blue-400 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"'
                                     >
-                                    About
+                                    Teachers
                                 </Link>
                             </li>
                             <li>
                                 <Link
-                                    href='/'
-                                    className='"block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 md:dark:hover:text-gray-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"'
+                                    href='#contact_section'
+                                    className='"block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 md:dark:hover:text-blue-400 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"'
                                     >
                                     Contact
                                 </Link>
