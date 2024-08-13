@@ -8,8 +8,17 @@ const router = express.Router();
 router.post('/register-admin', registerAdmin);
 router.post('/create-user', auth, checkRole('admin'), createUser);
 
+
 // Auth routes
 router.post('/login', loginUser);
-router.get('/user', auth, getUser);
+
+router.get('/user', auth, getUser);  // For the authenticated user
+router.get('/user/:id', auth, checkRole('admin'), getUser);
+
+// Test route
+router.get('/test', (req, res) => {
+    res.json({ msg: 'Test route works' });
+});
+
 
 module.exports = router;

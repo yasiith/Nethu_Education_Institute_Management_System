@@ -1,5 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/auth');
 const app = express();
 require('dotenv').config();
 
@@ -7,10 +8,12 @@ require('dotenv').config();
 connectDB();
 
 // Init Middleware
-app.use(express.json({ extended: false }));
+app.use(express.json());
+
 
 // Define Routes
-app.use('/api/auth', require('./routes/auth'));
+
+app.use('/api/auth', authRoutes);
 
 // Set up a basic route for testing
 app.get('/', (req, res) => res.send('API Running'));
@@ -20,3 +23,6 @@ const PORT = process.env.PORT || 5000;
 
 // Start the Server
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
+
+
