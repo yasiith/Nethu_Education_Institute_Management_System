@@ -1,27 +1,21 @@
-
-import '@styles/globals.css';
-import Navbar from '@components/nav';
-
+import "@styles/globals.css";
 
 export const metadata = {
-    title: "NEIMS",
-    description: 'Learn at Ease'
-}
+  title: "NEIMS",
+  description: "Learn at Ease"
+};
 
-const Rootlayout = ({children}) => {
+const Rootlayout = ({ children }) => {
   return (
     <html lang="en">
-        <body>
-            <div className="main">
-                <div className="gradient"/>
-            </div>
-            <main className="app">
-                
-                {children}
-            </main>
-        </body>
+      <body>
+        <div>
+          <div className="gradient" />
+        </div>
+        <main>{children}</main>
+      </body>
     </html>
-  )
-}
+  );
+};
 
-export default Rootlayout
+export default Rootlayout;
