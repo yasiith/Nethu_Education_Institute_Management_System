@@ -3,6 +3,7 @@ import Footer from "@components/footer"
 import Navbar from "@components/nav"
 import Teachers from "@components/teachers"
 import Who from "@components/who"
+import ScrollInCounter from "@components/counter" 
 
 
 const Home = () => {
@@ -14,6 +15,7 @@ const Home = () => {
         </section>
         <section id="about_section">
           <Who />
+          <ScrollInCounter/>
         </section>
         <section id="classes_section">
           <Classes />

@@ -1,13 +1,21 @@
+
+"use client"; 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
+  const router = useRouter()
+
+  const loginHandel = () => {
+    router.push("/loginPage")
+  };
     return (
         <>
             <nav className='bg-blue-950 backdrop-blur-sm  start-0 fixed w-full z-20 top-0 border-b '>
                 <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
                     <span className='text-white self-center text-2xl font-semibold whitespace-nowrap'>NEIMS</span>
                     <div className='flex md:order-2 space-x-3 md:space-x-0'>
-                        <button type='button' className='text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-3xl text-lg px-10 py-2 pt-2 text-center'>
+                        <button onClick={loginHandel} type='button' className='text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-3xl text-lg px-10 py-2 pt-2 text-center'>
                             Login
                         </button>
                     </div>
