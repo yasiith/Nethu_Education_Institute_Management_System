@@ -20,7 +20,7 @@ const LoginPage = () => {
         >
           <button
             type="button"
-            className="text-orange-500 bg-gray-200 hover:bg-orange-500 hover:text-white hover:delay-75 focus:ring-4 focus:outline-none focus:ring-blue-300 font-bold rounded-3xl text-xs px-10 py-2 pt-2 text-center"
+            className="text-orange-500 bg-gray-200 hover:bg-orange-500 hover:text-white hover:delay-75  font-bold rounded-3xl text-xs px-10 py-2 pt-2 text-center mt-2 mr-10"
           >
             HOME
           </button>
