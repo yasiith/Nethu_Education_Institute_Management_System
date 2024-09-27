@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const cors = require("cors");
 
 const { start } = require('repl');
 
