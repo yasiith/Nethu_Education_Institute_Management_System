@@ -16,11 +16,7 @@ exports.registerAdmin = async (req, res) => {
 
     await user.save();
 
-    const payload = { user: { id: user.id, role: user.role } };
-    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
-      if (err) throw err;
-      res.json({ token });
-    });
+    res.json({ msg: 'Admin created successfully' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
