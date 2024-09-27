@@ -3,10 +3,11 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const app = express();
 require('dotenv').config();
-
+const cors = require("cors");
 // Connect Database
 connectDB();
 
+app.use(cors());
 // Init Middleware
 app.use(express.json());
 
