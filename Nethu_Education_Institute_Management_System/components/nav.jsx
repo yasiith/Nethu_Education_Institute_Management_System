@@ -6,7 +6,7 @@ const Navbar = () => {
   const router = useRouter();
 
   const loginHandel = () => {
-    router.push("/LoginPage");
+    router.push("/Login");
   };
   return (
     <>
