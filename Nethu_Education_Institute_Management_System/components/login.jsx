@@ -1,11 +1,21 @@
 "use client";
+// import LoginImage from "@public/assets/images/login.png";
+// import HomePage from "@app/page";
+// import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react"; // Import useState for managing input state
-import LoginImage from "@public/assets/images/Login_page_image.svg";
+// import LoginImage from "@public/assets/images/Login_page_image.svg";
+import LoginImage from "@public/assets/images/login.png";
+import HomePage from "@app/page";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+  const router = useRouter();
+  const loginHandle = () => {
+    router.push("/admin");
+  }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -54,12 +64,12 @@ const LoginPage = () => {
   return (
     <div className="flex h-screen w-screen relative">
       {/* Left side: Image */}
-      <div className="w-1/2 bg-gray-900 relative">
-        <Image src={LoginImage} alt="Space" layout="fill" objectFit="cover" />
+      <div className="w-1/2 bg-white relative">
+        <Image src={LoginImage} alt="Space" layout="fill" objectFit="cover" className="h-auto max-w-2xl justify-center ml-10" />
       </div>
 
       {/* Right side: Login form */}
-      <div className="w-1/2 bg-white flex flex-col justify-center items-center p-10 relative">
+      <div className="w-1/2 bg-white flex flex-col justify-center items-center p-10 relative mr-10">
         {/* Home Button */}
         <Link
           href="/"
@@ -110,12 +120,19 @@ const LoginPage = () => {
               Forget Password?
             </Link>
           </div>
+          <Link
+            href = "/admin"
+          >
           <button
+            onClick = {loginHandle}
             className="w-full p-3 bg-orange-500 text-white font-bold rounded-full hover:bg-gray-200 hover:text-orange-500 hover:border-orange-500 hover:delay-75"
+
             type="submit"
           >
             LOGIN
           </button>
+          </Link>
+          
         </form>
       </div>
     </div>
