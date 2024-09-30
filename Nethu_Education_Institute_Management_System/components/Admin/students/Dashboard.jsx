@@ -23,7 +23,7 @@ const Dashboard = () => {
             <   h1 className='text-4xl font-bold'>STUDENT MANAGEMENT</h1>
             </div>
         </div>
-        <div className='flex flex-col-2 justify-center py-5 gap-x-5 items-start'>
+        <div className='flex flex-row justify-center py-5 gap-x-5 items-start'>
             <button
                 onClick={handleClick1}
                 className='bg-teal-600 rounded-[35px] text-white text-center pt-5 pb-5 w-1/4 cursor-pointer  h-[200px]'
@@ -52,8 +52,8 @@ const Dashboard = () => {
                 onClick={handleClick4}
                 className='bg-gray-300 rounded-[35px] p-5 text-center w-1/4 cursor-pointer'
             >
-                <p className='text-[30px] font-semibold leading-none'>VIEW</p>
-                <p className='text-[45px] font-semibold leading-none'>STUDENTS</p>
+                <p className='text-[40px] font-semibold leading-none'>VIEW</p>
+                <p className='text-[60px] font-semibold leading-none'>STUDENTS</p>
 
             </button>
         </div>
