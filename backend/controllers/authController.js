@@ -23,7 +23,7 @@ exports.registerAdmin = async (req, res) => {
   }
 };
 
-// Create User (Teacher or Student)
+// Create User (Teacher )
 exports.createUser = async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -37,6 +37,34 @@ exports.createUser = async (req, res) => {
 
     user = new User({ name, email, password, role });
 
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+
+    await user.save();
+
+    res.json({ msg: 'User created successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Create User (Student)
+exports.createStudent = async (req, res) => {
+  const { name, email, StudentID } = req.body;
+  let password = StudentID;
+
+  // if (role !== 'teacher' && role !== 'student') {
+  //   return res.status(400).json({ msg: 'Invalid role' });
+  // }
+
+  try {
+    let user = await User.findOne({ email });
+    if (user) return res.status(400).json({ msg: 'User already exists' });
+
+    user = new User({ name, email, StudentID, role:'student',password });
+
+    
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
