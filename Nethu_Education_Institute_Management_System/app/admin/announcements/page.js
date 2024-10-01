@@ -1,10 +1,13 @@
-import Footer from '@components/footer'
-import AdminNav from '@components/Admin/AdminNav'
+import Footer from "@components/footer";
+
+import Dashboard from "@components/Admin/announcements/Dashboard";
+
+import AdminNav from "@components/Admin/AdminNav";
 const page = () => {
   return (
     <div>
       <AdminNav />
-      announcements
+      <Dashboard />
       <Footer />
     </div>
   )
