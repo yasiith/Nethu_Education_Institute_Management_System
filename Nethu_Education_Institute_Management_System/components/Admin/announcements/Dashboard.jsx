@@ -111,7 +111,7 @@ const Dashboard = () => {
         <h2 className="text-2xl font-bold text-center text-red-500 mb-4">
           ERROR
         </h2>
-        <p className="text-base font-bold mb-6">{message}</p>
+        <p className="text-lg font-bold mb-6">{message}</p>
         <button
           className="bg-red-500 text-white px-6 py-2 rounded"
           onClick={onClose}
