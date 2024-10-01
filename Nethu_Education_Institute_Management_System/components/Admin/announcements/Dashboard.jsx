@@ -108,13 +108,24 @@ const Dashboard = () => {
   const ErrorPopup = ({ message, onClose }) => (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white rounded-lg p-6 w-1/3">
-        <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
-        <p className="mb-6">{message}</p>
+// <<<<<<< announcements
+        <h2 className="text-2xl font-bold text-center text-red-500 mb-4">
+          ERROR
+        </h2>
+        <p className="text-lg font-bold mb-6">{message}</p>
+// =======
+//         <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
+//         <p className="mb-6">{message}</p>
+// >>>>>>> main
         <button
           className="bg-red-500 text-white px-6 py-2 rounded"
           onClick={onClose}
         >
-          Close
+// <<<<<<< announcements
+          CLOSE
+// =======
+//           Close
+// >>>>>>> main
         </button>
       </div>
     </div>
