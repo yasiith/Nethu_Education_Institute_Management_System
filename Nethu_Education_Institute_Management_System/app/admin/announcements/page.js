@@ -14,11 +14,6 @@ const page = () => {
     <div>
       <AdminNav />
       <Dashboard />
-// <<<<<<< announcements
-   //   <Announcements />
-// =======
-//       <Dashboard />
-// >>>>>>> main
       <Footer />
     </div>
   );

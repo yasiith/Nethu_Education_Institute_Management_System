@@ -126,3 +126,23 @@ exports.getUser = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+exports.deleteStudent = async (req, res) => {
+  try {
+    const StudentID = req.params.id; // Get student ID from request params
+
+    // Find the student by their StudentID
+    const user = await User.findOne({ StudentID }).select('-password');
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    await User.findOneAndDelete({ StudentID }); // Delete the user by StudentID
+    res.json({ msg: 'Student deleted' });
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
