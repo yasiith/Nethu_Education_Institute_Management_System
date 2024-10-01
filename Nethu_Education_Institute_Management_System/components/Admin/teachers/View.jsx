@@ -11,18 +11,18 @@ const studentsData = [
 const View = () => {
     const router = useRouter();
     const handleBack = () => {
-        router.push("/admin/students");
+        router.push("/admin/teachers");
     }
   return (
     <div>
         <div className="flex justify-between items-center mb-5 p-5">
-          <button 
+          <button
             onClick={handleBack}
             className='bg-red-500 w-[200px] h-[70px] rounded-[30px] text-white font-bold text-4xl '>
                 BACK
           </button>
         <h1 className=" bg-[#D7D7D7] py-4 px-8 rounded-full text-[40px] font-bold text-[#3b3b3b]">
-          VIEW STUDENTS
+          VIEW TEACHERS
         </h1>
       </div>
       <div className="flex flex-col items-center pb-10 ml-10 mr-10 mt-">
@@ -30,7 +30,7 @@ const View = () => {
             <table className="table-auto w-full text-justify text-[30px]">
             <thead>
                 <tr className="font-bold text-gray-800 text-[30px]">
-                <th className="p-3">Student ID</th>
+                <th className="p-3">Teacher ID</th>
                 <th className="p-3">Name</th>
                 <th className="p-3">Email</th>
                 </tr>
