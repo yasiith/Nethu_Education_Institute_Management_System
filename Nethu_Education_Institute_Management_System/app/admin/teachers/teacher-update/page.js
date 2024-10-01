@@ -1,9 +1,13 @@
-import React from 'react'
+import AdminNav from "@components/Admin/AdminNav"
+import Update from "@components/Admin/teachers/Update"
+import Footer from "@components/footer"
 
 const page = () => {
   return (
     <div>
-      update teacher
+      <AdminNav />
+      <Update />
+      <Footer />
     </div>
   )
 }
