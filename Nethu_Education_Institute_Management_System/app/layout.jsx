@@ -9,9 +9,6 @@ const Rootlayout = ({ children }) => {
   return (
     <html lang="en">
       <body>
-        <div>
-          <div className="gradient" />
-        </div>
         <main>{children}</main>
       </body>
     </html>
