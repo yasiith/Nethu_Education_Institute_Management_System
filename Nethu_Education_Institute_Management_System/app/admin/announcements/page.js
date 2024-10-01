@@ -1,16 +1,21 @@
 import Footer from "@components/footer";
+
+import Dashboard from "@components/Admin/announcements/Dashboard";
+
+
 // <<<<<<< announcements
-import Announcements from "@components/Admin/announcements/Dashboard";
+//import Announcements from "@components/Admin/announcements/Dashboard";
 // =======
 // import Dashboard from "@components/Admin/announcements/Dashboard";
-// >>>>>>> main
+
 import AdminNav from "@components/Admin/AdminNav";
 const page = () => {
   return (
     <div>
       <AdminNav />
+      <Dashboard />
 // <<<<<<< announcements
-      <Announcements />
+   //   <Announcements />
 // =======
 //       <Dashboard />
 // >>>>>>> main
