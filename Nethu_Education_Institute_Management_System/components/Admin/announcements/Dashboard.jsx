@@ -152,7 +152,7 @@ const Dashboard = () => {
             className="bg-gray-500 text-white px-6 py-2 rounded"
             onClick={onCancel}
           >
-            CANCLE
+            CANCEL
           </button>
         </div>
       </div>
@@ -172,7 +172,7 @@ const Dashboard = () => {
         </h1>
       </div>
 
-      <table className="min-w-full bg-white rounded-lg">
+      <table className="min-w-full bg-white rounded-[20px]">
         <thead>
           <tr className="bg-gray-200 text-gray-700">
             <th className="text-2xl py-3 px-5">Date</th>
@@ -193,7 +193,7 @@ const Dashboard = () => {
                 {editingId === row.id ? (
                   <>
                     <button
-                      className="bg-green-500 text-white px-4 py-2 rounded"
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg"
                       onClick={handleUpdate}
                     >
                       OK
@@ -202,7 +202,7 @@ const Dashboard = () => {
                       className="bg-gray-500 text-white px-4 py-2 rounded"
                       onClick={handleCancel}
                     >
-                      CANCLE
+                      CANCEL
                     </button>
                   </>
                 ) : (
@@ -279,7 +279,7 @@ const Dashboard = () => {
               className="bg-gray-500 text-white px-6 py-2 rounded"
               onClick={handleCancel}
             >
-              CANCLE
+              CANCEL
             </button>
           )}
         </div>

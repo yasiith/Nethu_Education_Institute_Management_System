@@ -1,9 +1,13 @@
-import React from 'react'
+import AdminNav from "@components/Admin/AdminNav"
+import Delete from "@components/Admin/teachers/Delete"
+import Footer from "@components/footer"
 
 const page = () => {
   return (
     <div>
-      Teacher delete
+      <AdminNav />
+      <Delete />  
+      <Footer />
     </div>
   )
 }

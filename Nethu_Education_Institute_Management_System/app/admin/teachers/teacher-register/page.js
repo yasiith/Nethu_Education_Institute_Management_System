@@ -1,9 +1,14 @@
-import React from 'react'
+import AdminNav from "@components/Admin/AdminNav"
+import Register from "@components/Admin/teachers/Register"
+import Footer from "@components/footer"
+
 
 const page = () => {
   return (
     <div>
-      Register teacher
+      <AdminNav />
+      <Register />
+      <Footer />
     </div>
   )
 }
