@@ -1,9 +1,13 @@
-import React from 'react'
+import AdminNav from "@components/Admin/AdminNav"
+import Footer from "@components/footer"
+import View from "@components/Admin/students/View"
 
 const page = () => {
   return (
     <div>
-      view students
+      <AdminNav />
+      <View />
+      <Footer />
     </div>
   )
 }
