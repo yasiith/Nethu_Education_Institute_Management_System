@@ -1,14 +1,19 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
+  const router = useRouter();
+  const toAdminOverview = () => {
+    router.push('/admin')
+  }
   const initialData = [
     {
       id: 1,
       date: "2024-09-30",
       grade: "9",
       subject: "Sinhala",
-      description: "Panthi na"
+      description: "No classes today"
     },
     {
       id: 2,
@@ -22,7 +27,7 @@ const Dashboard = () => {
       date: "2024-09-30",
       grade: "8",
       subject: "Math",
-      description: "wedding"
+      description: "Class cancelled"
     }
   ];
 
@@ -157,9 +162,11 @@ const Dashboard = () => {
   return (
     <div className="w-full h-full relative bg-[#E8E9EB] p-10">
       <div className="flex justify-between items-center mb-16">
-        <div className="bg-teal-600 text-white text-base font-bold py-2 px-7 rounded-full cursor-pointer">
-          BACK
-        </div>
+          <button 
+            onClick={toAdminOverview}
+            className='bg-red-500 w-[200px] h-[70px] rounded-[30px] text-white font-bold text-4xl '>
+                BACK
+          </button>
         <h1 className=" bg-[#D7D7D7] py-4 px-8 rounded-full text-4xl font-bold text-[#3b3b3b]">
           ANNOUNCEMENTS
         </h1>
