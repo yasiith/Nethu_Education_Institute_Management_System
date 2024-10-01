@@ -8,14 +8,14 @@ import Link from "next/link";
 import { useState } from "react"; // Import useState for managing input state
 // import LoginImage from "@public/assets/images/Login_page_image.svg";
 import LoginImage from "@public/assets/images/login.png";
-import HomePage from "@app/page";
-import { useRouter } from "next/navigation";
+// import HomePage from "@app/page";
+// import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
-  const router = useRouter();
-  const loginHandle = () => {
-    router.push("/admin");
-  }
+  // const router = useRouter();
+  // const loginHandle = () => {
+  //   router.push("/admin");
+  // }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -47,7 +47,7 @@ const LoginPage = () => {
           window.localStorage.setItem("loggedIn", true);
 
           if (data.type === "admin") {
-            window.location.href = "https://piratelk.com/";
+            window.location.href = "/admin";
           } else {
             window.location.href = "./home";
           }
@@ -120,18 +120,16 @@ const LoginPage = () => {
               Forget Password?
             </Link>
           </div>
-          <Link
-            href = "/admin"
-          >
+          
           <button
-            onClick = {loginHandle}
+            // onClick = {loginHandle}
             className="w-full p-3 bg-orange-500 text-white font-bold rounded-full hover:bg-gray-200 hover:text-orange-500 hover:border-orange-500 hover:delay-75"
 
             type="submit"
           >
             LOGIN
           </button>
-          </Link>
+          
           
         </form>
       </div>

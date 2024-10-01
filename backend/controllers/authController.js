@@ -16,37 +16,62 @@ exports.registerAdmin = async (req, res) => {
 
     await user.save();
 
-    const payload = { user: { id: user.id, role: user.role } };
-    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
-      if (err) throw err;
-      res.json({ token });
-    });
+    res.json({ msg: 'Admin created successfully' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
 
-// Create User (Teacher or Student)
-exports.createUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
+// Create User (Teacher )
+exports.createTeacher = async (req, res) => {
+  const { name, email, TeacherID } = req.body;
+  let password = TeacherID;
 
-  if (role !== 'teacher' && role !== 'student') {
-    return res.status(400).json({ msg: 'Invalid role' });
-  }
+  // if (role !== 'teacher' && role !== 'student') {
+  //   return res.status(400).json({ msg: 'Invalid role' });
+  // }
 
   try {
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ msg: 'User already exists' });
 
-    user = new User({ name, email, password, role });
+    user = new User({ name, email, TeacherID, role:'teacher',password});
 
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
 
     await user.save();
 
-    res.json({ msg: 'User created successfully' });
+    res.json({ msg: 'Teacher created successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Create User (Student)
+exports.createStudent = async (req, res) => {
+  const { name, email, StudentID } = req.body;
+  let password = StudentID;
+
+  // if (role !== 'teacher' && role !== 'student') {
+  //   return res.status(400).json({ msg: 'Invalid role' });
+  // }
+
+  try {
+    let user = await User.findOne({ email });
+    if (user) return res.status(400).json({ msg: 'User already exists' });
+
+    user = new User({ name, email, StudentID, role:'student',password });
+
+    
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+
+    await user.save();
+
+    res.json({ status:"ok", msg: 'Student created successfully' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

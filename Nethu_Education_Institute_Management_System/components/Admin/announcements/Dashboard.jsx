@@ -113,9 +113,12 @@ const Dashboard = () => {
           ERROR
         </h2>
         <p className="text-lg font-bold mb-6">{message}</p>
-
-//         <h2 className="text-2xl font-bold text-red-600 mb-4">Error</h2>
-//         <p className="mb-6">{message}</p>
+        <button
+          className="bg-red-500 text-white px-6 py-2 rounded"
+          onClick={onClose}
+        >
+          CLOSE
+        </button>
 
       </div>
     </div>
