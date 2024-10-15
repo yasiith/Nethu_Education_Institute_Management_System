@@ -146,3 +146,15 @@ exports.deleteStudent = async (req, res) => {
   }
 };
 
+exports.getStudents = async (req, res) => {
+  try {
+    const students = await User.find({ role: 'student' }).select('-password -_id -createdAt -updatedAt -__v -role');
+    if (!students || students.length === 0) {
+      return res.status(404).json({ msg: 'No students found' });
+    }
+    res.json({data: students});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};

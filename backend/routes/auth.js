@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require('../models/User');
-const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeacher,deleteStudent } = require('../controllers/authController');
+const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeacher,deleteStudent,getStudents } = require('../controllers/authController');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 const router = express.Router();
@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/register-admin', registerAdmin);
 router.post('/create-student', auth, checkRole('admin'), createStudent);
 router.post('/create-teacher', auth, checkRole('admin'), createTeacher);
+router.get('/viewstudents', auth, checkRole('admin'), getStudents);
 
 router.delete('/delete-student/:id', auth, checkRole('admin'), deleteStudent);
 // Auth routes
