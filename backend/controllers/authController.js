@@ -138,7 +138,7 @@ exports.deleteStudent = async (req, res) => {
     }
 
     await User.findOneAndDelete({ StudentID }); // Delete the user by StudentID
-    res.json({ msg: 'Student deleted' });
+    res.json({ status:"ok", msg: 'Student deleted' });
 
   } catch (err) {
     console.error(err.message);

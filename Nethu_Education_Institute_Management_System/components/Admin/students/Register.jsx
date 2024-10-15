@@ -45,7 +45,7 @@ const Register = () => {
         if (data.status === "ok") {
           alert("Student registered successfully!");
           // Optionally, redirect after successful registration
-          router.push("/admin-dashboard"); // Adjust the route as necessary
+          router.push("/admin/students/student-register"); // Adjust the route as necessary
         } else {
           alert("Student registration failed. User may already exist.");
         }
