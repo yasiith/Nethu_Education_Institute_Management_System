@@ -5,9 +5,7 @@ import Footer from "@components/footer";
 const Page = () => {
   return (
     <div>
-      <TeacherNav />
       <GradeCreateForm />
-      <Footer />
     </div>
   );
 };
