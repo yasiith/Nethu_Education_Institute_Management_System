@@ -56,8 +56,10 @@ const LoginPage = () => {
 
           if (data.type === "admin") {
             window.location.href = "/admin";
-          } else {
-            window.location.href = "./home";
+          } else if(data.type =="teacher") {
+            window.location.href = "/teachers";
+          }else if(data.type ==="student"){
+            window.location.href ="/student"
           }
         } else {
           alert("Login failed. Please check your credentials.");
