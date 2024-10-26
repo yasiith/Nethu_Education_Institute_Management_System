@@ -7,23 +7,23 @@ const checkRole = require('../middleware/checkRole');
 const router = express.Router();
 
 // Admin routes
-router.post('/register-admin', registerAdmin);
-router.post('/create-student', auth, checkRole('admin'), createStudent);
-router.post('/create-teacher', auth, checkRole('admin'), createTeacher);
-router.get('/viewstudents', auth, checkRole('admin'), getStudents);
-router.get('/updatesudent',auth,checkRole('admin'),updatestudent);
+router.post('/api/auth/register-admin', registerAdmin);
+router.post('/api/auth/create-student', auth, checkRole('admin'), createStudent);
+router.post('/api/auth/create-teacher', auth, checkRole('admin'), createTeacher);
+router.get('/api/auth/viewstudents', auth, checkRole('admin'), getStudents);
+router.get('/api/auth/updatesudent',auth,checkRole('admin'),updatestudent);
 
 
 
-router.delete('/delete-student/:id', auth, checkRole('admin'), deleteStudent);
+router.delete('/api/auth/delete-student/:id', auth, checkRole('admin'), deleteStudent);
 // Auth routes
-router.post('/login', loginUser);
+router.post('/api/auth/login', loginUser);
 
-router.get('/user', auth, getUser);  // For the authenticated user
-router.get('/user/:id', auth, checkRole('admin'), getUser);
+router.get('/api/auth/user', auth, getUser);  // For the authenticated user
+router.get('/api/auth/user/:id', auth, checkRole('admin'), getUser);
 
 // Test route
-router.get('/test', (req, res) => {
+router.get('/api/auth/test', (req, res) => {
     res.json({ msg: 'Test route works' });
 });
 
