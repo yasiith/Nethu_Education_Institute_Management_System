@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <>
       <div>
-        <LandingPage />
+        <TeaTeacherNavLeft />
       </div>
     </>
   );
