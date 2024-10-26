@@ -1,45 +1,53 @@
 "use client";
-// import LoginImage from "@public/assets/images/login.png";
-// import HomePage from "@app/page";
-// import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react"; // Import useState for managing input state
-// import LoginImage from "@public/assets/images/Login_page_image.svg";
+import { useState, useEffect } from "react";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import LoginImage from "@public/assets/images/login.png";
-// import HomePage from "@app/page";
-// import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
-  // const router = useRouter();
-  // const loginHandle = () => {
-  //   router.push("/admin");
-  // }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
-  // Handle form submit
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
   function handleSubmit(e) {
     e.preventDefault();
+    if (rememberMe) {
+      localStorage.setItem("email", email);
+    } else {
+      localStorage.removeItem("email");
+    }
 
-    console.log(email, password);
     fetch("http://localhost:5000/api/auth/login", {
       method: "POST",
       crossDomain: true,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "*"
       },
       body: JSON.stringify({
         email,
-        password,
-      }),
+        password
+      })
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.status === "ok") {
           alert("Login successful");
           window.localStorage.setItem("token", data.data);
@@ -63,14 +71,17 @@ const LoginPage = () => {
 
   return (
     <div className="flex h-screen w-screen relative">
-      {/* Left side: Image */}
       <div className="w-1/2 bg-white relative">
-        <Image src={LoginImage} alt="Space" layout="fill" objectFit="cover" className="h-auto max-w-2xl justify-center ml-10" />
+        <Image
+          src={LoginImage}
+          alt="Space"
+          layout="fill"
+          objectFit="cover"
+          className="h-auto max-w-2xl justify-center ml-10"
+        />
       </div>
 
-      {/* Right side: Login form */}
       <div className="w-1/2 bg-white flex flex-col justify-center items-center p-10 relative mr-10">
-        {/* Home Button */}
         <Link
           href="/"
           className="absolute top-5 right-6 flex justify-center items-center"
@@ -94,23 +105,39 @@ const LoginPage = () => {
               type="email"
               placeholder="User name or email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)} // Update state on input change
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <input
               className="w-full p-3 mb-1 border rounded-lg text-gray-700"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} // Update state on input change
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 px-3 text-gray-500 flex items-center"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? (
+                <AiFillEyeInvisible size={20} />
+              ) : (
+                <AiFillEye size={20} />
+              )}
+            </button>
           </div>
           <div className="flex items-center font-bold justify-between mb-10">
             <label className="flex items-center">
-              <input type="checkbox" className="mr-2" />
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+              />
               Remember Me
             </label>
             <Link
@@ -120,17 +147,13 @@ const LoginPage = () => {
               Forget Password?
             </Link>
           </div>
-          
-          <button
-            // onClick = {loginHandle}
-            className="w-full p-3 bg-orange-500 text-white font-bold rounded-full hover:bg-gray-200 hover:text-orange-500 hover:border-orange-500 hover:delay-75"
 
+          <button
+            className="w-full p-3 bg-orange-500 text-white font-bold rounded-full hover:bg-gray-200 hover:text-orange-500 hover:border-orange-500 hover:delay-75"
             type="submit"
           >
             LOGIN
           </button>
-          
-          
         </form>
       </div>
     </div>
