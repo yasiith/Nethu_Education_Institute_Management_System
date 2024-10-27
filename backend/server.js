@@ -4,6 +4,9 @@ const authRoutes = require('./routes/auth');
 const teacherRoutes = require('./routes/teacherRoutes');
 const classRoutes = require('./routes/classRoutes');
 const studentRoutes = require('./routes/studentRoutes');
+const adminDashBoardRoutes = require('./routes/adminDashBoardRoutes');
+
+
 const app = express();
 require('dotenv').config();
 const cors = require("cors");
@@ -21,6 +24,7 @@ app.use(authRoutes);
 app.use(teacherRoutes);
 app.use(classRoutes);
 app.use(studentRoutes);
+app.use(adminDashBoardRoutes);
 
 // Set up a basic route for testing
 app.get('/', (req, res) => res.send('API Running'));

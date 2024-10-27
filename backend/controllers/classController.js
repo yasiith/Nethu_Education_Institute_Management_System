@@ -85,4 +85,16 @@ const deleteClass = async (req, res) => {
     }
 };
 
-module.exports = { createclass, getAllClasses, deleteClass };
+  // the number of classes
+const getClassCount = async (req, res) => {
+    try {
+        const classCount = await Class.countDocuments(); // Count the documents in Class collection
+        res.status(200).json({ count: classCount });
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving class count', error });
+    }
+};
+
+
+module.exports = {createClass,getAllClasses,deleteClass,getClassCount};
+
