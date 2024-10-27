@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
 const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeacher,deleteStudent,getStudents } = require('../controllers/authController');
-const { updatestudent} = require('../controllers/userupdate');
+const { getStudentInfo,updateStudentInfo} = require('../controllers/userupdate');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 const router = express.Router();
@@ -11,7 +11,9 @@ router.post('/register-admin', registerAdmin);
 router.post('/create-student', auth, checkRole('admin'), createStudent);
 router.post('/create-teacher', auth, checkRole('admin'), createTeacher);
 router.get('/viewstudents', auth, checkRole('admin'), getStudents);
-router.get('/updatesudent',auth,checkRole('admin'),updatestudent);
+
+router.get('/getstudentinfo/:id',getStudentInfo)
+router.put('/updatestudent/:id', updateStudentInfo);
 
 
 
