@@ -96,5 +96,5 @@ const getClassCount = async (req, res) => {
 };
 
 
-module.exports = {createClass,getAllClasses,deleteClass,getClassCount};
+module.exports = {createclass,getAllClasses,deleteClass,getClassCount};
 
