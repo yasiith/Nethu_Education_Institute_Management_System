@@ -158,6 +158,25 @@ exports.getStudents = async (req, res) => {
   }
 };
 
+exports.deleteTeacher = async (req, res) => {
+  try {
+    const TeacherID = req.params.id; // Get Teacher ID from request params
+
+    // Find the teacher by their TeacherID
+    const user = await User.findOne({ TeacherID }).select('-password');
+    if (!user) {
+      return res.status(404).json({ msg: 'Teacher not found' });
+    }
+
+    await User.findOneAndDelete({ TeacherID }); 
+    res.json({ status:"ok", msg: 'Teacher deleted' });
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
+
 exports.getTeachers = async (req, res) => {
   try {
     const teachers = await User.find({ role: 'teacher' }).select('-password -_id -createdAt -updatedAt -__v -role');

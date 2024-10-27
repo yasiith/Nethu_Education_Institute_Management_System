@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require('../models/User');
-const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeacher,deleteStudent,getStudents,getTeachers } = require('../controllers/authController');
+const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeacher,deleteStudent,getStudents,getTeachers, deleteTeacher } = require('../controllers/authController');
 const { getStudentInfo,updateStudentInfo} = require('../controllers/userupdate');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
@@ -26,6 +26,7 @@ router.put('/api/auth/updatestudent/:id', updateStudentInfo);
 
 
 router.delete('/api/auth/delete-student/:id', auth, checkRole('admin'), deleteStudent);
+router.delete('/api/auth/delete-teacher/:id', auth, checkRole('admin'), deleteTeacher);
 // Auth routes
 router.post('/api/auth/login', loginUser);
 
