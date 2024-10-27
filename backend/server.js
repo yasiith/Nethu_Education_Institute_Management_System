@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Define Routes
 
-app.use( authRoutes);
+app.use(authRoutes);
 app.use(teacherRoutes);
 app.use(classRoutes);
 app.use(studentRoutes);

@@ -13,13 +13,18 @@ const classSchema = new mongoose.Schema({
       type: Date,
       required: true,  
     },
+    classid: {
+        type:String,
+        required: true,
+        unique:true,
+    },
     description: {
         type: String,
         required: true,
     },
     privacy: {
         type: String,
-        enum: ['public', 'private'],
+        enum: ['Public', 'Private'],
         required: true,
     },
     teacher: {
