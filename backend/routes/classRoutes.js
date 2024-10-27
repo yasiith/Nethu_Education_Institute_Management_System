@@ -1,12 +1,8 @@
 const express = require('express');
-const {createClass} = require('../controllers/classController');
-const validateClass = require('../middleware/validateClass');
-const auth = require('../middleware/auth');
-const checkRole = require('../middleware/checkRole');
-
 const router = express.Router();
+const { getAllClasses } = require('../controllers/classController');
 
-// Route to create a new class
-router.post('/create',auth, checkRole('teacher'), validateClass, createClass);
+// Define the GET route for fetching all classes
+router.get('/api/classes', getAllClasses);
 
 module.exports = router;
