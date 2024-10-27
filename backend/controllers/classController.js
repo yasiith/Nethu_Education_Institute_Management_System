@@ -27,6 +27,7 @@ const createclass = async (req, res) => {
             date,
             description,
             privacy,
+            teacher: req.user.id,
         });
 
         await newClass.save();
