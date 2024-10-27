@@ -157,3 +157,16 @@ exports.getStudents = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+exports.getTeachers = async (req, res) => {
+  try {
+    const teachers = await User.find({ role: 'teacher' }).select('-password -_id -createdAt -updatedAt -__v -role');
+    if (!teachers || teachers.length === 0) {
+      return res.status(404).json({ msg: 'No teachers found' });
+    }
+    res.json({data: teachers});
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
