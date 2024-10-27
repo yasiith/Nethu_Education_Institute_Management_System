@@ -12,15 +12,15 @@ const router = express.Router();
 
 // Admin routes
 
-router.post('/register-admin', registerAdmin);
-router.post('/create-student', auth, checkRole('admin'), createStudent);
-router.post('/create-teacher', auth, checkRole('admin'), createTeacher);
-router.get('/viewstudents', auth, checkRole('admin'), getStudents);
+router.post('/api/auth/register-admin', registerAdmin);
+router.post('/api/auth/create-student', auth, checkRole('admin'), createStudent);
+router.post('/api/auth/create-teacher', auth, checkRole('admin'), createTeacher);
+router.get('/api/auth/viewstudents', auth, checkRole('admin'), getStudents);
 
 //router.get('/api/auth/getstudentinfo/:id', getStudentInfo);
 //router.put('/api/auth/updatestudent/:id', updateStudentInfo);
-router.get('/getstudentinfo/:id',getStudentInfo)
-router.put('/updatestudent/:id', updateStudentInfo);
+router.get('/api/auth/getstudentinfo/:id',getStudentInfo)
+router.put('/api/auth/updatestudent/:id', updateStudentInfo);
 
 
 router.delete('/api/auth/delete-student/:id', auth, checkRole('admin'), deleteStudent);
