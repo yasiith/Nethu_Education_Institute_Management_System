@@ -1,15 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
+import { FaChevronDown } from "react-icons/fa";
 
 const CreateForm = () => {
   const [grade, setGrade] = useState("");
-  const [title, setTitle] = useState("");
+  const [subject, setSubject] = useState("");
   const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
+  const [classPrivacy, setClassPrivacy] = useState("");
 
   const handleCreate = () => {
     // Handle form submission logic here
-    alert(`Grade: ${grade}, Title: ${title}, Date: ${date}`);
+    alert(
+      `Grade: ${grade}, Subject: ${subject}, Date: ${date}, Description: ${description}, Class Privacy: ${classPrivacy}`
+    );
   };
 
   return (
@@ -29,9 +34,9 @@ const CreateForm = () => {
       <div className="flex flex-col mb-4 w-[1000px]">
         <input
           type="text"
-          placeholder="TITLE"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          placeholder="SUBJECT"
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
           className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
         />
       </div>
@@ -49,11 +54,23 @@ const CreateForm = () => {
       <div className="flex flex-col mb-4 w-[1000px]">
         <input
           type="text"
-          placeholder="TITLE"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          placeholder="DESCRIPTION"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
         />
+      </div>
+      {/* Class Privacy Dropdown */}
+      <div className="flex flex-col mb-4 w-[1000px] relative">
+        <select
+          value={classPrivacy}
+          onChange={(e) => setClassPrivacy(e.target.value)}
+          className="appearance-none w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200 pr-10" // Added pr-10 for padding
+        >
+          <option value="Public">Public</option>
+          <option value="Private">Private</option>
+        </select>
+        <FaChevronDown className="absolute right-5 top-1/2 transform -translate-y-1/2 text-[#616060]" />
       </div>
       <div className="flex flex-col mt-4 mb-4 ml-[790px] w-[200px]">
         {/* Create Button */}
