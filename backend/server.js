@@ -3,7 +3,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const teacherRoutes = require('./routes/teacherRoutes');
 const classRoutes = require('./routes/classRoutes');
-const studentRoutes = require('./routes/studentRouts');
+const studentRoutes = require('./routes/studentRoutes');
 const app = express();
 require('dotenv').config();
 const cors = require("cors");
@@ -17,7 +17,7 @@ app.use(express.json());
 
 // Define Routes
 
-app.use(authRoutes);
+app.use('/api/auth', authRoutes);
 app.use(teacherRoutes);
 app.use(classRoutes);
 app.use(studentRoutes);

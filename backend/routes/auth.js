@@ -4,6 +4,7 @@ const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeac
 const { getStudentInfo,updateStudentInfo} = require('../controllers/userupdate');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
+
 const router = express.Router();
 
 // Admin routes
@@ -13,6 +14,8 @@ router.post('/create-student', auth, checkRole('admin'), createStudent);
 router.post('/create-teacher', auth, checkRole('admin'), createTeacher);
 router.get('/viewstudents', auth, checkRole('admin'), getStudents);
 
+//router.get('/api/auth/getstudentinfo/:id', getStudentInfo);
+//router.put('/api/auth/updatestudent/:id', updateStudentInfo);
 router.get('/getstudentinfo/:id',getStudentInfo)
 router.put('/updatestudent/:id', updateStudentInfo);
 
