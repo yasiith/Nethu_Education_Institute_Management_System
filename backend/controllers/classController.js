@@ -27,14 +27,14 @@ const createclass = async (req, res) => {
             date,
             description,
             privacy,
-            teacher: req.user.id,
+        
         });
 
         await newClass.save();
         res.json({ status: "ok", msg: 'Class created successfully', classid: newClassID });
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.json({ message: 'Server error' }); // Properly formatted response
     }
 };
 
@@ -86,7 +86,7 @@ const deleteClass = async (req, res) => {
     }
 };
 
-  // the number of classes
+// Controller to get the number of classes
 const getClassCount = async (req, res) => {
     try {
         const classCount = await Class.countDocuments(); // Count the documents in Class collection
