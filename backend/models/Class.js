@@ -22,6 +22,14 @@ const classSchema = new mongoose.Schema({
         enum: ['public', 'private'],
         required: true,
     },
+    teacher: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    students: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User' 
+    }]
 },{
     timestamps: true // Automatically adds createdAt and updatedAt fields
 });

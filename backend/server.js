@@ -1,7 +1,9 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
-const classes = require('./routes/classRoutes');
+const teacherRoutes = require('./routes/teacherRoutes');
+const classRoutes = require('./routes/classRoutes');
+const studentRoutes = require('./routes/studentRoutes');
 const app = express();
 require('dotenv').config();
 const cors = require("cors");
@@ -15,8 +17,10 @@ app.use(express.json());
 
 // Define Routes
 
-app.use('/api/auth', authRoutes);
-app.use('/api/classRoutes', classes);
+app.use( authRoutes);
+app.use(teacherRoutes);
+app.use(classRoutes);
+app.use(studentRoutes);
 
 // Set up a basic route for testing
 app.get('/', (req, res) => res.send('API Running'));
