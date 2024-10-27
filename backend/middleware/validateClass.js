@@ -5,8 +5,9 @@ const validateClass = [
     body('subject').notEmpty().withMessage('Subject is required'),  
     body('date').notEmpty().withMessage('Date must be in ISO format'),
     body('description').notEmpty().isLength({min:10}).withMessage('Description must be at least 10 characters long'),
-    body('privacy').notEmpty().isIn(['public', 'private']).withMessage('Privacy must be either public or private'),
+    body('privacy').notEmpty().isIn(['Public', 'Private']).withMessage('Privacy must be either public or private'),
     body('teacher').notEmpty(),
+  
 
     (req, res, next) => {
         const errors = validationResult(req);
