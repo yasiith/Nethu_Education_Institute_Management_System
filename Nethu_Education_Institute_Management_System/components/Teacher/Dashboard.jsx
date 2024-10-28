@@ -1,12 +1,31 @@
 "use client";
-
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 import CreateForm from "./gradeCreateForm"; // Make sure this path is correct
 
 const Dashboard = () => {
   const [grades, setGrades] = useState([]); // To store grades
   const [showGradeCreateForm, setShowGradeCreateForm] = useState(false); // State to control visibility
   const teacherName = "Teacher Name"; // Replace with dynamic data if needed
+
+  // For rendering classes dynamically - yasith
+  const router = useRouter();
+  const [classes, setClasses] = useState([]);
+
+  // Fetch classes on component mount - yasith
+  useEffect(() => {
+    async function fetchClasses() {
+      const response = await fetch('/api/teacher/classes');
+      const data = await response.json();
+      setClasses(data);
+    }
+
+    fetchClasses();
+  },[]);
+
+  const handleClassClick = (classId) => {
+    router.push(`/teachers/classes/${classId}`);
+  }
 
   // Handle adding a new grade
   const handleAddGrade = (newGrade) => {
@@ -25,7 +44,7 @@ const Dashboard = () => {
       </div>
 
       {/* Grade Buttons */}
-      <div className="flex flex-wrap justify-center gap-4 mt-10">
+      <div className="flex flex-col-3 flex-wrap justify-center gap-4 mt-10">
         {grades.length > 0 ? (
           grades.map((grade, index) => (
             <button
@@ -44,6 +63,18 @@ const Dashboard = () => {
             +
           </button>
         )}
+        {/* Rendering Classes dynamically -yasith */}
+        <div>
+          {classes.map((classItem) => (
+            <div
+              key={classItem.id}
+              onClick={() => handleClassClick(classItem.id)}
+            >
+              <h2>{classItem.name}</h2>
+              <p>{classItem.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* "Create a Grade" Button */}
