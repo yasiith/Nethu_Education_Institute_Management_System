@@ -1,100 +1,126 @@
 "use client";
-import { useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
-import CreateForm from "./gradeCreateForm"; // Make sure this path is correct
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router'; 
+import CreateForm from './gradeCreateForm';
 
-const Dashboard = () => {
-  const [grades, setGrades] = useState([]); // To store grades
-  const [showGradeCreateForm, setShowGradeCreateForm] = useState(false); // State to control visibility
-  const teacherName = "Teacher Name"; // Replace with dynamic data if needed
-
-  // For rendering classes dynamically - yasith
-  const router = useRouter();
+const TeacherDashboard = () => {
   const [classes, setClasses] = useState([]);
+  const [grades, setGrades] = useState([]);
+  const [showGradeCreateForm, setShowGradeCreateForm] = useState(false);
+  const [loading, setLoading] = useState(true);
+  //const router = useRouter();
 
-  // Fetch classes on component mount - yasith
-  useEffect(() => {
-    async function fetchClasses() {
-      const response = await fetch('/api/teacher/classes');
-      const data = await response.json();
-      setClasses(data);
+  const fetchClasses = async () => {
+    const teacherID = localStorage.getItem('TeacherID');
+    if (!teacherID) {
+      alert("TeacherID not found. Please log in again.");
+      return;
     }
 
+    try {
+      const response = await fetch(`http://localhost:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+       //alert("No classes available");
+      }
+
+      const data = await response.json();
+      setClasses(data);
+    } catch (error) {
+      console.error("Error loading classes:", error);
+      alert("Error loading classes: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Only fetch classes once after mounting
+  useEffect(() => {
     fetchClasses();
-  },[]);
+  }, []);
+
+  const handleCreateSuccess = () => {
+    fetchClasses(); // Refresh class list after successful creation
+  };
 
   const handleClassClick = (classId) => {
     router.push(`/teachers/classes/${classId}`);
-  }
-
-  // Handle adding a new grade
-  const handleAddGrade = (newGrade) => {
-    if (newGrade.trim() !== "") {
-      setGrades([...grades, newGrade]);
-    }
   };
 
   return (
     <div className="flex flex-col items-center pt-10">
-      {/* Welcome Message */}
       <div className="w-[1000px] h-[100px] bg-[#d9d9d9] text-center rounded-[30px] flex items-center justify-center">
-        <h2 className="text-4xl font-bold">
-          WELCOME, {teacherName.toUpperCase()}
-        </h2>
+        <h2 className="text-4xl font-bold">WELCOME, TEACHER</h2>
       </div>
 
-      {/* Grade Buttons */}
-      <div className="flex flex-col-3 flex-wrap justify-center gap-4 mt-10">
-        {grades.length > 0 ? (
-          grades.map((grade, index) => (
-            <button
-              key={index}
-              className="w-[397px] h-[137px] bg-teal-400 text-white font-bold rounded-[53px] text-xl flex items-center justify-center"
-              onClick={() => alert(`Navigating to ${grade}`)} // Replace with navigation logic
-            >
-              {grade.toUpperCase()}
-            </button>
-          ))
-        ) : (
-          <button
-            className="w-[397px] h-[137px] bg-teal-400 text-white font-bold rounded-[53px] text-3xl flex items-center justify-center"
-            onClick={() => setShowGradeCreateForm(true)} // Correctly set the visibility
-          >
-            +
-          </button>
-        )}
-        {/* Rendering Classes dynamically -yasith */}
-        <div>
-          {classes.map((classItem) => (
-            <div
-              key={classItem.id}
-              onClick={() => handleClassClick(classItem.id)}
-            >
-              <h2>{classItem.name}</h2>
-              <p>{classItem.description}</p>
+      {loading ? (
+        <div>Loading classes...</div>
+      ) : (
+        <>
+          <div className="flex flex-col-3 flex-wrap justify-center gap-4 mt-10">
+            {grades.length > 0 ? (
+              grades.map((grade, index) => (
+                <button
+                  key={index}
+                  className="w-[397px] h-[137px] bg-teal-400 text-white font-bold rounded-[53px] text-xl flex items-center justify-center"
+                  onClick={() => alert(`Navigating to ${grade}`)}
+                >
+                  {grade.toUpperCase()}
+                </button>
+              ))
+            ) : (
+              <button
+                className="w-[397px] h-[137px] bg-teal-400 text-white font-bold rounded-[53px] text-3xl flex items-center justify-center"
+                onClick={() => setShowGradeCreateForm(true)}
+              >
+                +
+              </button>
+            )}
+
+            <div>
+              {classes.length > 0 ? (
+                classes.map((classItem) => (
+                  <div
+                    key={classItem.id}
+                    onClick={() => handleClassClick(classItem.id)}
+                    className="cursor-pointer"
+                  >
+                    <h2>{classItem.name}</h2>
+                    <p>{classItem.description}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No classes available.</p>
+              )}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      {/* "Create a Grade" Button */}
-      <div className="mt-10 mb-3 w-full flex justify-center">
-        <button
-          className="w-[1000px] h-[100px] bg-[#dadada] text-[#616060] font-bold rounded-[30px] text-4xl hover:bg-gray-300 hover:text-black"
-          onClick={() => setShowGradeCreateForm(true)} // Correctly set the visibility
-        >
-          CREATE A GRADE +
-        </button>
-      </div>
+          <div className="mt-10 mb-3 w-full flex justify-center">
+            <button
+              className="w-[1000px] h-[100px] bg-[#dadada] text-[#616060] font-bold rounded-[30px] text-4xl hover:bg-gray-300 hover:text-black"
+              onClick={() => setShowGradeCreateForm(true)}
+            >
+              CREATE A GRADE +
+            </button>
+          </div>
 
-      {/* Additional Component (conditionally rendered) */}
-      {showGradeCreateForm && (
-        <div className="mt-5 w-full flex justify-center">
-          <CreateForm onClose={() => setShowGradeCreateForm(false)} />
-        </div>
+          {showGradeCreateForm && (
+            <div className="mt-5 w-full flex justify-center">
+              <CreateForm 
+                onClose={() => setShowGradeCreateForm(false)} 
+                onSuccess={handleCreateSuccess} 
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );
 };
 
-export default Dashboard;
+export default TeacherDashboard;
