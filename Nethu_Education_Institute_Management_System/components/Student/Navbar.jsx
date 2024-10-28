@@ -2,6 +2,7 @@
 import React from 'react';
 import { useState,useEffect, useRef } from 'react';
 import {User} from 'lucide-react';
+import Link from 'next/link';
 
 const Navbar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -28,7 +29,7 @@ const Navbar = () => {
         <div className='max-w-7xl'>
             <div className='flex p-10 justify-between items-center h-16'>
                 <div className='flex-shrink-0'>
-                    <span className='text-5xl font-semibold text-white'>NEIMS</span>
+                    <span className='text-3xl font-semibold text-white'><Link href='/'>NEIMS</Link></span>
                 </div>
                 <div ref={dropdownRef} className='absolute right-8'>
                     <button
