@@ -54,49 +54,39 @@ const TeacherDashboard = () => {
   };
 
   return (
-    <div className="flex flex-col items-center pt-10">
-      <div className="w-[1000px] h-[100px] bg-[#d9d9d9] text-center rounded-[30px] flex items-center justify-center">
-        <h2 className="text-4xl font-bold">WELCOME, TEACHER</h2>
+    <div className="pt-10">
+      <div className='inline-block pl-10'>
+        <div className='p-5 whitespace-nowrap'>
+            <h1 className='text-4xl font-bold'>Welcome,Teacher Name</h1> 
+        </div>
+      </div>
+      <div>
+        <div className='flex items-center justify-center'>
+          <div className='flex flex-col bg-gray-200 p-5 rounded-2xl'>
+            <h2 className='text-4xl font-semibold'>Created Classes</h2>
+          </div>
+        </div>
       </div>
 
       {loading ? (
         <div>Loading classes...</div>
       ) : (
         <>
-          <div className="flex flex-col-3 flex-wrap justify-center gap-4 mt-10">
-            {grades.length > 0 ? (
-              grades.map((grade, index) => (
-                <button
-                  key={index}
-                  className="w-[397px] h-[137px] bg-teal-400 text-white font-bold rounded-[53px] text-xl flex items-center justify-center"
-                  onClick={() => alert(`Navigating to ${grade}`)}
-                >
-                  {grade.toUpperCase()}
-                </button>
-              ))
-            ) : (
-              <button
-                className="w-[397px] h-[137px] bg-teal-400 text-white font-bold rounded-[53px] text-3xl flex items-center justify-center"
-                onClick={() => setShowGradeCreateForm(true)}
-              >
-                +
-              </button>
-            )}
-
-            <div>
+          <div className="flex flex-wrap justify-center gap-4 mt-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
               {classes.length > 0 ? (
                 classes.map((classItem) => (
                   <div
-                    key={classItem.id}
-                    onClick={() => handleClassClick(classItem.id)}
-                    className="cursor-pointer"
+                    key={classItem._id} // ensure _id or another unique identifier
+                    onClick={() => handleClassClick(classItem._id)}
+                    className="cursor-pointer p-4 bg-teal-100 rounded-lg shadow-md hover:bg-teal-200 transition duration-300 "
                   >
-                    <h2>{classItem.name}</h2>
-                    <p>{classItem.description}</p>
+                    <h2 className="text-xl font-bold text-teal-800">{classItem.name}</h2>
+                    <p className="text-lg text-gray-600 font-semibold mt-2">{classItem.description}</p>
                   </div>
                 ))
               ) : (
-                <p>No classes available.</p>
+                <p className="text-gray-500 col-span-full text-center">No classes available.</p>
               )}
             </div>
           </div>
