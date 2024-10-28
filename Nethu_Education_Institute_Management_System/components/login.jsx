@@ -52,8 +52,13 @@ const LoginPage = () => {
           alert("Login successful");
           window.localStorage.setItem("token", data.data);
           window.localStorage.setItem("role", data.type);
-          window.localStorage.setItem("TeacherID", data.TeacherID);
           window.localStorage.setItem("loggedIn", true);
+          if(data.type ==="teacher"){
+            window.localStorage.setItem("TeacherID", data.TeacherID);
+          }
+          if(data.type ==="student"){
+            window.localStorage.setItem("StudentID", data.StudentID);
+          }
 
           if (data.type === "admin") {
             window.location.href = "/admin";
