@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
-const CreateForm = () => {
+const CreateForm = ({ onClose, onSuccess }) => {
   const [grade, setGrade] = useState("");
   const [subject, setSubject] = useState("");
   const [date, setDate] = useState("");
@@ -13,7 +13,6 @@ const CreateForm = () => {
   const teacherID = localStorage.getItem('TeacherID');
 
   const handleCreate = async () => {
-    // Check if TeacherID exists
     if (!teacherID) {
       alert("TeacherID not found. Please log in again.");
       return;
@@ -25,7 +24,7 @@ const CreateForm = () => {
       date,
       description,
       privacy: classPrivacy,
-      teacherID: teacherID, // Use the variable from localStorage
+      teacherID: teacherID,
     };
 
     try {
@@ -38,14 +37,16 @@ const CreateForm = () => {
       });
 
       const data = await response.json();
-      if (data.status === "ok") {
+      if (response.ok) {
         alert("Class created successfully");
-      }
-      if (!response.ok) {
+        // Call the onSuccess function to refresh the dashboard
+        onSuccess();
+        // Optionally, close the form if desired
+        onClose();
+      } else {
         throw new Error(data.msg || "Error creating class");
       }
 
-      console.log(data.msg); // Class created successfully
       // Optionally, reset the form
       setGrade("");
       setSubject("");
@@ -71,7 +72,7 @@ const CreateForm = () => {
         />
       </div>
 
-      {/* Title Input */}
+      {/* Subject Input */}
       <div className="flex flex-col mb-4 w-[1000px]">
         <input
           type="text"
@@ -117,8 +118,8 @@ const CreateForm = () => {
         <FaChevronDown className="absolute right-5 top-1/2 transform -translate-y-1/2 text-[#616060]" />
       </div>
 
+      {/* Create Button */}
       <div className="flex flex-col mt-4 mb-4 ml-[790px] w-[200px]">
-        {/* Create Button */}
         <button
           onClick={handleCreate}
           className="bg-teal-400 text-white font-bold text-lg py-3 px-10 rounded-full hover:bg-teal-500"
