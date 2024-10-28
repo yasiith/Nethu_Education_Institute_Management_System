@@ -10,13 +10,22 @@ const CreateForm = () => {
   const [description, setDescription] = useState("");
   const [classPrivacy, setClassPrivacy] = useState("");
 
+  const teacherID = localStorage.getItem('TeacherID');
+
   const handleCreate = async () => {
+    // Check if TeacherID exists
+    if (!teacherID) {
+      alert("TeacherID not found. Please log in again.");
+      return;
+    }
+
     const classData = {
       grade,
       subject,
       date,
       description,
       privacy: classPrivacy,
+      teacherID: teacherID, // Use the variable from localStorage
     };
 
     try {
@@ -29,8 +38,8 @@ const CreateForm = () => {
       });
 
       const data = await response.json();
-      if(data.status ==="ok"){
-      alert("Class created successfully");
+      if (data.status === "ok") {
+        alert("Class created successfully");
       }
       if (!response.ok) {
         throw new Error(data.msg || "Error creating class");
