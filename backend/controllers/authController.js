@@ -88,16 +88,36 @@ exports.loginUser = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: 'Invalid Credentials' });
 
-    const payload = { user: { id: user.id, role: user.role } };
+    // Define the payload based on the user's role
+    const payload = {
+      user: {
+        id: user.id,
+        role: user.role,
+        TeacherID: user.role === 'teacher' ? user.TeacherID : undefined,
+        StudentID: user.role === 'student' ? user.StudentID : undefined,
+      },
+    };
+
+    // Sign the JWT with the additional ID field
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ status:"ok", data:token, type:user.role});
+
+      // Send the response based on user role
+      if (user.role === 'teacher') {
+        res.json({ status: "ok", data: token, type: user.role, TeacherID: user.TeacherID });
+      } else if (user.role === 'student') {
+        res.json({ status: "ok", data: token, type: user.role, StudentID: user.StudentID });
+      } else {
+        // For admin or any other roles
+        res.json({ status: "ok", data: token, type: user.role });
+      }
     });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
   }
 };
+
 
 // Get User Data
 /*exports.getUser = async (req, res) => {

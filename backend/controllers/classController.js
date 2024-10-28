@@ -5,7 +5,9 @@ const mongoose = require('mongoose');
 
 // Controller to create a new class
 const createclass = async (req, res) => {
-    const { grade, subject, date, description, privacy } = req.body;
+    
+    //const item = localStorage.getItem('TeacherID');
+    const { teacherID ,grade, subject, date, description, privacy } = req.body;
 
     try {
         // Find the last created class by sorting `classid` in descending order
@@ -27,6 +29,7 @@ const createclass = async (req, res) => {
             date,
             description,
             privacy,
+            teacher:teacherID,
         
         });
 

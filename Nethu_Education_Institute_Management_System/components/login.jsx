@@ -52,6 +52,7 @@ const LoginPage = () => {
           alert("Login successful");
           window.localStorage.setItem("token", data.data);
           window.localStorage.setItem("role", data.type);
+          window.localStorage.setItem("TeacherID", data.TeacherID);
           window.localStorage.setItem("loggedIn", true);
 
           if (data.type === "admin") {
