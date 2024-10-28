@@ -1,14 +1,15 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router'; 
+import { useRouter } from 'next/navigation'; 
 import CreateForm from './gradeCreateForm';
+
 
 const TeacherDashboard = () => {
   const [classes, setClasses] = useState([]);
   const [grades, setGrades] = useState([]);
   const [showGradeCreateForm, setShowGradeCreateForm] = useState(false);
   const [loading, setLoading] = useState(true);
-  //const router = useRouter();
+  const router = useRouter();
 
   const fetchClasses = async () => {
     const teacherID = localStorage.getItem('TeacherID');
