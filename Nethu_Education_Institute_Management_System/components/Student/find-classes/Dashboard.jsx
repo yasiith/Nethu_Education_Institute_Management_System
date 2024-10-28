@@ -18,7 +18,6 @@ const Dashboard = () => {
         <div className='flex flex-col-3 p-8 gap-10'>
                 <GradeDropdown />
                 <SubjectDropdown />
-                <SearchBtn />
             </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ const SearchBtn = () => {
     <div>
       <div>
         <button
-        
+            
         >
             Search
         </button>
