@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 const Register = () => {
   const router = useRouter();
 
-  const [studentID, setStudentID] = useState(""); 
-  const [message, setMessage] = useState(""); 
+  const [studentID, setStudentID] = useState("");
+  const [message, setMessage] = useState("");
 
   const toStudentDashboard = () => {
-    router.push('admin/students');
+    router.push("/admin/students");
   };
 
   const deleteStudent = async () => {
@@ -25,14 +25,17 @@ const Register = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/auth/delete-student/${studentID}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "x-auth-token": token,
-        },
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/auth/delete-student/${studentID}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "x-auth-token": token
+          }
+        }
+      );
 
       const data = await res.json(); // Get the response data
 
