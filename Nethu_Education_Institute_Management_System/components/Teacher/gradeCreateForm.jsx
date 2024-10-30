@@ -10,7 +10,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
   const [description, setDescription] = useState("");
   const [classPrivacy, setClassPrivacy] = useState("");
 
-  const teacherID = localStorage.getItem('TeacherID');
+  const teacherID = localStorage.getItem("TeacherID");
 
   const handleCreate = async () => {
     if (!teacherID) {
@@ -24,17 +24,20 @@ const CreateForm = ({ onClose, onSuccess }) => {
       date,
       description,
       privacy: classPrivacy,
-      teacherID: teacherID,
+      teacherID: teacherID
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/classes/createclass", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(classData),
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/classes/createclass",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(classData)
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
