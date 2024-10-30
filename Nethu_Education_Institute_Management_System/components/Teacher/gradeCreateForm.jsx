@@ -17,7 +17,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
       alert("TeacherID not found. Please log in again.");
       return;
     }
-
+  
     const classData = {
       grade,
       subject,
@@ -26,7 +26,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
       privacy: classPrivacy,
       teacherID: teacherID
     };
-
+  
     try {
       const response = await fetch(
         "http://localhost:5000/api/classes/createclass",
@@ -38,29 +38,28 @@ const CreateForm = ({ onClose, onSuccess }) => {
           body: JSON.stringify(classData)
         }
       );
-
+  
       const data = await response.json();
+  
       if (response.ok) {
         alert("Class created successfully");
-        // Call the onSuccess function to refresh the dashboard
-        onSuccess();
-        // Optionally, close the form if desired
-        onClose();
+        onSuccess(); // Refresh dashboard on success
+        onClose(); // Optionally, close the form
+        setGrade("");
+        setSubject("");
+        setDate("");
+        setDescription("");
+        setClassPrivacy("");
       } else {
-        throw new Error(data.msg || "Error creating class");
+        // Display error message from response if provided
+        alert(data.message || "Error creating class");
       }
-
-      // Optionally, reset the form
-      setGrade("");
-      setSubject("");
-      setDate("");
-      setDescription("");
-      setClassPrivacy("");
     } catch (error) {
       console.error("Error creating class:", error);
       alert("Error creating class: " + error.message);
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center pt-10">

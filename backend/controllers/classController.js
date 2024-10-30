@@ -8,6 +8,10 @@ const createclass = async (req, res) => {
     
     //const item = localStorage.getItem('TeacherID');
     const { teacherID ,grade, subject, date, description, privacy } = req.body;
+    
+    if (!teacherID || !grade || !subject || !date || !description || !privacy) {
+        return res.status(400).json({ status: "error", message: "All fields are required." });
+    }
 
     try {
         // Find the last created class by sorting `classid` in descending order
