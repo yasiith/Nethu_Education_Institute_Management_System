@@ -90,33 +90,26 @@ const TeacherDashboard = () => {
         <div>Loading classes...</div>
       ) : (
         <>
-          <div className="flex flex-wrap justify-center gap-4 mt-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-              {classes.length > 0 ? (
-                classes.map((classItem) => (
-                  <div
-                    key={classItem._id} // ensure _id or another unique identifier
-                    onClick={() => handleClassClick(classItem._id)}
-                    className="cursor-pointer p-4 bg-teal-100 rounded-lg shadow-md hover:bg-teal-200 transition duration-300 "
-                  >
+<div className="flex flex-wrap justify-center gap-4 mt-5">
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+    {classes.length > 0 ? (
+      classes.map((classItem) => (
+        <div
+          key={classItem._id} // ensure _id or another unique identifier
+          onClick={() => handleClassClick(classItem._id)}
+          className="cursor-pointer p-4 bg-orange-600 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 flex flex-col items-center"
+        >
+          <h2 className="text-xl font-bold text-white text-center">{classItem.grade}</h2>
+          <p className="text-lg text-white font-semibold mt-2 text-center">{classItem.description}</p>
+        </div>
+      ))
+    ) : (
+      <p className="text-gray-500 col-span-full text-center">No classes available.</p>
+    )}
+  </div>
+</div>
 
-                    <h2 className="text-xl font-bold text-teal-800">
-                      {classItem.name}
-                    </h2>
-                    <p className="text-lg text-gray-600 font-semibold mt-2">
-                      {classItem.description}
-                    </p>
 
-
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-500 col-span-full text-center">
-                  No classes available.
-                </p>
-              )}
-            </div>
-          </div>
 
           <div className="mt-10 mb-3 w-full flex justify-center">
             <button
