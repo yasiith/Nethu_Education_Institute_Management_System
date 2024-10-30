@@ -1,12 +1,14 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
   const router = useRouter();
   const toAdminOverview = () => {
-    router.push('/admin')
-  }
+    router.push("/admin");
+  };
+
   const initialData = [
     {
       id: 1,
@@ -113,7 +115,6 @@ const Dashboard = () => {
   const ErrorPopup = ({ message, onClose }) => (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white rounded-lg p-6 w-1/3">
-
         <h2 className="text-2xl font-bold text-center text-red-500 mb-4">
           ERROR
         </h2>
@@ -124,7 +125,6 @@ const Dashboard = () => {
         >
           CLOSE
         </button>
-
       </div>
     </div>
   );
@@ -162,11 +162,12 @@ const Dashboard = () => {
   return (
     <div className="w-full h-full relative bg-[#E8E9EB] p-10">
       <div className="flex justify-between items-center mb-16">
-          <button 
-            onClick={toAdminOverview}
-            className='bg-red-500 w-[200px] h-[70px] rounded-[30px] text-white font-bold text-4xl '>
-                BACK
-          </button>
+        <button
+          onClick={toAdminOverview}
+          className="bg-red-500 w-[200px] h-[70px] rounded-[30px] text-white font-bold text-4xl "
+        >
+          BACK
+        </button>
         <h1 className=" bg-[#D7D7D7] py-4 px-8 rounded-full text-4xl font-bold text-[#3b3b3b]">
           ANNOUNCEMENTS
         </h1>
