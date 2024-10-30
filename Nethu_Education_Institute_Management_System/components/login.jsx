@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import LoginImage from "@public/assets/images/login.png";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -12,11 +13,12 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  // Toggle password visibility
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+  const router = useRouter();
 
+  // Toggle password visibility
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  // Check localStorage for saved email on component mount
   useEffect(() => {
     const savedEmail = localStorage.getItem("email");
     if (savedEmail) {
@@ -25,57 +27,53 @@ const LoginPage = () => {
     }
   }, []);
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Manage localStorage based on 'Remember Me' checkbox
     if (rememberMe) {
       localStorage.setItem("email", email);
     } else {
       localStorage.removeItem("email");
     }
 
-    fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      crossDomain: true,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
-      body: JSON.stringify({
-        email,
-        password
-      })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === "ok") {
-          alert("Login successful");
-          window.localStorage.setItem("token", data.data);
-          window.localStorage.setItem("role", data.type);
-          window.localStorage.setItem("loggedIn", true);
-          if(data.type ==="teacher"){
-            window.localStorage.setItem("TeacherID", data.TeacherID);
-          }
-          if(data.type ==="student"){
-            window.localStorage.setItem("StudentID", data.StudentID);
-          }
-
-          if (data.type === "admin") {
-            window.location.href = "/admin";
-          } else if(data.type =="teacher") {
-            window.location.href = "/teachers";
-          }else if(data.type ==="student"){
-            window.location.href ="/student"
-          }
-        } else {
-          alert("Login failed. Please check your credentials.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error during login:", error);
-        alert("An error occurred during login.");
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({ email, password })
       });
-  }
+
+      const data = await response.json();
+
+      if (data.status === "ok") {
+        alert("Login successful");
+        localStorage.setItem("token", data.data);
+        localStorage.setItem("role", data.type);
+        localStorage.setItem("loggedIn", "true");
+
+        // Storing ID based on user type
+        if (data.type === "teacher")
+          localStorage.setItem("TeacherID", data.TeacherID);
+        if (data.type === "student")
+          localStorage.setItem("StudentID", data.StudentID);
+
+        // Redirect based on user type
+        if (data.type === "admin") router.push("/admin");
+        else if (data.type === "teacher") router.push("/teachers");
+        else if (data.type === "student") router.push("/student");
+      } else {
+        alert("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("An error occurred during login.");
+    }
+  };
 
   return (
     <div className="flex h-screen w-screen relative">
@@ -96,7 +94,7 @@ const LoginPage = () => {
         >
           <button
             type="button"
-            className="text-orange-500 bg-gray-200 hover:bg-orange-500 hover:text-white hover:delay-75 font-bold rounded-3xl text-xs px-10 py-2 pt-2 text-center mt-2 mr-10"
+            className="text-orange-500 bg-gray-200 hover:bg-orange-500 hover:text-white font-bold rounded-3xl text-xs px-10 py-2 pt-2 text-center mt-2 mr-10"
           >
             HOME
           </button>
@@ -115,6 +113,7 @@ const LoginPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email" // This helps the browser recognize the input as email
             />
           </div>
           <div className="mb-4 relative">
@@ -125,6 +124,7 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="current-password" // This helps the browser recognize the input as password
             />
             <button
               type="button"
@@ -157,7 +157,7 @@ const LoginPage = () => {
           </div>
 
           <button
-            className="w-full p-3 bg-orange-500 text-white font-bold rounded-full hover:bg-gray-200 hover:text-orange-500 hover:border-orange-500 hover:delay-75"
+            className="w-full p-3 bg-orange-500 text-white font-bold rounded-full hover:bg-gray-200 hover:text-orange-500"
             type="submit"
           >
             LOGIN
