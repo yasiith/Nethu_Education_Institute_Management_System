@@ -17,7 +17,7 @@ const Dashboard = () => {
       localStorage.clear();
 
       // Navigate to the login page
-      await router.push("/Login");
+       router.push("/Login");
     } catch (error) {
       console.error("Error during logout:", error);
     }

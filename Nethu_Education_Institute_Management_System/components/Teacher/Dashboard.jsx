@@ -99,12 +99,15 @@ const TeacherDashboard = () => {
                     onClick={() => handleClassClick(classItem._id)}
                     className="cursor-pointer p-4 bg-teal-100 rounded-lg shadow-md hover:bg-teal-200 transition duration-300 "
                   >
+
                     <h2 className="text-xl font-bold text-teal-800">
                       {classItem.name}
                     </h2>
                     <p className="text-lg text-gray-600 font-semibold mt-2">
                       {classItem.description}
                     </p>
+
+
                   </div>
                 ))
               ) : (
