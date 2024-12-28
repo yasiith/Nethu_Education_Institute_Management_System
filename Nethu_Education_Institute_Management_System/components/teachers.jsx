@@ -13,122 +13,122 @@ import Commerce from '@public/assets/images/2 blue.png'
 const Teachers = () => {
   return (
     <div>
-      <h1 className="text-gray-800 text-center font-bold text-7xl">Our Teachers</h1>
+      <h1 className="font-bold text-center text-gray-800 text-7xl">Our Teachers</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 p-4 max-w-[400px] md:max-w-6xl place-items-center mx-auto">
       <div className="relative group">
         <Image
           src={Maths}
-          className="hover:scale-105 transform transition duration-500 grayscale-0 hover:grayscale"
+          className="transition duration-500 transform hover:scale-105 grayscale-0 hover:grayscale"
           alt="Maths Image"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition duration-500">
+        <div className="absolute inset-0 flex items-center justify-center text-white transition duration-500 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
           <div className="flex flex-col">
-            <p className="text-center font-semibold text-2xl">JAYANATH PRIYASHANTHA</p>
-            <p className="text-center text-lg text-normal">[MATHS-ORDINARY LEVEL]</p>
+            <p className="text-2xl font-semibold text-center">JAYANATH PRIYASHANTHA</p>
+            <p className="text-lg text-center text-normal">[MATHS-ORDINARY LEVEL]</p>
           </div>
         </div>
       </div>
       <div className="relative group">
         <Image
           src={Ict}
-          className="hover:scale-105 transform transition duration-500 grayscale-0 hover:grayscale"
+          className="transition duration-500 transform hover:scale-105 grayscale-0 hover:grayscale"
           alt="Ict"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition duration-500">
+        <div className="absolute inset-0 flex items-center justify-center text-white transition duration-500 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
           <div className="flex flex-col">
-            <p className="text-center font-semibold text-2xl">YASIRU RATHNAYAKE</p>
-            <p className="text-center text-lg text-normal">[ICT-ORDINARY LEVEL]</p>
+            <p className="text-2xl font-semibold text-center">YASIRU RATHNAYAKE</p>
+            <p className="text-lg text-center text-normal">[ICT-ORDINARY LEVEL]</p>
           </div>
         </div>
       </div>
       <div className="relative group">
         <Image
           src={English1}
-          className="hover:scale-105 transform transition duration-500 grayscale-0 hover:grayscale"
+          className="transition duration-500 transform hover:scale-105 grayscale-0 hover:grayscale"
           alt="English"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition duration-500">
+        <div className="absolute inset-0 flex items-center justify-center text-white transition duration-500 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
           <div className="flex flex-col">
-            <p className="text-center font-semibold text-2xl">H.VISHWAJITH</p>
-            <p className="text-center text-lg text-normal">[ENGLISH-ORDINARY LEVEL]</p>
+            <p className="text-2xl font-semibold text-center">H.VISHWAJITH</p>
+            <p className="text-lg text-center text-normal">[ENGLISH-ORDINARY LEVEL]</p>
           </div>
         </div>
       </div>
       <div className="relative group">
         <Image
           src={Science1}
-          className="hover:scale-105 transform transition duration-500 grayscale-0 hover:grayscale"
+          className="transition duration-500 transform hover:scale-105 grayscale-0 hover:grayscale"
           alt="Science"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition duration-500">
+        <div className="absolute inset-0 flex items-center justify-center text-white transition duration-500 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
           <div className="flex flex-col">
-            <p className="text-center font-semibold text-2xl">BRIAN DE SILVA</p>
-            <p className="text-center text-lg text-normal">[SCIENCE-ORDINARY LEVEL]</p>
+            <p className="text-2xl font-semibold text-center">BRIAN DE SILVA</p>
+            <p className="text-lg text-center text-normal">[SCIENCE-ORDINARY LEVEL]</p>
           </div>
         </div>
       </div>
       <div className="relative group">
         <Image
           src={Commerce}
-          className="hover:scale-105 transform transition duration-500 grayscale-0 hover:grayscale"
+          className="transition duration-500 transform hover:scale-105 grayscale-0 hover:grayscale"
           alt="commerce"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition duration-500">
+        <div className="absolute inset-0 flex items-center justify-center text-white transition duration-500 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
           <div className="flex flex-col">
-            <p className="text-center font-semibold text-2xl">JANITH CHATHURANGA</p>
-            <p className="text-center text-lg text-normal">[COMMERCE-ORDINARY LEVEL]</p>
+            <p className="text-2xl font-semibold text-center">JANITH CHATHURANGA</p>
+            <p className="text-lg text-center text-normal">[COMMERCE-ORDINARY LEVEL]</p>
           </div>
         </div>
       </div>
       <div className="relative group">
         <Image
           src={History}
-          className="hover:scale-105 transform transition duration-500 grayscale-0 hover:grayscale"
+          className="transition duration-500 transform hover:scale-105 grayscale-0 hover:grayscale"
           alt="history"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition duration-500">
+        <div className="absolute inset-0 flex items-center justify-center text-white transition duration-500 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
           <div className="flex flex-col">
-            <p className="text-center font-semibold text-2xl">ASITHA EKANAYAKE</p>
-            <p className="text-center text-lg text-normal">[HISTORY-ORDINARY LEVEL]</p>
+            <p className="text-2xl font-semibold text-center">ASITHA EKANAYAKE</p>
+            <p className="text-lg text-center text-normal">[HISTORY-ORDINARY LEVEL]</p>
           </div>
         </div>
       </div>
       <div className="relative group">
         <Image
           src={Science2}
-          className="hover:scale-105 transform transition duration-500 grayscale-0 hover:grayscale"
+          className="transition duration-500 transform hover:scale-105 grayscale-0 hover:grayscale"
           alt="science"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition duration-500">
+        <div className="absolute inset-0 flex items-center justify-center text-white transition duration-500 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
           <div className="flex flex-col">
-            <p className="text-center font-semibold text-2xl">SAMPATH GALLAGE</p>
-            <p className="text-center text-lg text-normal">[SCIENCE-ORDINARY LEVEL]</p>
+            <p className="text-2xl font-semibold text-center">SAMPATH GALLAGE</p>
+            <p className="text-lg text-center text-normal">[SCIENCE-ORDINARY LEVEL]</p>
           </div>
         </div>
       </div>
       <div className="relative group">
         <Image
           src={English2}
-          className="hover:scale-105 transform transition duration-500 grayscale-0 hover:grayscale"
+          className="transition duration-500 transform hover:scale-105 grayscale-0 hover:grayscale"
           alt="english"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition duration-500">
+        <div className="absolute inset-0 flex items-center justify-center text-white transition duration-500 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
           <div className="flex flex-col">
-            <p className="text-center font-semibold text-2xl">SHASHIKALA SEWWANDI</p>
-            <p className="text-center text-lg text-normal">[ENGLISH-PRIMARY GRADES]</p>
+            <p className="text-2xl font-semibold text-center">SHASHIKALA SEWWANDI</p>
+            <p className="text-lg text-center text-normal">[ENGLISH-PRIMARY GRADES]</p>
           </div>
         </div>
       </div>
       <div className="relative group">
         <Image
           src={Scholar}
-          className="hover:scale-105 transform transition duration-500 grayscale-0 hover:grayscale"
+          className="transition duration-500 transform hover:scale-105 grayscale-0 hover:grayscale"
           alt="scholarship"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 transition duration-500">
+        <div className="absolute inset-0 flex items-center justify-center text-white transition duration-500 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
           <div className="flex flex-col">
-            <p className="text-center font-semibold text-2xl">BANDULA MAPA</p>
-            <p className="text-center text-lg text-normal">[SCHOLARSHIP-GRADE 5]</p>
+            <p className="text-2xl font-semibold text-center">BANDULA MAPA</p>
+            <p className="text-lg text-center text-normal">[SCHOLARSHIP-GRADE 5]</p>
           </div>
         </div>
       </div>

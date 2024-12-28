@@ -1,55 +1,55 @@
-import React from 'react'
+import React from 'react';
 
 const Classes = () => {
   return (
-    <div className='py-10 relative'>
-        <h1 className='text-center text-7xl text-gray-800 font-bold pt-5'>What We Offer</h1>
-        <div className='flex flex-wrap justify-center gap-4 p-4'>
-            <div className='flex justify-center items-center border h-32 w-48 bg-orange-400 rounded-2xl z-10 hover:scale-110 transform transition duration-500'>
-                <div className='flex flex-col items-center'>
-                    <h2 className='font-semibold text-sm mb-0'>ORDINARY LEVEL</h2>
-                    <h1 className='font-bold text-4xl mt-0 '>MATHS</h1>
-                </div>
-            </div>
-            <div className='flex justify-center items-center border  h-32 w-48 bg-orange-400 rounded-2xl z-10 hover:scale-110 transform transition duration-500'>
-                <div className='flex flex-col items-center'>
-                    <h2 className='font-semibold text-sm mb-0'>ORDINARY LEVEL</h2>
-                    <h1 className='font-bold text-4xl mt-0 '>SCIENCE</h1>
-                </div>
-            </div>
-            <div className='flex justify-center items-center border  h-32 w-48 bg-orange-400 rounded-2xl z-10 hover:scale-110 transform transition duration-500'>
-                <div className='flex flex-col items-center'>
-                    <h2 className='font-semibold text-sm mb-0'>ORDINARY LEVEL</h2>
-                    <h1 className='font-bold text-4xl mt-0 '>ICT</h1>
-                </div>
-            </div>
-            <div className='flex justify-center items-center border  h-32 w-48 bg-orange-400 rounded-2xl hover:scale-110 transform transition duration-500'>
-                <div className='flex flex-col items-center'>
-                    <h2 className='font-semibold text-sm mb-0'>ORDINARY LEVEL</h2>
-                    <h1 className='font-bold text-4xl mt-0 '>ENGLISH</h1>
-                </div>
-            </div>
-            <div className='flex justify-center items-center border  h-32 w-60 bg-orange-400 rounded-2xl hover:scale-110 transform transition duration-500'>
-                <div className='flex flex-col items-center'>
-                    <h2 className='font-semibold text-sm mb-0'>ORDINARY LEVEL</h2>
-                    <h1 className='font-bold text-4xl mt-0 '>COMMERCE</h1>
-                </div>
-            </div>
-            <div className='flex justify-center items-center border  h-32 w-48 bg-orange-400 rounded-2xl hover:scale-110 transform transition duration-500'>
-                <div className='flex flex-col items-center'>
-                    <h2 className='font-semibold text-sm mb-0'>ORDINARY LEVEL</h2>
-                    <h1 className='font-bold text-4xl mt-0 '>HISTORY</h1>
-                </div>
-            </div>
-            <div className='flex justify-center items-center border  h-32 w-96 bg-orange-400 rounded-2xl hover:scale-110 transform transition duration-500'>
-                <div className='flex flex-col items-center'>
-                    <h2 className='font-semibold text-sm mb-0'>GRADE 5</h2>
-                    <h1 className='font-bold text-4xl mt-0 '>SCHOLARSHIP</h1>
-                </div>
-            </div>
+    <div className='relative py-10'>
+      <h1 className='pt-5 text-4xl font-bold text-center text-gray-800 md:text-7xl'>What We Offer</h1>
+      <div className='flex flex-wrap justify-center gap-4 p-4'>
+        <div className='z-10 flex items-center justify-center w-48 h-32 transition duration-500 transform bg-orange-400 border sm:w-60 md:w-48 lg:w-48 rounded-2xl hover:scale-110'>
+          <div className='flex flex-col items-center'>
+            <h2 className='mb-0 text-sm font-semibold'>ORDINARY LEVEL</h2>
+            <h1 className='mt-0 text-2xl font-bold md:text-4xl'>MATHS</h1>
+          </div>
         </div>
+        <div className='z-10 flex items-center justify-center w-48 h-32 transition duration-500 transform bg-orange-400 border sm:w-60 md:w-48 lg:w-48 rounded-2xl hover:scale-110'>
+          <div className='flex flex-col items-center'>
+            <h2 className='mb-0 text-sm font-semibold'>ORDINARY LEVEL</h2>
+            <h1 className='mt-0 text-2xl font-bold md:text-4xl'>SCIENCE</h1>
+          </div>
+        </div>
+        <div className='z-10 flex items-center justify-center w-48 h-32 transition duration-500 transform bg-orange-400 border sm:w-60 md:w-48 lg:w-48 rounded-2xl hover:scale-110'>
+          <div className='flex flex-col items-center'>
+            <h2 className='mb-0 text-sm font-semibold'>ORDINARY LEVEL</h2>
+            <h1 className='mt-0 text-2xl font-bold md:text-4xl'>ICT</h1>
+          </div>
+        </div>
+        <div className='z-10 flex items-center justify-center w-48 h-32 transition duration-500 transform bg-orange-400 border sm:w-60 md:w-48 lg:w-48 rounded-2xl hover:scale-110'>
+          <div className='flex flex-col items-center'>
+            <h2 className='mb-0 text-sm font-semibold'>ORDINARY LEVEL</h2>
+            <h1 className='mt-0 text-2xl font-bold md:text-4xl'>ENGLISH</h1>
+          </div>
+        </div>
+        <div className='z-10 flex items-center justify-center h-32 transition duration-500 transform bg-orange-400 border w-60 sm:w-72 md:w-60 lg:w-60 rounded-2xl hover:scale-110'>
+          <div className='flex flex-col items-center'>
+            <h2 className='mb-0 text-sm font-semibold'>ORDINARY LEVEL</h2>
+            <h1 className='mt-0 text-2xl font-bold md:text-4xl'>COMMERCE</h1>
+          </div>
+        </div>
+        <div className='z-10 flex items-center justify-center w-48 h-32 transition duration-500 transform bg-orange-400 border sm:w-60 md:w-48 lg:w-48 rounded-2xl hover:scale-110'>
+          <div className='flex flex-col items-center'>
+            <h2 className='mb-0 text-sm font-semibold'>ORDINARY LEVEL</h2>
+            <h1 className='mt-0 text-2xl font-bold md:text-4xl'>HISTORY</h1>
+          </div>
+        </div>
+        <div className='z-10 flex items-center justify-center h-32 transition duration-500 transform bg-orange-400 border w-96 sm:w-full md:w-96 lg:w-96 rounded-2xl hover:scale-110'>
+          <div className='flex flex-col items-center'>
+            <h2 className='mb-0 text-sm font-semibold'>GRADE 5</h2>
+            <h1 className='mt-0 text-2xl font-bold md:text-4xl'>SCHOLARSHIP</h1>
+          </div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Classes
+export default Classes;
