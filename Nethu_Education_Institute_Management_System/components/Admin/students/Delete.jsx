@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 
 const Register = () => {
   const router = useRouter();
-
   const [studentID, setStudentID] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const toStudentDashboard = () => {
     router.push("/admin/students");
@@ -18,12 +18,13 @@ const Register = () => {
       return;
     }
 
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    const token = localStorage.getItem("token");
     if (!token) {
       setMessage("No token found. Please log in.");
-      return; // Stop execution if no token is found
+      return;
     }
 
+    setIsLoading(true);
     try {
       const res = await fetch(
         `http://localhost:5000/api/auth/delete-student/${studentID}`,
@@ -37,61 +38,95 @@ const Register = () => {
         }
       );
 
-      const data = await res.json(); // Get the response data
+      const data = await res.json();
 
       if (res.ok) {
-        setMessage("Student deleted successfully!"); // Show success message
-        router.push("/admin/students/student-delete"); // Adjust the route as necessary
+        setMessage("Student deleted successfully!");
+        router.push("/admin/students/student-delete");
       } else {
-        setMessage(data.msg || "Student deletion failed."); // Show error message
+        setMessage(data.msg || "Student deletion failed.");
       }
     } catch (error) {
       console.error("Error during student deletion:", error);
       setMessage("An error occurred during deletion.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="bg-gray-100 flex flex-col items-center justify-center">
-      <div className="bg-gray-300 w-1/2 text-center py-4 rounded-[35px] mt-5 mb-5">
-        <h1 className="text-4xl font-bold">STUDENT MANAGEMENT</h1>
+    <div className="min-h-screen px-4 py-6 bg-gray-100">
+      {/* Header */}
+      <div className="flex justify-center mb-8">
+        <div className="bg-gray-300 w-full sm:w-4/5 md:w-3/4 lg:w-1/2 text-center py-4 rounded-[35px]">
+          <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">
+            STUDENT MANAGEMENT
+          </h1>
+        </div>
       </div>
 
-      <div className="flex flex-col md:flex-row justify-center items-center gap-6 max-w-4xl">
-        <div className="flex flex-col gap-6 items-center">
-          <div className="bg-teal-500 w-[350px] h-[200px] rounded-[45px] flex items-center justify-center text-white text-center p-5">
+      {/* Main Content */}
+      <div className="flex flex-col items-center justify-center max-w-6xl gap-6 mx-auto lg:flex-row">
+        {/* Left Section */}
+        <div className="flex flex-col items-center w-full gap-6 sm:w-auto">
+          {/* Delete Box */}
+          <div className="bg-teal-500 w-full sm:w-[350px] h-[180px] sm:h-[200px] 
+                         rounded-[45px] flex items-center justify-center text-white 
+                         text-center p-5 transition-all hover:bg-teal-600">
             <div className="flex flex-col leading-none">
-              <p className="text-[40px] font-semibold">DELETE</p>
-              <p className="text-[60px] font-bold">STUDENT</p>
+              <p className="text-3xl sm:text-[40px] font-semibold">DELETE</p>
+              <p className="text-4xl sm:text-[60px] font-bold">STUDENT</p>
             </div>
           </div>
+
+          {/* Back Button */}
           <button
             onClick={toStudentDashboard}
-            className="bg-red-500 w-[350px] h- rounded-[30px] text-white font-bold text-[50px] mb-5"
+            className="bg-red-500 w-full sm:w-[350px] py-3 sm:py-4 rounded-[30px] 
+                     text-white font-bold text-3xl sm:text-[50px] hover:bg-red-600 
+                     transition-colors"
           >
             BACK
           </button>
         </div>
 
-        <div className="bg-gray-400 w-[400px] p-8 rounded-[40px] flex flex-col justify-center gap-4 m-5 h-[300px]">
-          <label className="text-white text-lg font-bold">Student ID</label>
-          <input
-            type="text"
-            value={studentID}
-            onChange={(e) => setStudentID(e.target.value)}
-            placeholder="Student ID"
-            className="p-2 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500"
-          />
+        {/* Right Section - Delete Form */}
+        <div className="bg-gray-400 w-full sm:w-[400px] p-6 sm:p-8 rounded-[40px] 
+                     flex flex-col justify-center gap-4 m-5 min-h-[300px]">
+          <div className="space-y-4">
+            <label className="block text-base font-bold text-white sm:text-lg">
+              Student ID
+            </label>
+            <input
+              type="text"
+              value={studentID}
+              onChange={(e) => setStudentID(e.target.value)}
+              placeholder="Enter Student ID"
+              className="w-full p-2 sm:p-3 rounded-[30px] border-none 
+                       focus:ring-2 focus:ring-teal-500 outline-none
+                       placeholder-gray-400"
+            />
+          </div>
 
           <button
             onClick={deleteStudent}
-            className="bg-red-500 w-full py-2 mt-4 rounded-[30px] text-white font-bold text-lg"
+            disabled={isLoading}
+            className={`bg-red-500 w-full py-2 sm:py-3 mt-4 rounded-[30px] 
+                     text-white font-bold text-base sm:text-lg
+                     hover:bg-red-600 transition-colors
+                     ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'}`}
           >
-            DELETE STUDENT
+            {isLoading ? 'Deleting...' : 'DELETE STUDENT'}
           </button>
 
           {message && (
-            <p className="text-white font-bold text-center mt-4">{message}</p>
+            <div className={`text-center p-3 rounded-lg font-medium ${
+              message.includes('successfully') 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-red-100 text-red-800'
+            }`}>
+              {message}
+            </div>
           )}
         </div>
       </div>

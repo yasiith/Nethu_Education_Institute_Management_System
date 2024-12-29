@@ -16,49 +16,54 @@ const Dashboard = () => {
         router.push('/admin/students/student-view')
     }
 
-  return (
-    <div>
-        <div className='pt-5 flex justify-center'>
-            <div className='bg-gray-300 rounded-[35px] flex justify-center pt-5 pb-5 w-1/2'>
-            <   h1 className='text-4xl font-bold'>STUDENT MANAGEMENT</h1>
+    return (
+        <div className="container px-4 mx-auto">
+            {/* Title Section */}
+            <div className='flex justify-center pt-5'>
+                <div className='bg-gray-300 rounded-[35px] flex justify-center p-5 w-full md:w-3/4 lg:w-1/2'>
+                    <h1 className='text-2xl font-bold text-center md:text-3xl lg:text-4xl'>STUDENT MANAGEMENT</h1>
+                </div>
+            </div>
+
+            {/* First Row of Buttons */}
+            <div className='flex flex-col justify-center gap-5 py-5 md:flex-row'>
+                <button
+                    onClick={handleClick1}
+                    className='bg-teal-600 rounded-[35px] text-white text-center p-5 w-full md:w-1/2 lg:w-1/4 cursor-pointer min-h-[150px] md:min-h-[200px] hover:bg-teal-700 transition-colors'
+                >
+                    <p className='text-2xl md:text-3xl lg:text-[40px] font-semibold leading-none mb-2'>REGISTER</p>
+                    <p className='text-3xl md:text-4xl lg:text-[60px] font-semibold leading-none'>STUDENT</p>
+                </button>
+
+                <button
+                    onClick={handleClick2}
+                    className='bg-gray-400 rounded-[35px] text-white text-center p-5 w-full md:w-1/2 lg:w-1/4 cursor-pointer min-h-[150px] md:min-h-[200px] hover:bg-gray-500 transition-colors'
+                >
+                    <p className="text-2xl md:text-3xl lg:text-[40px] font-semibold leading-none mb-2">UPDATE</p>
+                    <p className="text-3xl md:text-4xl lg:text-[60px] font-semibold leading-none">STUDENTS</p>
+                </button>
+            </div>
+
+            {/* Second Row of Buttons */}
+            <div className='flex flex-col justify-center gap-5 pb-5 md:flex-row'>
+                <button
+                    onClick={handleClick3}
+                    className='bg-red-500 text-white text-center rounded-[35px] p-5 w-full md:w-1/2 lg:w-1/4 cursor-pointer min-h-[150px] md:min-h-[200px] hover:bg-red-600 transition-colors'
+                >
+                    <p className='text-2xl md:text-3xl lg:text-[40px] font-semibold leading-none mb-2'>DELETE</p>
+                    <p className='text-3xl md:text-4xl lg:text-[60px] font-semibold leading-none'>STUDENT</p>
+                </button>
+
+                <button
+                    onClick={handleClick4}
+                    className='bg-gray-300 rounded-[35px] p-5 text-center w-full md:w-1/2 lg:w-1/4 cursor-pointer min-h-[150px] md:min-h-[200px] hover:bg-gray-400 transition-colors'
+                >
+                    <p className='text-2xl md:text-3xl lg:text-[40px] font-semibold leading-none mb-2'>VIEW</p>
+                    <p className='text-3xl md:text-4xl lg:text-[60px] font-semibold leading-none'>STUDENTS</p>
+                </button>
             </div>
         </div>
-        <div className='flex flex-row justify-center py-5 gap-x-5 items-start'>
-            <button
-                onClick={handleClick1}
-                className='bg-teal-600 rounded-[35px] text-white text-center pt-5 pb-5 w-1/4 cursor-pointer  h-[200px]'
-            >
-                <p className='text-[40px] font-semibold leading-none'>REGISTER</p>
-                <p className='text-[60px] font-semibold leading-none'>STUDENT</p>
-            </button>
-
-            <button
-                onClick={handleClick2}
-                className='bg-gray-400 rounded-[35px] p-5 text-white text-center w-1/4 h-[200px]'
-            >
-                <p className="text-[40px] font-semibold leading-none">UPDATE</p>
-                <p className="text-[60px] font-semibold leading-none">STUDENTS</p>
-            </button>
-        </div>
-        <div className='flex flex-col-2 justify-center gap-x-5 pb-5 '>
-            <button
-                onClick={handleClick3}
-                className='bg-red-500 text-white text-center rounded-[25px] p-5 w-1/4 cursor-pointer'
-            >
-                <p className='font-semibold text-[40px] leading-none'>DELETE</p>
-                <p className='font-semibold text-[60px] leading-none'>STUDENT</p>
-            </button>
-            <button
-                onClick={handleClick4}
-                className='bg-gray-300 rounded-[35px] p-5 text-center w-1/4 cursor-pointer'
-            >
-                <p className='text-[40px] font-semibold leading-none'>VIEW</p>
-                <p className='text-[60px] font-semibold leading-none'>STUDENTS</p>
-
-            </button>
-        </div>
-    </div>
-  )
+    )
 }
 
 export default Dashboard
