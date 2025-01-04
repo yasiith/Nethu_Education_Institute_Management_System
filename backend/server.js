@@ -29,6 +29,11 @@ app.use(adminDashBoardRoutes);
 // Set up a basic route for testing
 app.get('/', (req, res) => res.send('API Running'));
 
+const chatbotRoutes = require('./routes/chatbot');
+
+app.use('/api/chatbot', chatbotRoutes);
+
+
 // Define the Port
 const PORT = process.env.PORT || 5000;
 
