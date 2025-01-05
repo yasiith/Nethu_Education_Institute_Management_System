@@ -61,7 +61,7 @@ const Navbar = () => {
             <li>
               <Link
                 href="#home_section"
-                className="block px-3 py-2 text-white md:hover:text-blue-700 md:p-0"
+                className="block px-3 py-2 text-white md:hover:text-blue-500 md:p-0"
                 aria-current="page"
               >
                 Home
@@ -70,7 +70,7 @@ const Navbar = () => {
             <li>
               <Link
                 href="/"
-                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
               >
                 Gallery
               </Link>
@@ -78,7 +78,7 @@ const Navbar = () => {
             <li>
               <Link
                 href="#classes_section"
-                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
               >
                 Classes
               </Link>
@@ -86,7 +86,7 @@ const Navbar = () => {
             <li>
               <Link
                 href="#teachers_section"
-                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
               >
                 Teachers
               </Link>
@@ -94,7 +94,7 @@ const Navbar = () => {
             <li>
               <Link
                 href="#contact_section"
-                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-gray-700 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
               >
                 Contact
               </Link>
