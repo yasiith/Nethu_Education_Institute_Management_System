@@ -160,6 +160,40 @@ const getClassesByTeacher = async (req, res) => {
     }
 };
 
+// Controller function to get class details by class ID
+const getClassDetails = async (req, res) => {
+    try {
+        const { classId } = req.params;
+        
+        // Input validation
+        if (!classId) {
+            return res.status(400).json({ message: 'Class ID is required' });
+        }
+
+        // Using a case-insensitive query for better matching
+        const classDetails = await Class.findOne({ 
+            classid: { $regex: new RegExp(`^${classId}$`, 'i') }
+        });
+
+        if (!classDetails) {
+            return res.status(404).json({ 
+                message: `Class with ID ${classId} not found` 
+            });
+        }
+
+        res.status(200).json(classDetails);
+        
+    } catch (error) {
+        console.error('Error fetching class details:', error.message);
+        res.status(500).json({ 
+            message: 'Error fetching class details',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+};
+  
+  
+
 
   
   
@@ -167,5 +201,5 @@ const getClassesByTeacher = async (req, res) => {
  // module.exports = { getClassesByTeacher };
   
 
-module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher, getFilteredClasses};
+module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher, getFilteredClasses, getClassDetails};
 
