@@ -53,8 +53,8 @@ const TeacherDashboard = () => {
     fetchClasses(); // Refresh class list after successful creation
   };
 
-  const handleClassClick = (classId) => {
-    router.push(`/teachers/classes/${classId}`);
+  const handleClassClick = () => {
+    router.push(`/teachers/insideGrade_`);
   };
 
   const toggleGradeCreateForm = () => {
@@ -80,7 +80,7 @@ const TeacherDashboard = () => {
       </div>
       <div>
         <div className="flex items-center justify-center">
-          <div className="flex flex-col bg-gray-200 p-5 rounded-2xl">
+          <div className="flex flex-col p-5 bg-gray-200 rounded-2xl">
             <h2 className="text-4xl font-semibold">Created Classes</h2>
           </div>
         </div>
@@ -91,32 +91,34 @@ const TeacherDashboard = () => {
       ) : (
         <>
           <div className="flex flex-wrap justify-center gap-4 mt-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+            <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {classes.length > 0 ? (
                 classes.map((classItem) => (
                   <div
                     key={classItem._id} // ensure _id or another unique identifier
+
                     onClick={() => handleClassClick(classItem.classid)}
 
                     className="cursor-pointer p-4 bg-teal-500 rounded-lg shadow-md  hover:bg-teal-600 transition duration-300 flex flex-col items-center"
+
                   >
-                    <h2 className="text-xl font-bold text-white text-center">
+                    <h2 className="text-xl font-bold text-center text-white">
                       {classItem.grade}
                     </h2>
-                    <p className="text-lg text-white font-semibold mt-2 text-center">
+                    <p className="mt-2 text-lg font-semibold text-center text-white">
                       {classItem.description}
                     </p>
                   </div>
                 ))
               ) : (
-                <p className="text-gray-500 col-span-full text-center">
+                <p className="text-center text-gray-500 col-span-full">
                   No classes available.
                 </p>
               )}
             </div>
           </div>
 
-          <div className="mt-10 mb-10 w-full flex justify-center">
+          <div className="flex justify-center w-full mt-10 mb-10">
             <button
               className="w-[1000px] h-[100px] bg-[#dadada] text-[#616060] font-bold rounded-[30px] text-4xl hover:bg-gray-300 hover:text-black"
               onClick={toggleGradeCreateForm}
@@ -127,7 +129,7 @@ const TeacherDashboard = () => {
 
           {showGradeCreateForm && (
             <div
-              className="mt-5 w-full flex justify-center"
+              className="flex justify-center w-full mt-5"
               ref={createFormRef}
             >
               <CreateForm
