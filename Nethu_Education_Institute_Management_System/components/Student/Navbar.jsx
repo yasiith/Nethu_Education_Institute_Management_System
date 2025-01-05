@@ -3,10 +3,17 @@ import React from 'react';
 import { useState,useEffect, useRef } from 'react';
 import {User} from 'lucide-react';
 import Link from 'next/link';
+import {useRouter} from 'next/navigation';
 
 const Navbar = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+
+    const router = useRouter();
+    const toMyProfile = () => {
+        router.push('/student/my-profile');
+    }
+
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -42,13 +49,13 @@ const Navbar = () => {
                     {isDropdownOpen && (
                         <div className='origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-black ring-opacity-5'>
                             <div className='py-1'>
-                                <a 
-                                    href="#profile"
+                                <button
+                                    onClick = {toMyProfile}
                                     className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                                 
                                 >
-                                    Your Profile
-                                </a>
+                                    My Profile
+                                </button>
                                 <a 
                                     href="#logout"
                                     className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
