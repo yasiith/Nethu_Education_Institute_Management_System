@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 const QuizCreatePage = () => {
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [currentOptions, setCurrentOptions] = useState(['', '', '', '']);
@@ -17,19 +18,29 @@ const QuizCreatePage = () => {
 
   const addQuestion = () => {
     if (currentQuestion.trim() && correctAnswer.trim()) {
+      // Verify all options are filled
+      if (currentOptions.some(option => option.trim() === '')) {
+        alert('Please fill out all options');
+        return;
+      }
+
       if (editingIndex !== null) {
         // Update existing question
         const updatedQuestions = questions.map((q, index) => 
-          index === editingIndex ? { question: currentQuestion, options: currentOptions, answer: correctAnswer } : q
+          index === editingIndex ? {
+            questionText: currentQuestion,
+            options: currentOptions,
+            correctAnswer: correctAnswer
+          } : q
         );
         setQuestions(updatedQuestions);
         setEditingIndex(null);
       } else {
         // Add new question
         setQuestions([...questions, {
-          question: currentQuestion,
+          questionText: currentQuestion,
           options: currentOptions,
-          answer: correctAnswer
+          correctAnswer: correctAnswer
         }]);
       }
 
@@ -44,17 +55,64 @@ const QuizCreatePage = () => {
 
   const editQuestion = (index) => {
     const questionToEdit = questions[index];
-    setCurrentQuestion(questionToEdit.question);
+    setCurrentQuestion(questionToEdit.questionText);
     setCurrentOptions(questionToEdit.options);
-    setCorrectAnswer(questionToEdit.answer);
+    setCorrectAnswer(questionToEdit.correctAnswer);
     setEditingIndex(index);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (title.trim() && questions.length > 0) {
-      const quizData = { title, questions };
-      console.log('Quiz Data:', quizData);
-      alert('Quiz Created Successfully!');
+      const quizData = { title, description, questions };
+      console.log('Sending quiz data:', quizData);
+      
+      try {
+        const token = localStorage.getItem('token');
+        console.log('Token:', token);
+
+        if (!token) {
+          alert('You are not logged in. Please log in first.');
+          return;
+        }
+
+        console.log('Making request to:', 'http://localhost:5000/api/quizzes/create');
+        
+        const response = await fetch('http://localhost:5000/api/quizzes/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token,
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(quizData),
+        });
+
+        console.log('Response status:', response.status);
+        
+        const responseData = await response.json();
+        console.log('Response data:', responseData);
+
+        if (!response.ok) {
+          throw new Error(responseData.message || `Server returned ${response.status}: ${response.statusText}`);
+        }
+
+        alert('Quiz Created Successfully!');
+        // Clear the form after successful creation
+        setTitle('');
+        setDescription('');
+        setQuestions([]);
+        setCurrentQuestion('');
+        setCurrentOptions(['', '', '', '']);
+        setCorrectAnswer('');
+        
+      } catch (err) {
+        console.error('Detailed error:', err);
+        if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
+          alert('Unable to connect to the server. Please check if the backend is running.');
+        } else {
+          alert(`Error creating quiz: ${err.message}`);
+        }
+      }
     } else {
       alert('Please add a title and at least one question');
     }
@@ -70,6 +128,14 @@ const QuizCreatePage = () => {
         placeholder="Quiz Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        className="border p-2 w-full mb-4 rounded-md"
+      />
+
+      {/* Quiz Description */}
+      <textarea
+        placeholder="Quiz Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         className="border p-2 w-full mb-4 rounded-md"
       />
 
@@ -119,13 +185,13 @@ const QuizCreatePage = () => {
         <h2 className="text-xl font-semibold mb-2">Questions:</h2>
         {questions.map((q, index) => (
           <div key={index} className="border p-2 mb-2 rounded-md">
-            <p><strong>Q{index + 1}:</strong> {q.question}</p>
+            <p><strong>Q{index + 1}:</strong> {q.questionText}</p>
             <ul className="list-disc pl-5">
               {q.options.map((opt, idx) => (
                 <li key={idx}>{opt}</li>
               ))}
             </ul>
-            <p><strong>Answer:</strong> {q.answer}</p>
+            <p><strong>Answer:</strong> {q.correctAnswer}</p>
             <button 
               onClick={() => editQuestion(index)}
               className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded mt-2"
