@@ -192,6 +192,26 @@ const getClassDetails = async (req, res) => {
     }
 };
   
+
+const Getgradesubject = async (req, res) => {
+    try {
+      // Fetch all classes
+      const classes = await Class.find();
+  
+      // Extract unique grades and subjects
+      const uniqueGrades = [...new Set(classes.map(cls => cls.grade))];
+      const uniqueSubjects = [...new Set(classes.map(cls => cls.subject))];
+  
+      res.status(200).json({
+        classes,
+        uniqueGrades,
+        uniqueSubjects,
+      });
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+      res.status(500).json({ message: 'Failed to fetch classes' });
+    }
+  };
   
 
 
@@ -201,5 +221,5 @@ const getClassDetails = async (req, res) => {
  // module.exports = { getClassesByTeacher };
   
 
-module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher, getFilteredClasses, getClassDetails};
+module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher, getFilteredClasses, getClassDetails, Getgradesubject};
 
