@@ -5,6 +5,7 @@ const teacherRoutes = require('./routes/teacherRoutes');
 const classRoutes = require('./routes/classRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const adminDashBoardRoutes = require('./routes/adminDashBoardRoutes');
+const quizRoutes = require('./routes/quiz.js');
 
 
 const app = express();
@@ -16,6 +17,8 @@ connectDB();
 app.use(cors());
 // Init Middleware
 app.use(express.json());
+
+app.use('/api/quizzes', quizRoutes);
 
 
 // Define Routes
