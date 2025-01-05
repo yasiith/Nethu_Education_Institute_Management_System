@@ -53,8 +53,8 @@ const TeacherDashboard = () => {
     fetchClasses(); // Refresh class list after successful creation
   };
 
-  const handleClassClick = (classId) => {
-    router.push(`/teachers/classes/${classId}`);
+  const handleClassClick = () => {
+    router.push(`/teachers/insideGrade_`);
   };
 
   const toggleGradeCreateForm = () => {
@@ -96,7 +96,7 @@ const TeacherDashboard = () => {
                 classes.map((classItem) => (
                   <div
                     key={classItem._id} // ensure _id or another unique identifier
-                    onClick={() => handleClassClick(classItem._id)}
+                    onClick={() => handleClassClick()}
                     className="flex flex-col items-center p-4 transition duration-300 bg-teal-500 rounded-lg shadow-md cursor-pointer hover:bg-teal-600"
                   >
                     <h2 className="text-xl font-bold text-center text-white">
