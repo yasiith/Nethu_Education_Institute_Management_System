@@ -9,6 +9,11 @@ import Calendar from "@components/Teacher/Calander";
 import InsideGrade_ from "./teachers/insideGrade_/page";
 
 
+export const metadata = {
+  title: "NEIMS",
+  description: "Learn at Ease"
+};
+
 const Home = () => {
   return (
     <>

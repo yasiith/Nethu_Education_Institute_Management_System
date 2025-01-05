@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import LoginImage from "@public/assets/images/login.png";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -12,11 +13,12 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  // Toggle password visibility
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+  const router = useRouter();
 
+  // Toggle password visibility
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  // Check localStorage for saved email on component mount
   useEffect(() => {
     const savedEmail = localStorage.getItem("email");
     if (savedEmail) {
@@ -25,110 +27,108 @@ const LoginPage = () => {
     }
   }, []);
 
-  function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Manage localStorage based on 'Remember Me' checkbox
     if (rememberMe) {
       localStorage.setItem("email", email);
     } else {
       localStorage.removeItem("email");
     }
 
-    fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      crossDomain: true,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*"
-      },
-      body: JSON.stringify({
-        email,
-        password
-      })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === "ok") {
-          alert("Login successful");
-          window.localStorage.setItem("token", data.data);
-          window.localStorage.setItem("role", data.type);
-          window.localStorage.setItem("loggedIn", true);
-          if(data.type ==="teacher"){
-            window.localStorage.setItem("TeacherID", data.TeacherID);
-          }
-          if(data.type ==="student"){
-            window.localStorage.setItem("StudentID", data.StudentID);
-          }
-
-          if (data.type === "admin") {
-            window.location.href = "/admin";
-          } else if(data.type =="teacher") {
-            window.location.href = "/teachers";
-          }else if(data.type ==="student"){
-            window.location.href ="/student"
-          }
-        } else {
-          alert("Login failed. Please check your credentials.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error during login:", error);
-        alert("An error occurred during login.");
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        body: JSON.stringify({ email, password })
       });
-  }
+
+      const data = await response.json();
+
+      if (data.status === "ok") {
+        alert("Login successful");
+        localStorage.setItem("token", data.data);
+        localStorage.setItem("role", data.type);
+        localStorage.setItem("loggedIn", "true");
+
+        // Storing ID based on user type
+        if (data.type === "teacher")
+          localStorage.setItem("TeacherID", data.TeacherID);
+        if (data.type === "student")
+          localStorage.setItem("StudentID", data.StudentID);
+
+        // Redirect based on user type
+        if (data.type === "admin") router.push("/admin");
+        else if (data.type === "teacher") router.push("/teachers");
+        else if (data.type === "student") router.push("/student");
+      } else {
+        alert("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("An error occurred during login.");
+    }
+  };
 
   return (
-    <div className="flex h-screen w-screen relative">
-      <div className="w-1/2 bg-white relative">
+    <div className="flex flex-col w-screen h-screen md:flex-row">
+      <div className="relative bg-white md:w-1/2 h-1/2 md:h-full">
         <Image
           src={LoginImage}
           alt="Space"
           layout="fill"
           objectFit="cover"
-          className="h-auto max-w-2xl justify-center ml-10"
+          className="w-full h-auto md:w-auto"
         />
       </div>
 
-      <div className="w-1/2 bg-white flex flex-col justify-center items-center p-10 relative mr-10">
+      <div className="relative flex flex-col items-center justify-center p-4 bg-white md:w-1/2 md:p-10">
         <Link
           href="/"
-          className="absolute top-5 right-6 flex justify-center items-center"
+          className="fixed top-4 right-4 md:top-5 md:right-6"
         >
           <button
             type="button"
-            className="text-orange-500 bg-gray-200 hover:bg-orange-500 hover:text-white hover:delay-75 font-bold rounded-3xl text-xs px-10 py-2 pt-2 text-center mt-2 mr-10"
+            className="px-10 py-2 pt-2 text-xs font-bold text-center text-orange-500 bg-gray-200 hover:bg-orange-500 hover:text-white rounded-3xl"
           >
             HOME
           </button>
         </Link>
 
-        <h2 className="text-2xl font-bold mb-7">
+        <h2 className="text-xl font-bold text-center md:text-2xl mb-7">
           LOGIN WITH YOUR ACCOUNT DETAILS
         </h2>
 
-        <form className="w-full max-w-sm" onSubmit={handleSubmit}>
+        <form className="w-full max-w-xs md:max-w-sm" onSubmit={handleSubmit}>
           <div className="mb-4">
             <input
-              className="w-full p-3 mb-1 border rounded-lg text-gray-700"
+              className="w-full p-3 mb-1 text-gray-700 border rounded-lg"
               type="email"
               placeholder="User name or email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email" // This helps the browser recognize the input as email
             />
           </div>
-          <div className="mb-4 relative">
+          <div className="relative mb-4">
             <input
-              className="w-full p-3 mb-1 border rounded-lg text-gray-700"
+              className="w-full p-3 mb-1 text-gray-700 border rounded-lg"
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="current-password" // This helps the browser recognize the input as password
             />
             <button
               type="button"
-              className="absolute inset-y-0 right-0 px-3 text-gray-500 flex items-center"
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500"
               onClick={togglePasswordVisibility}
             >
               {showPassword ? (
@@ -138,7 +138,7 @@ const LoginPage = () => {
               )}
             </button>
           </div>
-          <div className="flex items-center font-bold justify-between mb-10">
+          <div className="flex items-center justify-between mb-10 font-bold">
             <label className="flex items-center">
               <input
                 type="checkbox"
@@ -157,7 +157,7 @@ const LoginPage = () => {
           </div>
 
           <button
-            className="w-full p-3 bg-orange-500 text-white font-bold rounded-full hover:bg-gray-200 hover:text-orange-500 hover:border-orange-500 hover:delay-75"
+            className="w-full p-3 font-bold text-white bg-orange-500 rounded-full hover:bg-gray-200 hover:text-orange-500"
             type="submit"
           >
             LOGIN

@@ -10,54 +10,56 @@ const CreateForm = ({ onClose, onSuccess }) => {
   const [description, setDescription] = useState("");
   const [classPrivacy, setClassPrivacy] = useState("");
 
-  const teacherID = localStorage.getItem('TeacherID');
+  const teacherID = localStorage.getItem("TeacherID");
 
   const handleCreate = async () => {
     if (!teacherID) {
       alert("TeacherID not found. Please log in again.");
       return;
     }
-
+  
     const classData = {
       grade,
       subject,
       date,
       description,
       privacy: classPrivacy,
-      teacherID: teacherID,
+      teacherID: teacherID
     };
-
+  
     try {
-      const response = await fetch("http://localhost:5000/api/classes/createclass", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(classData),
-      });
-
+      const response = await fetch(
+        "http://localhost:5000/api/classes/createclass",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(classData)
+        }
+      );
+  
       const data = await response.json();
+  
       if (response.ok) {
         alert("Class created successfully");
-        // Call the onSuccess function to refresh the dashboard
-        onSuccess();
-        // Optionally, close the form if desired
-        onClose();
+        onSuccess(); // Refresh dashboard on success
+        onClose(); // Optionally, close the form
+        setGrade("");
+        setSubject("");
+        setDate("");
+        setDescription("");
+        setClassPrivacy("");
       } else {
-        throw new Error(data.msg || "Error creating class");
+        // Display error message from response if provided
+        alert(data.message || "Error creating class");
       }
-
-      // Optionally, reset the form
-      setGrade("");
-      setSubject("");
-      setDate("");
-      setDescription("");
-      setClassPrivacy("");
     } catch (error) {
       console.error("Error creating class:", error);
       alert("Error creating class: " + error.message);
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center pt-10">

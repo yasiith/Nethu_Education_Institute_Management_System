@@ -8,6 +8,10 @@ const createclass = async (req, res) => {
     
     //const item = localStorage.getItem('TeacherID');
     const { teacherID ,grade, subject, date, description, privacy } = req.body;
+    
+    if (!teacherID || !grade || !subject || !date || !description || !privacy) {
+        return res.status(400).json({ status: "error", message: "All fields are required." });
+    }
 
     try {
         // Find the last created class by sorting `classid` in descending order
@@ -123,11 +127,45 @@ const getClassesByTeacher = async (req, res) => {
       res.status(500).json({ message: "Server error" });
     }
   };
+
+
+  const getFilteredClasses = async (req, res) => {
+    try {
+        const { subject, grade } = req.query;
+
+        // Build a dynamic query object
+        const query = {};
+        if (subject) query.subject = subject;
+        if (grade) query.grade = grade;
+
+        const classes = await Class.find(query);
+
+        if (classes.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'No classes found for the given subject and grade.',
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: classes,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Server Error',
+        });
+    }
+};
+
+
   
   
   
  // module.exports = { getClassesByTeacher };
   
 
-module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher};
+module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher, getFilteredClasses};
 
