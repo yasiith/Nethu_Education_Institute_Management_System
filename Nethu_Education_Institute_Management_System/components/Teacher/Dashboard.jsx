@@ -96,8 +96,11 @@ const TeacherDashboard = () => {
                 classes.map((classItem) => (
                   <div
                     key={classItem._id} // ensure _id or another unique identifier
-                    onClick={() => handleClassClick()}
-                    className="flex flex-col items-center p-4 transition duration-300 bg-teal-500 rounded-lg shadow-md cursor-pointer hover:bg-teal-600"
+
+                    onClick={() => handleClassClick(classItem.classid)}
+
+                    className="cursor-pointer p-4 bg-teal-500 rounded-lg shadow-md  hover:bg-teal-600 transition duration-300 flex flex-col items-center"
+
                   >
                     <h2 className="text-xl font-bold text-center text-white">
                       {classItem.grade}
