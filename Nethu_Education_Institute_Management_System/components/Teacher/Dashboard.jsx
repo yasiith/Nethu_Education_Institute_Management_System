@@ -53,7 +53,7 @@ const TeacherDashboard = () => {
     fetchClasses(); // Refresh class list after successful creation
   };
 
-  const handleClassClick = () => {
+  const handleClassClick = (classId) => {
     router.push(`/teachers/insideGrade_`);
   };
 
