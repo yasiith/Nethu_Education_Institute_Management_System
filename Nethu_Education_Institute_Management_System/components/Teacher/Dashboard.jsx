@@ -54,7 +54,9 @@ const TeacherDashboard = () => {
   };
 
   const handleClassClick = (classId) => {
+
     router.push(`/teachers/classes/${classId}`);
+
   };
 
   const toggleGradeCreateForm = () => {
