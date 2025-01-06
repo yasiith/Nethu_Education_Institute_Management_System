@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Quiz = require('../models/Quiz');
 const auth = require('../middleware/auth'); // Middleware for JWT authentication
+const { GetquizzesbyClass } = require('../controllers/quizController');
 
 // @route   POST /api/quizzes/create
 // @desc    Create a new quiz
@@ -31,5 +32,7 @@ router.post('/create', auth, async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
+router.get('/class/:classID', auth, GetquizzesbyClass); 
 
 module.exports = router;
