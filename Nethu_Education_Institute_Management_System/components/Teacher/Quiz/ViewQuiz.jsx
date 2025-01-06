@@ -1,28 +1,76 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 
 const ViewQuizPage = () => {
-  // Sample data for testing the layout. Replace with dynamic data when backend is integrated.
-  const quiz = {
-    title: 'Sample Quiz Title',
-    description: 'This is a sample description for the quiz.',
-    questions: [
-      {
-        questionText: 'What is the capital of France?',
-        choices: ['Berlin', 'Madrid', 'Paris', 'Rome'],
-        correctAnswer: 'Paris'
-      },
-      {
-        questionText: 'Who developed the theory of relativity?',
-        choices: ['Isaac Newton', 'Albert Einstein', 'Galileo Galilei', 'Nikola Tesla'],
-        correctAnswer: 'Albert Einstein'
-      },
-      {
-        questionText: 'What is the largest planet in our solar system?',
-        choices: ['Earth', 'Jupiter', 'Saturn', 'Mars'],
-        correctAnswer: 'Jupiter'
+  const params = useParams();
+  const quizId = params?.quizId; // Extract quizId from the route
+
+  const [quiz, setQuiz] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchQuiz = async () => {
+      if (!quizId) {
+        setError('Quiz ID is missing');
+        setLoading(false);
+        return;
       }
-    ]
-  };
+
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setError('Authentication required');
+          setLoading(false);
+          return;
+        }
+
+        const response = await fetch(`http://localhost:5000/api/quizzes/${quizId}`, {
+          method: 'GET',
+          headers: {
+            'x-auth-token': token,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch quiz data');
+        }
+
+        const data = await response.json();
+        setQuiz(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchQuiz();
+  }, [quizId]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <div className="text-xl text-gray-600">Loading quiz...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <div className="text-xl text-red-600">{error}</div>
+      </div>
+    );
+  }
+
+  if (!quiz) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <div className="text-xl text-gray-600">Quiz not found</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50">
@@ -54,7 +102,9 @@ const ViewQuizPage = () => {
                     />
                     <label 
                       htmlFor={`q${index}-choice${idx}`} 
-                      className={`text-lg ${choice === q.correctAnswer ? 'text-green-600 font-medium' : 'text-gray-700'}`}
+                      className={`text-lg ${
+                        choice === q.correctAnswer ? 'text-green-600 font-medium' : 'text-gray-700'
+                      }`}
                     >
                       {choice}
                     </label>
@@ -70,6 +120,6 @@ const ViewQuizPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default ViewQuizPage;
