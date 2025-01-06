@@ -7,7 +7,7 @@ const CreateNewQuizCard = () => {
 
     const router = useRouter();
     const toQuizCreatePage = () => {
-        router.push('/teachers/quiz/quiz-create');
+        router.push(`/teachers/classes/${classId}/quiz/quiz-create`);
     };
 
   return (
