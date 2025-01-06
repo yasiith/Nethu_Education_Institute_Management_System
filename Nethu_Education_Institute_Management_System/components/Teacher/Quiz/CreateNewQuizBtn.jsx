@@ -3,11 +3,11 @@ import React from 'react'
 import { useRouter } from 'next/navigation';
 import { HiPlusCircle } from 'react-icons/hi'; // Importing an icon from react-icons
 
-const CreateNewQuizCard = () => {
+const CreateNewQuizCard = ({classId}) => {
 
     const router = useRouter();
     const toQuizCreatePage = () => {
-        router.push(`/teachers/classes/${classId}/quiz/quiz-create`);
+        router.push(`/teachers/classes/${classId}/quizzes/quiz-create`);
     };
 
   return (
