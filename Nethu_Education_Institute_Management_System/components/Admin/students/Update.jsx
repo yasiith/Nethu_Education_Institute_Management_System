@@ -103,11 +103,10 @@ const Update = () => {
           </div>
 
           {/* Main Content */}
-          <div className="flex flex-col items-start justify-center max-w-6xl gap-6 mx-auto lg:flex-row">
+          <div className="flex flex-col items-center justify-center max-w-6xl gap-6 mx-auto lg:flex-row">
             {/* Left Section */}
             <div className="flex flex-col items-center w-full gap-6 sm:w-auto">
-              <div className="bg-teal-500 w-full sm:w-[400px] h-[300px] rounded-[35px] 
-                           flex items-center justify-center hover:bg-teal-600 transition-colors">
+              <div className="bg-teal-500 w-full sm:w-[400px] h-[300px] rounded-[35px]  flex items-center justify-center hover:bg-teal-600 transition-colors">
                 <div className="flex flex-col text-center text-white">
                   <p className="text-4xl sm:text-[50px] font-semibold">UPDATE</p>
                   <p className="text-5xl sm:text-[75px] font-bold leading-none">STUDENT</p>
