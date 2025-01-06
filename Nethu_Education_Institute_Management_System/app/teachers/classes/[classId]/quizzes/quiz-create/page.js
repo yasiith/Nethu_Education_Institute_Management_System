@@ -1,3 +1,5 @@
+//Nethu_Education_Institute_Management_System\app\teachers\classes\[classId]\quizzes\quiz-create\page.js
+
 import Footer from '@components/footer'
 import QuizCreatePage from '@components/Teacher/Quiz/QuizCreatePage'
 import QuizNav from '@components/Teacher/Quiz/QuizNav'
