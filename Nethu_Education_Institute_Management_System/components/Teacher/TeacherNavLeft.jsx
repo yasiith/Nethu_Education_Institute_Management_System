@@ -1,8 +1,13 @@
 import React from "react";
 import { LogOut } from "lucide-react";
-const [isNavOpen, setIsNavOpen] = useState(false); // State to toggle navbar
+import { useState } from "react";
+
+ // State to toggle navbar
 
 const Sidebar = () => {
+
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
   return (
     <div className="flex flex-col h-screen md:flex-row">
       {/* Sidebar (Navigation) */}
