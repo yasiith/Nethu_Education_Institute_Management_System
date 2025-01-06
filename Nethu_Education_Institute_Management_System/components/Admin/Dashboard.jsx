@@ -76,11 +76,11 @@ const Dashboard = () => {
           <p className="text-xl font-semibold md:text-2xl">TEACHERS</p>
           <p className="text-xl font-semibold md:text-2xl">REGISTERED</p>
         </div>
-        <div className="bg-red-500 text-white text-center rounded-[25px] p-5 w-full md:w-1/4">
-          <button onClick={handleLogout}>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white text-center rounded-[25px] p-5 w-full md:w-1/4 text-2xl font-bold md:text-4xl">
             <h1 className="text-2xl font-bold md:text-4xl">Log Out</h1>
-          </button>
-        </div>
+        </button>
       </div>
     </div>
   );

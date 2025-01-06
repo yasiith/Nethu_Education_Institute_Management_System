@@ -67,7 +67,7 @@ const Register = () => {
           {/* Register Box */}
           <div className="bg-teal-500 w-full sm:w-[350px] h-[250px] sm:h-[300px] rounded-[45px] flex items-center justify-center text-white text-center p-5 transition-all">
             <div className="flex flex-col leading-none">
-              <p className="text-3xl sm:text-[40px] font-semibold">REGISTER</p>
+              <p className="text-3xl mb-3 sm:text-[40px] font-semibold">REGISTER</p>
               <p className="text-4xl sm:text-[60px] font-bold">STUDENT</p>
             </div>
           </div>
