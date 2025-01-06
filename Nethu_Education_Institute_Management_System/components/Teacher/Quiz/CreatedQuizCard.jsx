@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { HiOutlineEye } from 'react-icons/hi'; // Importing an icon
 
-const QuizCard = ({ quiz = {}, index }) => {
+const QuizCard = ({ quiz = {}, index, classId }) => {
   const router = useRouter();
 
   const toViewQuiz = () => {
