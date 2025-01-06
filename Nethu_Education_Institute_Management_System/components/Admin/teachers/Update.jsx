@@ -1,140 +1,144 @@
 "use client";
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const teachersData = [
-    {id: '1', fullName: 'John Doe', email:'john@gmail.com'}
-]
+  { id: "1", fullName: "John Doe", email: "john@gmail.com" },
+];
 
 const Update = () => {
-    const router = useRouter();
-    const toTeacherDashboard = () => {
-        router.push('/admin/teachers')
-    }
-    const [teacherID, setTeacherID] = useState('');
-    const [fullName, setFullName] = useState('');
-    const [newFullName, setNewFullName] = useState('');
-    const [newEmail, setNewEmail] = useState('');
-    const [email, setEmail] = useState('');
+  const router = useRouter();
+  const toTeacherDashboard = () => {
+    router.push("/admin/teachers");
+  };
+  const [teacherID, setTeacherID] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [newFullName, setNewFullName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [email, setEmail] = useState("");
 
-    const handleFindTeacher = () => {
-        const teacher = teachersData.find(teacher => teacher.id === teacherID);
-        if(teacher){
-            setFullName(teacher.fullName);
-            setEmail(teacher.email);
-        } else {
-            alert('Teacher not found');
-        }
+  const handleFindTeacher = () => {
+    const teacher = teachersData.find((teacher) => teacher.id === teacherID);
+    if (teacher) {
+      setFullName(teacher.fullName);
+      setEmail(teacher.email);
+    } else {
+      alert("Teacher not found");
     }
+  };
 
-    const handleUpdateTeacher = () => {
-        if (newFullName && newEmail) {
-          // Find the student by ID in the studentsData array
-          const teacherIndex = teachersData.findIndex(teacher => teacher.id === teacherID);
-      
-          if (teacherIndex !== -1) {
-            // Update the student's full name and email in the array
-            teachersData[teacherIndex].fullName = newFullName;
-            teachersData[teacherIndex].email = newEmail;
-      
-            // Reset the input fields after update
-            setNewFullName("");
-            setNewEmail("");
-      
-            // Optionally, update the UI to reflect the changes
-            setFullName(newFullName);
-            setEmail(newEmail);
-      
-            // Success message
-            alert("Teacher updated successfully!");
-          } else {
-            alert("Teacher not found");
-          }
-        } else {
-          alert("Please enter the new full name and email.");
-        }
-      };
-      
-      
+  const handleUpdateTeacher = () => {
+    if (newFullName && newEmail) {
+      const teacherIndex = teachersData.findIndex(
+        (teacher) => teacher.id === teacherID
+      );
+
+      if (teacherIndex !== -1) {
+        teachersData[teacherIndex].fullName = newFullName;
+        teachersData[teacherIndex].email = newEmail;
+
+        setNewFullName("");
+        setNewEmail("");
+
+        setFullName(newFullName);
+        setEmail(newEmail);
+
+        alert("Teacher updated successfully!");
+      } else {
+        alert("Teacher not found");
+      }
+    } else {
+      alert("Please enter the new full name and email.");
+    }
+  };
 
   return (
-    <div className='flex flex-col items-center'>
-      <div className='bg-gray-300 w-1/2 m-5 flex flex-col items-center rounded-[35px] p-5'>
-        <h1 className='text-4xl font-bold'>TEACHER MANAGEMENT</h1>
+    <div className="flex flex-col items-center min-h-screen px-4 py-6 bg-gray-100 sm:px-8">
+      <div className="bg-gray-300 w-full max-w-4xl mb-6 p-6 flex flex-col items-center rounded-[35px]">
+        <h1 className="text-2xl font-bold text-center sm:text-4xl">TEACHER MANAGEMENT</h1>
       </div>
-      <div className="flex flex-col md:flex-row justify-center items-center gap-6 max-w-4xl">
-        <div className='flex flex-col gap-6 items-center pb-10'>
-            <div className='bg-teal-500 rounded-[35px] flex items-center w-[400px] h-[350px] justify-center'>
-                <div className='flex flex-col text-white m-5'>
-                    <p className='text-[50px] font-semibold'>UPDATE</p>
-                    <p className='text-[75px] font-bold leading-none'>TEACHER</p>
+
+      <div className="flex flex-col items-center justify-center w-full max-w-5xl gap-8 lg:flex-row">
+        {/* Left Section */}
+        <div className="flex flex-col items-center gap-6">
+          <div className="bg-teal-500 w-full sm:w-[400px] h-[300px] rounded-[35px] 
+                           flex items-center justify-center hover:bg-teal-600 transition-colors">
+                <div className="flex flex-col text-center text-white">
+                  <p className="text-4xl sm:text-[50px] font-semibold">UPDATE</p>
+                  <p className="text-5xl sm:text-[75px] font-bold leading-none">STUDENT</p>
                 </div>
-            </div>
-            <button 
+              </div>
+          <button
             onClick={toTeacherDashboard}
-            className='bg-red-500 w-[400px] h-[90px] rounded-[30px] text-white font-bold text-[50px] '>
-                BACK
-            </button>
+            className="bg-red-500 w-full max-w-md py-3 text-white font-bold text-lg sm:text-2xl rounded-[30px] hover:bg-red-600 transition-colors"
+          >
+            BACK
+          </button>
         </div>
-        <div className="bg-gray-400 w-[400px] p-8 rounded-[40px] flex flex-col gap-4 m-5">
-          <label className="text-white text-lg font-bold">Enter Teacher ID</label>
+
+        {/* Right Section */}
+        <div className="bg-gray-400 w-full max-w-md p-6 rounded-[40px] flex flex-col gap-4">
+          <label className="text-lg font-bold text-white">Enter Teacher ID</label>
           <input
             type="text"
             value={teacherID}
             onChange={(e) => setTeacherID(e.target.value)}
             placeholder="Teacher ID"
-            className="p-2 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500"
           />
-          <button 
+          <button
             onClick={handleFindTeacher}
-            className="bg-red-500 w-full py-2 rounded-[30px] text-white font-bold text-lg ">
+            className="bg-red-500 w-full py-3 rounded-[30px] text-white font-bold text-lg hover:bg-red-600 transition-colors"
+          >
             SEARCH
           </button>
 
-          <label className="text-white text-lg font-bold">Full Name</label>
+          <label className="text-lg font-bold text-white">Full Name</label>
           <input
             type="text"
-            id="fullName"
             value={fullName}
-            readonly
+            readOnly
             placeholder="Full Name"
-            className="p-2 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 rounded-[30px] bg-gray-100"
           />
 
-          <label className="text-white text-lg font-bold">Email</label>
+          <label className="text-lg font-bold text-white">Email</label>
           <input
             type="email"
-            id="email"
             value={email}
-            readonly
+            readOnly
             placeholder="Email"
-            className="p-2 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 rounded-[30px] bg-gray-100"
           />
 
-          <label className="text-white text-lg font-bold">New Full Name</label>
-          <input type="text"
+          <label className="text-lg font-bold text-white">New Full Name</label>
+          <input
+            type="text"
             value={newFullName}
             onChange={(e) => setNewFullName(e.target.value)}
             placeholder="New Full Name"
-            className="p-2 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500"
           />
-          <label className="text-white text-lg font-bold">New Email</label>
-          <input type="email"
+
+          <label className="text-lg font-bold text-white">New Email</label>
+          <input
+            type="email"
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
             placeholder="New Email"
-            className="p-2 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500"
+            className="w-full p-3 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500"
           />
-          <button 
+
+          <button
             onClick={handleUpdateTeacher}
-            className="bg-red-500 w-full py-2 rounded-[30px] text-white font-bold text-lg ">
+            className="bg-red-500 w-full py-3 rounded-[30px] text-white font-bold text-lg hover:bg-red-600 transition-colors"
+          >
             UPDATE TEACHER
           </button>
-          
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Update
+export default Update;

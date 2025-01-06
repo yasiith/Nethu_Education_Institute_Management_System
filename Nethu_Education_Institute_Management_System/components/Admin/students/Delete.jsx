@@ -74,7 +74,7 @@ const Register = () => {
                          rounded-[45px] flex items-center justify-center text-white 
                          text-center p-5 transition-all hover:bg-teal-600">
             <div className="flex flex-col leading-none">
-              <p className="text-3xl sm:text-[40px] font-semibold">DELETE</p>
+              <p className="text-3xl mb-3 sm:text-[40px] font-semibold">DELETE</p>
               <p className="text-4xl sm:text-[60px] font-bold">STUDENT</p>
             </div>
           </div>
