@@ -79,7 +79,7 @@ const Sidebar = () => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 md:w-1/5`}
       >
-        <h1 className="mb-6 text-xl font-bold">NEIMS</h1>
+        <h1 className="mb-6 text-4xl font-semibold">NEIMS</h1>
 
         {/* Display Teacher's Classes */}
         <div className="flex flex-col w-full overflow-y-auto">

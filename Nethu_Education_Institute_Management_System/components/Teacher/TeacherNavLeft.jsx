@@ -16,7 +16,7 @@ const Sidebar = () => {
           isNavOpen ? "translate-x-0" : "-translate-x-full"
         } fixed top-0 left-0 z-20 w-3/4 md:w-1/5 bg-[#03045E] text-white flex flex-col items-center p-4 transition-transform duration-300 h-screen md:static md:translate-x-0`}
       >
-        <h1 className="mb-6 text-2xl font-bold">NEIMS</h1>
+        <h1 className="mb-6 text-4xl font-bold">NEIMS</h1>
         <div className="flex flex-col items-center mb-8">
           <div className="w-12 h-12 mb-2 bg-gray-400 rounded-full"></div>
           <p>MR. Yasith</p>
