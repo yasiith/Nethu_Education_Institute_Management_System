@@ -1,3 +1,5 @@
+//C:\Users\Asus\Desktop\6th SEM\Project\Nethu_Education_Institute_Management_System\Nethu_Education_Institute_Management_System\app\teachers\classes\[classId]\quizzes\page.js
+
 'use client'
 import Footer from '@components/footer'
 import CreatedQuizCard from '@components/Teacher/Quiz/CreatedQuizCard'

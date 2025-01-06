@@ -1,4 +1,3 @@
-// routes/quiz.js
 const express = require('express');
 const router = express.Router();
 const Quiz = require('../models/Quiz');
@@ -8,34 +7,29 @@ const auth = require('../middleware/auth'); // Middleware for JWT authentication
 // @desc    Create a new quiz
 // @access  Private (Teacher only)
 router.post('/create', auth, async (req, res) => {
-    try {
-        const { title, description, questions } = req.body;
+  try {
+    const { classID, title, description, questions } = req.body;
+    const createdBy = req.user.id; // Get the teacher's ID from the JWT token
 
-        // Validate required fields
-        if (!title || !questions || questions.length === 0) {
-            return res.status(400).json({ message: 'Title and questions are required.' });
-        }
-
-        // Validate questions format (each question must have 4 options)
-        if (questions.some(q => q.options.length !== 4)) {
-            return res.status(400).json({ message: 'Each question must have 4 options' });
-        }
-
-        // Create new quiz
-        const newQuiz = new Quiz({
-            title,
-            description,
-            questions,
-            createdBy: req.user.id // Extracted from the token using auth middleware
-        });
-
-        await newQuiz.save();
-
-        res.status(201).json({ message: 'Quiz created successfully', quiz: newQuiz });
-    } catch (error) {
-        console.error('Error creating quiz:', error.message);
-        res.status(500).json({ message: 'Server error' });
+    if (!classID || !title || !questions || questions.length === 0) {
+      return res.status(400).json({ message: 'Class ID, Title, and Questions are required' });
     }
+
+    const quiz = new Quiz({
+      classID,
+      title,
+      description,
+      questions,
+      createdBy, // Add createdBy here
+    });
+
+    await quiz.save();
+
+    res.status(201).json({ message: 'Quiz created successfully', quiz });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
 });
 
 module.exports = router;
