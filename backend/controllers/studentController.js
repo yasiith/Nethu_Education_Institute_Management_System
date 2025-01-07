@@ -1,12 +1,11 @@
 const Class = require('../models/Class'); // Ensure you import your Class model
 
-// Enroll in a class
 const enrollInClass = async (req, res) => {
     const { classId } = req.params; // Get the class ID from the request parameters
 
     try {
-        // Find the class by ID
-        const classToEnroll = await Class.findById(classId);
+        // Find the class by custom classid field instead of _id
+        const classToEnroll = await Class.findOne({ classid: classId });
         if (!classToEnroll) {
             return res.status(404).send({ message: "Class not found." });
         }
@@ -26,5 +25,6 @@ const enrollInClass = async (req, res) => {
         res.status(500).send({ message: "Error enrolling in class.", error: error.message });
     }
 };
+
 
 module.exports = { enrollInClass };
