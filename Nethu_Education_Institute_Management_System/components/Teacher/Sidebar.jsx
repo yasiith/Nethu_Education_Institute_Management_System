@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 const Sidebar = () => {
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
 
   const handleLogout = async () => {
     try {
       localStorage.clear();
-      router.push("/Login");
+      window.location.href = "/Login";
     } catch (error) {
       console.error("Error during logout:", error);
     }
@@ -53,11 +51,11 @@ const Sidebar = () => {
   }, []);
 
   const handleClassClick = (classId) => {
-    router.push(`/teachers/classes/${classId}`);
+    window.location.href = `/teachers/classes/${classId}`;
   };
 
   const handleClickBack = () => { 
-    router.push('/teachers');
+    window.location.href = '/teachers';
   }
 
   const toggleSidebar = () => {
@@ -82,7 +80,7 @@ const Sidebar = () => {
         <h1 className="mb-6 text-4xl font-semibold">NEIMS</h1>
 
         {/* Display Teacher's Classes */}
-        <div className="flex flex-col w-full overflow-y-auto">
+        <div className="flex flex-col w-full overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-[#03045E] [&::-webkit-scrollbar-thumb]:bg-[#03045E] [&::-webkit-scrollbar-thumb]:rounded-full">
           <h2 className="mb-3 text-lg font-semibold text-center text-teal-400">
             Your Classes
           </h2>
@@ -117,9 +115,6 @@ const Sidebar = () => {
 
         {/* Sidebar Buttons */}
         <div className="w-full mt-auto">
-          <button className="w-full py-2 mt-4 text-sm font-medium text-white transition-all bg-teal-600 rounded-md hover:bg-teal-700">
-            CREATE A GRADE +
-          </button>
           <button
             onClick={handleClickBack}
             className="w-full py-2 my-2 bg-[#0077B6] text-white text-sm font-medium rounded-md hover:bg-[#0096C7] transition-all">
