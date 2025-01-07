@@ -1,19 +1,25 @@
-'use client'; // Ensures client-side rendering
+'use client';
 
 import React, { useEffect, useState } from 'react';
+import { Loader2, AlertCircle, BookOpen, Edit2, Trash2, ArrowLeft } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 
 const ViewQuizPage = () => {
-  const { classId, quizId } = useParams();
-  const router = useRouter(); // Router for redirection after actions
-
   const [quiz, setQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const params = useParams();
+  const router = useRouter();
+  const { classId, quizId } = params;
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      if (!quizId || !classId) return;
+      if (!quizId || !classId) {
+        setError('Quiz ID or Class ID is missing');
+        setLoading(false);
+        return;
+      }
 
       try {
         const token = localStorage.getItem('token');
@@ -24,14 +30,14 @@ const ViewQuizPage = () => {
         }
 
         const response = await fetch(
-            `http://localhost:5000/api/quizzes/class/${classId}/quizzes/${quizId}`,
-            {
-              method: 'GET',
-              headers: {
-                'x-auth-token': token,
-              },
-            }
-          );
+          `http://localhost:5000/api/quizzes/class/${classId}/quizzes/${quizId}`,
+          {
+            method: 'GET',
+            headers: {
+              'x-auth-token': token,
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error('Failed to fetch quiz data');
@@ -74,97 +80,140 @@ const ViewQuizPage = () => {
         throw new Error('Failed to delete quiz');
       }
 
-      router.push(`/classes/${classId}/quizzes`); // Redirect to quiz list page after deletion
+      router.push(`/teachers/classes/${classId}/quizzes`);
     } catch (err) {
       setError(err.message);
     }
   };
 
   const handleEditQuiz = () => {
-    // Redirect to an edit page where users can modify the quiz
-    router.push(`/classes/${classId}/quizzes/edit/${quizId}`);
+    router.push(`/teachers/classes/${classId}/quizzes/edit/${quizId}`);
+  };
+
+  const handleBackToQuizzes = () => {
+    router.push(`/teachers/classes/${classId}/quizzes`);
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-white">
-        <div className="text-xl text-gray-600">Loading quiz...</div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+        <Loader2 className="w-12 h-12 text-blue-600 animate-spin" />
+        <p className="mt-4 text-lg text-gray-600">Loading quiz...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-white">
-        <div className="text-xl text-red-600">{error}</div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+        <AlertCircle className="w-12 h-12 text-red-600" />
+        <p className="mt-4 text-lg text-red-600">{error}</p>
       </div>
     );
   }
 
   if (!quiz) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-white">
-        <div className="text-xl text-gray-600">Quiz not found</div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+        <BookOpen className="w-12 h-12 text-gray-400" />
+        <p className="mt-4 text-lg text-gray-600">Quiz not found</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start p-6 bg-white">
-      {/* Header and Action Buttons */}
-      <div className="w-full bg-white p-6 rounded-b-xl shadow-lg">
-        <h1 className="text-4xl font-semibold text-center text-gray-900 mb-6">{quiz.title}</h1>
-        <p className="text-lg text-gray-700 mb-8 text-center italic">{quiz.description}</p>
-
-        <div className="flex justify-center items-center space-x-6 mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+      {/* Top Navigation Bar */}
+      <div className="p-4 bg-white shadow-md">
+        <div className="flex items-center justify-between max-w-6xl mx-auto">
           <button
-            onClick={handleEditQuiz}
-            className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
+            onClick={handleBackToQuizzes}
+            className="flex items-center text-gray-600 hover:text-gray-900"
           >
-            Edit Quiz
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            Back to Quizzes
           </button>
-          <button
-            onClick={handleDeleteQuiz}
-            className="px-6 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-300"
-          >
-            Delete Quiz
-          </button>
+          <div className="flex space-x-4">
+            <button
+              onClick={handleEditQuiz}
+              className="flex items-center px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+            >
+              <Edit2 className="w-4 h-4 mr-2" />
+              Edit Quiz
+            </button>
+            <button
+              onClick={handleDeleteQuiz}
+              className="flex items-center px-4 py-2 text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete Quiz
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Questions and Answers */}
-      <div className="w-full flex-grow overflow-y-auto p-6">
-        {quiz.questions.map((q, index) => (
-          <div key={index} className="p-6 mb-4 border-2 border-indigo-600 rounded-lg shadow-md hover:bg-indigo-50 transition duration-300">
-            <h2 className="text-2xl font-medium text-gray-800 mb-4">{`Q${index + 1}: ${q.questionText}`}</h2>
-
-            {/* Multiple Choice Answers */}
-            <div className="space-y-4">
-              {q.options.map((choice, idx) => (
-                <div key={idx} className="flex items-center space-x-4">
-                  <input 
-                    type="radio" 
-                    id={`q${index}-choice${idx}`} 
-                    name={`q${index}`} 
-                    value={choice} 
-                    disabled 
-                    checked={choice === q.correctAnswer} 
-                    className="h-5 w-5 text-indigo-500 focus:ring-indigo-500"
-                  />
-                  <label 
-                    htmlFor={`q${index}-choice${idx}`} 
-                    className={`text-lg transition duration-300 ${choice === q.correctAnswer ? 'text-green-600 font-medium' : 'text-gray-700'}`}
-                  >
-                    {choice}
-                  </label>
-                </div>
-              ))}
-            </div>
-
-            {/* Correct Answer Highlight */}
-            <p className="mt-4 text-green-600 font-medium">Correct Answer: {q.correctAnswer}</p>
+      {/* Quiz Content */}
+      <div className="max-w-4xl px-4 py-8 mx-auto">
+        {/* Quiz Header */}
+        <div className="p-6 mb-8 bg-white shadow-lg rounded-xl">
+          <h1 className="mb-4 text-3xl font-bold text-gray-900">{quiz.title}</h1>
+          <p className="text-lg italic text-gray-600">{quiz.description}</p>
+          <div className="mt-4 text-sm text-gray-500">
+            Total Questions: {quiz.questions.length}
           </div>
-        ))}
+        </div>
+
+        {/* Questions */}
+        <div className="space-y-6">
+          {quiz.questions.map((question, index) => (
+            <div key={index} className="p-6 transition-all bg-white shadow-lg rounded-xl hover:shadow-xl">
+              <div className="flex items-start">
+                <span className="flex items-center justify-center flex-shrink-0 w-8 h-8 font-semibold text-blue-800 bg-blue-100 rounded-full">
+                  {index + 1}
+                </span>
+                <div className="flex-grow ml-4">
+                  <h2 className="mb-4 text-xl font-semibold text-gray-800">
+                    {question.questionText}
+                  </h2>
+                  <div className="space-y-3">
+                    {question.options.map((option, idx) => (
+                      <div
+                        key={idx}
+                        className={`p-3 rounded-lg border-2 transition-all ${
+                          option === question.correctAnswer
+                            ? 'border-green-500 bg-green-50'
+                            : 'border-gray-200'
+                        }`}
+                      >
+                        <div className="flex items-center">
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 ${
+                            option === question.correctAnswer
+                              ? 'bg-green-500 text-white'
+                              : 'bg-gray-200'
+                          }`}>
+                            {String.fromCharCode(65 + idx)}
+                          </div>
+                          <span className={`${
+                            option === question.correctAnswer
+                              ? 'text-green-700 font-medium'
+                              : 'text-gray-700'
+                          }`}>
+                            {option}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="pt-3 mt-4 border-t border-gray-100">
+                    <p className="font-medium text-green-600">
+                      Correct Answer: {question.correctAnswer}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
