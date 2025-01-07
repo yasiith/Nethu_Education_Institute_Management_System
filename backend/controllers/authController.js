@@ -106,7 +106,7 @@ exports.loginUser = async (req, res) => {
       if (user.role === 'teacher') {
         res.json({ status: "ok", data: token, type: user.role, TeacherID: user.TeacherID });
       } else if (user.role === 'student') {
-        res.json({ status: "ok", data: token, type: user.role, StudentID: user.StudentID });
+        res.json({ status: "ok", data: token, type: user.role, StudentID: user.StudentID, MongoID: user._id, name:user.name });
       } else {
         // For admin or any other roles
         res.json({ status: "ok", data: token, type: user.role });

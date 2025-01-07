@@ -7,7 +7,6 @@ const StudentProfile = () => {
   const [student, setStudent] = useState({
     name: 'Yasith Vimukthi',
     email: 'yasith123@gmail.com',
-    grade: '6',
     avatar: '/assets/icons/user.png',
   });
 
