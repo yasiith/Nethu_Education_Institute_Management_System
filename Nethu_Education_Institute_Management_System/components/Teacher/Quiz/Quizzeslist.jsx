@@ -1,7 +1,7 @@
-// QuizzesList.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import CreatedQuizCard from './CreatedQuizCard';
+import ErrorCard from './Error'; // Import the ErrorCard component
 
 const QuizzesList = () => {
   const params = useParams();
@@ -35,7 +35,7 @@ const QuizzesList = () => {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch quizzes');
+          throw new Error('No quizzes for this class yet!!!');
         }
 
         const data = await response.json();
@@ -59,11 +59,7 @@ const QuizzesList = () => {
   }
 
   if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-[200px]">
-        <div className="text-xl text-red-600">{error}</div>
-      </div>
-    );
+    return <ErrorCard message={error} />; // Use the ErrorCard component
   }
 
   return (
