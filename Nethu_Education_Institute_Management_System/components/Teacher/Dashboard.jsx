@@ -83,7 +83,7 @@ const TeacherDashboard = () => {
       <div>
         <div className="flex items-center justify-center">
           <div className="flex flex-col bg-gray-200 p-5 rounded-2xl">
-            <h2 className="text-4xl font-semibold">Created Classes</h2>
+            <h2 className=" text-4xl font-semibold">Created Classes</h2>
           </div>
         </div>
       </div>

@@ -10,22 +10,43 @@ const ClassDetails = () => {
   const grade = searchParams.get('grade');
   const teacher = searchParams.get('teacher');
 
-  const [enrollMessage, setEnrollMessage] = useState('');
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      setError('You must be logged in to enroll in a class.');
-    }
-  }, []);
-
-  const handleEnroll = async () => {
-    const confirmEnroll = window.confirm(`Do you want to enroll in the class "${subject}" taught by ${teacher || 'N/A'}?`);
-    if (!confirmEnroll) {
+      setError('You must be logged in to view enrollment status.');
       return;
     }
 
+    // Check if the student is already enrolled
+    const checkEnrollment = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/student/enrollment-status/${classId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token,
+          },
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setIsEnrolled(data.isEnrolled);
+        } else {
+          setError(data.message || 'Failed to fetch enrollment status.');
+        }
+      } catch (err) {
+        setError('Something went wrong. Please try again.');
+        console.error(err);
+      }
+    };
+
+    checkEnrollment();
+  }, [classId]);
+
+  const handleEnroll = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
       setError('You must be logged in to enroll in a class.');
@@ -37,19 +58,47 @@ const ClassDetails = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-auth-token': token
-        }
+          'x-auth-token': token,
+        },
       });
 
       const data = await response.json();
-
       if (response.ok) {
-        setEnrollMessage(data.message);
+        setIsEnrolled(true);
+        setMessage(data.message);
         setError('');
-        setTimeout(() => router.push('/student'), 2000); // Redirect to /student after 2 seconds
       } else {
         setError(data.message || 'Error enrolling in class.');
-        setEnrollMessage('');
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+      console.error(err);
+    }
+  };
+
+  const handleUnenroll = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('You must be logged in to unenroll from a class.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/student/unenroll/${classId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token,
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setIsEnrolled(false);
+        setMessage(data.message);
+        setError('');
+      } else {
+        setError(data.message || 'Error unenrolling from class.');
       }
     } catch (err) {
       setError('Something went wrong. Please try again.');
@@ -67,12 +116,14 @@ const ClassDetails = () => {
         <p className="text-lg">Class ID: {classId}</p>
       </div>
       <button
-        onClick={handleEnroll}
-        className="mt-5 bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600"
+        onClick={isEnrolled ? handleUnenroll : handleEnroll}
+        className={`mt-5 px-6 py-2 rounded-md text-white ${
+          isEnrolled ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'
+        }`}
       >
-        Enroll
+        {isEnrolled ? 'Unenroll' : 'Enroll'}
       </button>
-      {enrollMessage && <p className="mt-4 text-green-600">{enrollMessage}</p>}
+      {message && <p className="mt-4 text-green-600">{message}</p>}
       {error && <p className="mt-4 text-red-600">{error}</p>}
     </div>
   );

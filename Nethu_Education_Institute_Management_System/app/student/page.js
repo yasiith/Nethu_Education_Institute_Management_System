@@ -1,7 +1,7 @@
-import Footer from '@components/footer'
-import Dashboard from '@components/Student/Dashboard'
-import Navbar from '@components/Student/Navbar'
-import React from 'react'
+import Footer from "@components/footer";
+import Dashboard from "@components/Student/Dashboard";
+import Navbar from "@components/Student/StudentNavbar";
+import React from "react";
 
 const studentDashboard = () => {
   return (
@@ -10,7 +10,7 @@ const studentDashboard = () => {
       <Dashboard />
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default studentDashboard
+export default studentDashboard;
