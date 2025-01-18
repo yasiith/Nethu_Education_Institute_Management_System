@@ -1,40 +1,36 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
   const router = useRouter();
   const [enrolledClasses, setEnrolledClasses] = useState([]);
-  const [error, setError] = useState(null); // Error state to capture errors
+  const [error, setError] = useState(null);
 
-  // Get MongoDB ID from localStorage
-  const studentMongoId = typeof window !== 'undefined' ? localStorage.getItem("studentMongoId") : null;
+  // Get MongoDB ID and name from localStorage
+  const studentMongoId =
+    typeof window !== "undefined" ? localStorage.getItem("studentMongoId") : null;
+  const name = localStorage.getItem("name");
 
+  // Navigate to the Find Classes page
   const toFindClasses = () => {
-    router.push('/student/find-classes');
+    router.push("/student/find-classes");
   };
 
-  const handleClassClick = (classId) => {
-    // Redirect to class details page (change this route as needed)
-    router.push(`/student/class-details`);
-  };
-
-  const name = localStorage.getItem('name');
-
-
+  // Fetch enrolled classes
   useEffect(() => {
     if (studentMongoId) {
       fetch(`http://localhost:5000/classes/student/${studentMongoId}`)
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           if (data.classes) {
             setEnrolledClasses(data.classes);
             setError(null); // Clear error if successful
           } else {
-            setError("Failed to fetch enrolled classes");
+            setError("Failed to fetch enrolled classes.");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("Error fetching classes:", error);
           setError("Error fetching classes. Please try again later.");
         });
@@ -43,52 +39,57 @@ const Dashboard = () => {
     }
   }, [studentMongoId]);
 
+  // Navigate to class details
+  const handleClassClick = (classId) => {
+    router.push(`/student/class-details/${classId}`);
+  };
+
   return (
-    <div className='p-10'>
-      <div className='flex flex-col items-center justify-center w-full'>
-        <div className='inline-block'>
-          <div className='bg-gray-200 rounded-3xl'>
-            <div className='p-5 whitespace-nowrap'>
-              <h1 className='text-4xl font-bold'>Welcome, {name}</h1> 
-            </div>
+    <div className="p-4 md:p-10">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+        <h1 className="text-3xl md:text-4xl font-bold text-center md:text-left">
+          Welcome, {name}
+        </h1>
+        <button
+          onClick={toFindClasses}
+          className="bg-gray-200 text-gray-800 text-lg md:text-2xl font-bold rounded-lg px-4 py-2 md:px-6 md:py-3 hover:shadow-lg transition-shadow"
+        >
+          Find a Class
+        </button>
+      </div>
+
+      {/* Enrolled Classes Section */}
+      <div className="flex flex-col items-center">
+        <h2 className="bg-gray-200 p-4 md:p-5 rounded-2xl text-2xl md:text-3xl font-bold mb-5 text-center w-full md:w-auto">
+          ENROLLED CLASSES
+        </h2>
+        {error && <p className="text-red-500 mb-5 text-center">{error}</p>}
+        {enrolledClasses.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {enrolledClasses.map((cls) => (
+              <div
+                key={cls._id}
+                className="p-4 md:p-6 bg-teal-500 rounded-lg shadow-lg cursor-pointer hover:bg-teal-600 transition duration-300 flex flex-col items-center"
+                onClick={() => handleClassClick(cls._id)}
+              >
+                <h3 className="text-lg md:text-xl font-bold text-white text-center mb-2">
+                  Grade: {cls.grade}
+                </h3>
+                <p className="text-base md:text-lg text-white text-center">
+                  <strong>Subject:</strong> {cls.subject}
+                </p>
+                <p className="text-base md:text-lg text-white text-center">
+                  <strong>Teacher:</strong> {cls.teacher || "N/A"}
+                </p>
+              </div>
+            ))}
           </div>
-        </div>
-        <div className='my-6'>
-          <h2 className='text-2xl font-bold'>Announcements</h2>
-        </div>
-        <div className='inline-block p-10'>
-          <div className='bg-gray-200 rounded-3xl'>
-            <div className='p-5 whitespace-nowrap'>
-              <h1 className='text-4xl font-bold'>Enrolled Classes</h1>
-              {error && <p className="text-red-500 mt-5">{error}</p>} {/* Display errors */}
-              {enrolledClasses.length > 0 ? (
-                <ul className='mt-5 space-y-4'>
-                  {enrolledClasses.map((cls) => (
-                    <li
-                      key={cls._id}
-                      className='p-4 bg-white rounded-lg shadow-md cursor-pointer hover:bg-gray-300 transition-all'
-                      onClick={() => handleClassClick(cls._id)} // Add click handler
-                    >
-                      <p><strong>Grade:</strong> {cls.grade}</p>
-                      <p><strong>Subject:</strong> {cls.subject}</p>
-                      <p><strong>Teacher:</strong> {cls.teacher}</p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className='mt-5 text-gray-600'>No enrolled classes.</p>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className='inline-block'>
-          <button
-            onClick={toFindClasses}
-            className='bg-gray-200 text-gray-800 text-4xl text-center font-bold rounded-[25px] p-5 cursor-pointer hover:shadow-xl transition-shadow duration-300'
-          >
-            Find a class
-          </button>
-        </div>
+        ) : (
+          <p className="text-gray-600 text-center mt-5">
+            No enrolled classes found.
+          </p>
+        )}
       </div>
     </div>
   );

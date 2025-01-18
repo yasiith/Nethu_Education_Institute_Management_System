@@ -15,18 +15,17 @@ const ClassList = ({ classes }) => {
             <button
               key={index}
               onClick={() => handleClassClick(cls)}
-              className="p-4 border rounded-md shadow-md text-left bg-blue-200 hover:bg-blue-300 transition-colors"
+              className="p-6 bg-teal-500 rounded-lg shadow-lg hover:bg-teal-600 transition-all duration-300 flex flex-col items-center"
             >
-              <h2 className="text-xl font-bold text-black">{cls.subject}</h2>
-              <p className="text-black">Grade: {cls.grade}</p>
-              <p className="text-black">Teacher: {cls.teacher || 'Unknown Teacher'}</p>
-              <p className="text-black">classid: {cls.classid}</p>
-
+              <h2 className="text-xl font-bold text-white text-center">{cls.subject}</h2>
+              <p className="text-white text-lg mt-2 text-center">Grade: {cls.grade}</p>
+              <p className="text-white text-lg mt-1 text-center">Teacher: {cls.teacher || 'Unknown Teacher'}</p>
+              <p className="text-white text-lg mt-1 text-center">Class ID: {cls.classid}</p>
             </button>
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No classes found.</p>
+        <p className="text-gray-500 text-center">No classes found.</p>
       )}
     </div>
   );
