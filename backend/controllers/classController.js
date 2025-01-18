@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const Class = require('../models/Class');
 const mongoose = require('mongoose');
 
+
 // Controller to create a new class
 const createclass = async (req, res) => {
     
@@ -212,14 +213,38 @@ const Getgradesubject = async (req, res) => {
       res.status(500).json({ message: 'Failed to fetch classes' });
     }
   };
+
+  
   
 
 
+  const getClassesByStudent = async (req, res) => {
+    const { studentId } = req.params;
   
+    try {
+      // Fetch classes where the studentId is in the students array
+      const classes = await Class.find({ students: studentId });
+  
+      // Extract unique grades and subjects from the filtered classes
+      const uniqueGrades = [...new Set(classes.map(cls => cls.grade))];
+      const uniqueSubjects = [...new Set(classes.map(cls => cls.subject))];
+  
+      res.status(200).json({
+        classes,
+        uniqueGrades,
+        uniqueSubjects,
+      });
+    } catch (error) {
+      console.error('Error fetching classes by student:', error);
+      res.status(500).json({ message: 'Failed to fetch classes for the student' });
+    }
+  };
+
+
   
   
  // module.exports = { getClassesByTeacher };
   
 
-module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher, getFilteredClasses, getClassDetails, Getgradesubject};
+module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher, getFilteredClasses, getClassDetails, Getgradesubject, getClassesByStudent};
 

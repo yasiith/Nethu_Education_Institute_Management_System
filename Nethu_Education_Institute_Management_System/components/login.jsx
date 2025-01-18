@@ -59,8 +59,12 @@ const LoginPage = () => {
         // Storing ID based on user type
         if (data.type === "teacher")
           localStorage.setItem("TeacherID", data.TeacherID);
-        if (data.type === "student")
-          localStorage.setItem("StudentID", data.StudentID);
+        if (data.type === "student") {
+          localStorage.setItem("StudentID", data.StudentID); // Custom StudentID
+          localStorage.setItem("studentMongoId", data.MongoID);  // MongoDB-generated ID
+          localStorage.setItem("name",data.name);
+        }
+        
 
         // Redirect based on user type
         if (data.type === "admin") router.push("/admin");
