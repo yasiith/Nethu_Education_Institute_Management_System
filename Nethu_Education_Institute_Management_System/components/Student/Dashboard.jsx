@@ -40,8 +40,8 @@ const Dashboard = () => {
   }, [studentMongoId]);
 
   // Navigate to class details
-  const handleClassClick = (classId) => {
-    router.push(`/student/class-details/${classId}`);
+  const handleClassClick = () => {
+    router.push("/student/view-classes");
   };
 
   return (
