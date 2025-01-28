@@ -1,14 +1,27 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const loginHandel = () => {
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem("loggedIn") === "true";
+    setIsLoggedIn(loggedInStatus);
+  }, []);
+
+  const loginHandler = () => {
     router.push("/Login");
+  };
+
+  const logoutHandler = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    alert("You have been logged out");
+    router.push("/");
   };
 
   const toggleMenu = () => {
@@ -22,13 +35,23 @@ const Navbar = () => {
           NEIMS
         </span>
         <div className="flex space-x-3 md:order-2 md:space-x-0">
-          <button
-            onClick={loginHandel}
-            type="button"
-            className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-orange-500 hover:bg-orange-600 rounded-3xl"
-          >
-            Login
-          </button>
+          {isLoggedIn ? (
+            <button
+              onClick={logoutHandler}
+              type="button"
+              className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-red-500 hover:bg-red-600 rounded-3xl"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              onClick={loginHandler}
+              type="button"
+              className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-orange-500 hover:bg-orange-600 rounded-3xl"
+            >
+              Login
+            </button>
+          )}
           <button
             type="button"
             className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
