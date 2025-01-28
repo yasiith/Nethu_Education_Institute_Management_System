@@ -9,7 +9,7 @@ const studentDashboard = () => {
   return (
     <div>
       <Navbar />
-      <Dashboard1 />
+      <Dashboard />
       <Footer />
     </div>
   );
