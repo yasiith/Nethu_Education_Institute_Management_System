@@ -7,10 +7,18 @@ const Navbar = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [dashboardPath, setDashboardPath] = useState("");
 
   useEffect(() => {
     const loggedInStatus = localStorage.getItem("loggedIn") === "true";
     setIsLoggedIn(loggedInStatus);
+
+    if (loggedInStatus) {
+      const userType = localStorage.getItem("role");
+      if (userType === "admin") setDashboardPath("/admin");
+      else if (userType === "teacher") setDashboardPath("/teachers");
+      else if (userType === "student") setDashboardPath("/student");
+    }
   }, []);
 
   const loginHandler = () => {
@@ -34,6 +42,16 @@ const Navbar = () => {
           NEIMS
         </span>
         <div className="flex space-x-3 md:order-2 md:space-x-0">
+          {isLoggedIn && dashboardPath ? (
+            <Link href={dashboardPath}>
+              <button
+                type="button"
+                className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-green-500 hover:bg-green-600 rounded-3xl"
+              >
+                Dashboard
+              </button>
+            </Link>
+          ) : null}
           {isLoggedIn ? (
             <button
               onClick={logoutHandler}
