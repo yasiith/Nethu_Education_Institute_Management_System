@@ -20,7 +20,6 @@ const Navbar = () => {
   const logoutHandler = () => {
     localStorage.clear();
     setIsLoggedIn(false);
-    alert("You have been logged out");
     router.push("/");
   };
 
