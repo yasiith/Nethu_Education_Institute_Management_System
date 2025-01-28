@@ -51,7 +51,6 @@ const LoginPage = () => {
       const data = await response.json();
 
       if (data.status === "ok") {
-        alert("Login successful");
         localStorage.setItem("token", data.data);
         localStorage.setItem("role", data.type);
         localStorage.setItem("loggedIn", "true");
