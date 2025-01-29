@@ -30,7 +30,7 @@ const UserViewPage = () => {
   }, []);
 
   const handleMonthClick = (month) => {
-    router.push(`/month-details/${month.toLowerCase()}`);
+    router.push(`/student/month-details`);
   };
 
   return (

@@ -120,7 +120,7 @@ const ManageMaterialsPage = () => {
 const UploadedFilesList = ({ files }) => {
   return (
     <div className="mt-10">
-      <h2 className="text-xl font-bold mb-4">Uploaded Materials</h2>
+      <h2 className="text-xl font-bold mb-4">Uploaded Materials..</h2>
       {files.length === 0 ? (
         <p>No materials uploaded yet.</p>
       ) : (

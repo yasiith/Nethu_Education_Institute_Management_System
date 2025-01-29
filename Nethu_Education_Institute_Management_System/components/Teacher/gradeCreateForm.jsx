@@ -9,6 +9,8 @@ const CreateForm = ({ onClose, onSuccess }) => {
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
   const [classPrivacy, setClassPrivacy] = useState("");
+  const [defaultMonthlyFee, setDefaultMonthlyFee] = useState("");
+  const [error, setError] = useState("");
 
   const teacherID = localStorage.getItem("TeacherID");
 
@@ -17,41 +19,49 @@ const CreateForm = ({ onClose, onSuccess }) => {
       alert("TeacherID not found. Please log in again.");
       return;
     }
-  
+
+    // Validate that all required fields are filled out
+    if (!grade || !subject || !date || !classPrivacy || !defaultMonthlyFee) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
     const classData = {
       grade,
       subject,
       date,
       description,
       privacy: classPrivacy,
-      teacherID: teacherID
+      teacherID,
+      defaultMonthlyFee: parseFloat(defaultMonthlyFee) || 0, // Convert to number, default to 0
     };
-  
+
     try {
       const response = await fetch(
         "http://localhost:5000/api/classes/createclass",
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(classData)
+          body: JSON.stringify(classData),
         }
       );
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         alert("Class created successfully");
-        onSuccess(); // Refresh dashboard on success
-        onClose(); // Optionally, close the form
+        onSuccess();
+        onClose();
         setGrade("");
         setSubject("");
         setDate("");
         setDescription("");
         setClassPrivacy("");
+        setDefaultMonthlyFee("");
+        setError(""); // Clear error message on success
       } else {
-        // Display error message from response if provided
         alert(data.message || "Error creating class");
       }
     } catch (error) {
@@ -59,10 +69,12 @@ const CreateForm = ({ onClose, onSuccess }) => {
       alert("Error creating class: " + error.message);
     }
   };
-  
 
   return (
     <div className="flex flex-col items-center pt-10">
+      {/* Error Message */}
+      {error && <div className="text-red-500 mb-4">{error}</div>}
+
       {/* Grade Input */}
       <div className="flex flex-col mb-4 w-[1000px]">
         <input
@@ -118,6 +130,17 @@ const CreateForm = ({ onClose, onSuccess }) => {
           <option value="Private">Private</option>
         </select>
         <FaChevronDown className="absolute right-5 top-1/2 transform -translate-y-1/2 text-[#616060]" />
+      </div>
+
+      {/* Default Monthly Fee Input */}
+      <div className="flex flex-col mb-4 w-[1000px]">
+        <input
+          type="number"
+          placeholder="Default Monthly Fee (You can change this later)"
+          value={defaultMonthlyFee}
+          onChange={(e) => setDefaultMonthlyFee(e.target.value)}
+          className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
+        />
       </div>
 
       {/* Create Button */}
