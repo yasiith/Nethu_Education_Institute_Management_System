@@ -17,10 +17,10 @@ const ClassList = ({ classes }) => {
               onClick={() => handleClassClick(cls)}
               className="p-6 bg-teal-500 rounded-lg shadow-lg hover:bg-teal-600 transition-all duration-300 flex flex-col items-center"
             >
+              <h2 className="text-xl font-bold text-white text-center">{cls.year}</h2>
               <h2 className="text-xl font-bold text-white text-center">{cls.subject}</h2>
-              <p className="text-white text-lg mt-2 text-center">Grade: {cls.grade}</p>
-              <p className="text-white text-lg mt-1 text-center">Teacher: {cls.teacher || 'Unknown Teacher'}</p>
-              <p className="text-white text-lg mt-1 text-center">Class ID: {cls.classid}</p>
+              <p className="text-xl font-bold text-white text-center">Grade: {cls.grade}</p>
+              <p className="text-xl font-bold text-white text-center">Teacher: {cls.teacher || 'Unknown Teacher'}</p>
             </button>
           ))}
         </div>

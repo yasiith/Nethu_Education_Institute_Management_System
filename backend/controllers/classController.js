@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 
 //Create class
 const createclass = async (req, res) => {
-    const { teacherID, grade, subject, date, description, privacy, defaultMonthlyFee } = req.body;
+    const { teacherID, grade, subject, date, description, privacy, defaultMonthlyFee,year } = req.body;
 
-    if (!teacherID || !grade || !subject || !date || !description || !privacy || defaultMonthlyFee === undefined) {
-        return res.status(400).json({ status: "error", message: "All fields are required, including defaultMonthlyFee." });
+    if (!teacherID || !grade || !subject || !date || !privacy || !defaultMonthlyFee || !year === undefined) {
+        return res.status(400).json({ status: "error", message: "All fields are required." });
     }
 
     try {
@@ -49,6 +49,7 @@ const createclass = async (req, res) => {
             privacy,
             teacher: teacherID,
             monthlyFees, // Set the same fee for all months
+            year,
         });
 
         await newClass.save();

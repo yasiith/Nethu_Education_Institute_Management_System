@@ -10,6 +10,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
   const [description, setDescription] = useState("");
   const [classPrivacy, setClassPrivacy] = useState("");
   const [defaultMonthlyFee, setDefaultMonthlyFee] = useState("");
+  const [year, setYear] = useState("");
   const [error, setError] = useState("");
 
   const teacherID = localStorage.getItem("TeacherID");
@@ -21,7 +22,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
     }
 
     // Validate that all required fields are filled out
-    if (!grade || !subject || !date || !classPrivacy || !defaultMonthlyFee) {
+    if (!grade || !subject || !date || !classPrivacy || !defaultMonthlyFee || !year) {
       alert("Please fill out all fields.");
       return;
     }
@@ -34,6 +35,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
       privacy: classPrivacy,
       teacherID,
       defaultMonthlyFee: parseFloat(defaultMonthlyFee) || 0, // Convert to number, default to 0
+      year,
     };
 
     try {
@@ -60,6 +62,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
         setDescription("");
         setClassPrivacy("");
         setDefaultMonthlyFee("");
+        setYear("");
         setError(""); // Clear error message on success
       } else {
         alert(data.message || "Error creating class");
@@ -85,7 +88,17 @@ const CreateForm = ({ onClose, onSuccess }) => {
           className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
         />
       </div>
-
+      {/* Year Input */}
+      <div className="flex flex-col mb-4 w-[1000px]">
+        <input
+          type="text"
+          placeholder="YEAR"
+          value={year}
+          onChange={(e) => setYear(e.target.value)}
+          className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
+        />
+        
+      </div>
       {/* Subject Input */}
       <div className="flex flex-col mb-4 w-[1000px]">
         <input

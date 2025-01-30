@@ -36,13 +36,14 @@ const Dashboard = () => {
     }
   }, [studentMongoId]);
 
-  const handleClassClick = (className, teacher) => {
+  const handleClassClick = (className, teacher, classid, year) => {
     router.push(
       `/student/view-classes?className=${encodeURIComponent(
         className
-      )}&teacher=${encodeURIComponent(teacher)}`
+      )}&teacher=${encodeURIComponent(teacher)}&classid=${encodeURIComponent(classid)}&year=${encodeURIComponent(year)}`
     );
   };
+  
 
   return (
     <div className="p-4 md:p-10">
@@ -69,9 +70,12 @@ const Dashboard = () => {
               <div
                 key={cls._id}
                 className="p-4 md:p-6 bg-teal-500 rounded-lg shadow-lg cursor-pointer hover:bg-teal-600 transition duration-300 flex flex-col items-center"
-                onClick={() => handleClassClick(cls.subject, cls.teacher || "N/A")}
+                onClick={() => handleClassClick(cls.subject, cls.teacher || "N/A", cls.classid || "N/A" , cls.year)}
               >
-                <h3 className="text-lg md:text-xl font-bold text-white text-center mb-2">
+                <h3 className="text-base md:text-lg text-white text-center">
+                  {cls.year}
+                </h3>
+                <h3 className="text-base md:text-lg text-white text-center">
                   Grade: {cls.grade}
                 </h3>
                 <p className="text-base md:text-lg text-white text-center">
