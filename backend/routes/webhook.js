@@ -72,7 +72,7 @@ router.post('/api/stripe-webhook', bodyParser.raw({ type: 'application/json' }),
           // Query the database to confirm the payment was saved/updated
           const savedPayment = await Payment.findOne({ transactionId: session.id });
         } catch (error) {
-          console.error('Error processing payment:', error); // Log the error
+          console.error('Error processing payment:', error);
           return res.status(500).json({ error: 'Failed to process payment' });
         }
         break;
