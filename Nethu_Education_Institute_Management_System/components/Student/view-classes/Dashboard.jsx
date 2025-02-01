@@ -8,6 +8,7 @@ const UserViewPage = () => {
   const searchParams = useSearchParams();
   const [months, setMonths] = useState([]);
   const [monthlyFees, setMonthlyFees] = useState({});
+  const [paymentStatus, setPaymentStatus] = useState({}); // Store payment status for each month
   const [loading, setLoading] = useState(true);
 
   const classId = searchParams.get("classid");
@@ -25,6 +26,20 @@ const UserViewPage = () => {
         const data = await response.json();
         setMonths(Object.keys(data.monthlyFees));
         setMonthlyFees(data.monthlyFees);
+
+        // Fetch payment status for each month
+        const studentId = localStorage.getItem("StudentID");
+        const paymentStatuses = {};
+        for (const month of Object.keys(data.monthlyFees)) {
+          const paymentStatusResponse = await fetch(
+            `http://localhost:5000/api/check-payment-status?studentId=${studentId}&classId=${classId}&month=${month}&year=${year}`
+          );
+          if (paymentStatusResponse.ok) {
+            const paymentStatusData = await paymentStatusResponse.json();
+            paymentStatuses[month] = paymentStatusData.status === 'Completed';
+          }
+        }
+        setPaymentStatus(paymentStatuses);
       } catch (error) {
         console.error("Error fetching class details:", error);
       } finally {
@@ -59,7 +74,13 @@ const UserViewPage = () => {
         return;
       }
 
-      // Step 2: If payment is not completed, proceed with the payment process
+      // Step 2: Show confirmation dialog before proceeding to payment
+      const shouldProceed = window.confirm("You haven't paid for this month. Do you want to proceed to checkout?");
+      if (!shouldProceed) {
+        return; // Exit if the user cancels the payment
+      }
+
+      // Step 3: Proceed with the payment process
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
       if (!stripe) {
@@ -115,7 +136,9 @@ const UserViewPage = () => {
             {months.map((month) => (
               <div
                 key={month}
-                className="p-4 md:p-6 bg-teal-500 rounded-lg shadow-lg cursor-pointer hover:bg-teal-600 transition duration-300 flex flex-col items-center"
+                className={`p-4 md:p-6 rounded-lg shadow-lg cursor-pointer transition duration-300 flex flex-col items-center ${
+                  paymentStatus[month] ? 'bg-green-500 hover:bg-green-600' : 'bg-teal-500 hover:bg-teal-600'
+                }`}
                 onClick={() => handleMonthClick(month, year, classId)}
               >
                 <h3 className="text-lg md:text-xl font-bold text-white text-center mb-2">
