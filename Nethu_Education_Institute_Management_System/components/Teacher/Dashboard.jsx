@@ -103,10 +103,13 @@ const TeacherDashboard = () => {
                     className="cursor-pointer p-4 bg-teal-500 rounded-lg shadow-md  hover:bg-teal-600 transition duration-300 flex flex-col items-center"
                   >
                     <h2 className="text-xl font-bold text-white text-center">
-                      {classItem.grade}
+                      {classItem.year}
                     </h2>
-                    <p className="text-lg text-white font-semibold mt-2 text-center">
-                      {classItem.description}
+                    <h2 className="text-xl font-bold text-white text-center">
+                      Grade {classItem.grade}
+                    </h2>
+                    <p className="text-xl font-bold text-white text-center">
+                      {classItem.subject}
                     </p>
                   </div>
                 ))

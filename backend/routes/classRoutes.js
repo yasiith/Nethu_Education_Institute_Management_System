@@ -22,6 +22,8 @@ router.get('/api/classes/:classId', getClassDetails); // Use the controller func
 
 router.get('/classes/student/:studentId', getClassesByStudent);
 
+
+
 getClassesByTeacher
 
 module.exports = router;
