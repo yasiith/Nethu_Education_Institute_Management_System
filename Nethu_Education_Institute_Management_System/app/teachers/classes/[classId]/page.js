@@ -56,6 +56,10 @@ const ClassDetailPage = () => {
     router.push(`/teachers/classes/${classId}/materials`);
   };
 
+  const navigateToPayments = () => {
+    router.push(`/teachers/classes/${classId}/payments`);
+  };
+
   return (
     <div className="flex min-h-screen f bg-gray-50">
       {/* Sidebar */}
@@ -117,6 +121,13 @@ const ClassDetailPage = () => {
       >
         <FileText size={20} />
         Manage Materials
+      </button>
+      <button
+        onClick={navigateToPayments}
+        className="flex items-center justify-center flex-1 gap-2 px-6 py-3 text-white transition-all bg-red-500 rounded-md hover:bg-red-600"
+      >
+        <FileText size={20} />
+        Manage Payments
       </button>
     </div>
   </div>

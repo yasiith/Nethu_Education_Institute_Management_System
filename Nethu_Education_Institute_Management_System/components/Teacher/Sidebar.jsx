@@ -97,10 +97,13 @@ const Sidebar = () => {
                     className="flex flex-col items-center w-full p-4 transition duration-300 bg-teal-500 rounded-md shadow-md cursor-pointer hover:bg-teal-600"
                   >
                     <h2 className="font-bold text-center text-white text-md">
-                      {classItem.grade}
+                      {classItem.year}
                     </h2>
-                    <p className="mt-1 text-sm font-medium text-center text-white">
-                      {classItem.description}
+                    <h2 className="font-bold text-center text-white text-md">
+                      Grade {classItem.grade}
+                    </h2>
+                    <p className="font-bold text-center text-white text-md">
+                      {classItem.subject}
                     </p>
                   </div>
                 ))

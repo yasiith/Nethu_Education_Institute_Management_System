@@ -7,17 +7,14 @@ const Dashboard = () => {
   const [enrolledClasses, setEnrolledClasses] = useState([]);
   const [error, setError] = useState(null);
 
-  // Get MongoDB ID and name from localStorage
   const studentMongoId =
     typeof window !== "undefined" ? localStorage.getItem("studentMongoId") : null;
   const name = localStorage.getItem("name");
 
-  // Navigate to the Find Classes page
   const toFindClasses = () => {
     router.push("/student/find-classes");
   };
 
-  // Fetch enrolled classes
   useEffect(() => {
     if (studentMongoId) {
       fetch(`http://localhost:5000/classes/student/${studentMongoId}`)
@@ -25,7 +22,7 @@ const Dashboard = () => {
         .then((data) => {
           if (data.classes) {
             setEnrolledClasses(data.classes);
-            setError(null); // Clear error if successful
+            setError(null);
           } else {
             setError("Failed to fetch enrolled classes.");
           }
@@ -39,14 +36,17 @@ const Dashboard = () => {
     }
   }, [studentMongoId]);
 
-  // Navigate to class details
-  const handleClassClick = () => {
-    router.push("/student/view-classes");
+  const handleClassClick = (className, teacher, classid, year) => {
+    router.push(
+      `/student/view-classes?className=${encodeURIComponent(
+        className
+      )}&teacher=${encodeURIComponent(teacher)}&classid=${encodeURIComponent(classid)}&year=${encodeURIComponent(year)}`
+    );
   };
+  
 
   return (
     <div className="p-4 md:p-10">
-      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
         <h1 className="text-3xl md:text-4xl font-bold text-center md:text-left">
           Welcome, {name}
@@ -59,7 +59,6 @@ const Dashboard = () => {
         </button>
       </div>
 
-      {/* Enrolled Classes Section */}
       <div className="flex flex-col items-center">
         <h2 className="bg-gray-200 p-4 md:p-5 rounded-2xl text-2xl md:text-3xl font-bold mb-5 text-center w-full md:w-auto">
           ENROLLED CLASSES
@@ -71,9 +70,12 @@ const Dashboard = () => {
               <div
                 key={cls._id}
                 className="p-4 md:p-6 bg-teal-500 rounded-lg shadow-lg cursor-pointer hover:bg-teal-600 transition duration-300 flex flex-col items-center"
-                onClick={() => handleClassClick(cls._id)}
+                onClick={() => handleClassClick(cls.subject, cls.teacher || "N/A", cls.classid || "N/A" , cls.year)}
               >
-                <h3 className="text-lg md:text-xl font-bold text-white text-center mb-2">
+                <h3 className="text-base md:text-lg text-white text-center">
+                  {cls.year}
+                </h3>
+                <h3 className="text-base md:text-lg text-white text-center">
                   Grade: {cls.grade}
                 </h3>
                 <p className="text-base md:text-lg text-white text-center">
@@ -86,9 +88,7 @@ const Dashboard = () => {
             ))}
           </div>
         ) : (
-          <p className="text-gray-600 text-center mt-5">
-            No enrolled classes found.
-          </p>
+          <p className="text-gray-600 text-center mt-5">No enrolled classes found.</p>
         )}
       </div>
     </div>
