@@ -81,7 +81,7 @@ const UserViewPage = () => {
       }
 
       // Step 3: Proceed with the payment process
-      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+      const stripe = await SloadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
       if (!stripe) {
         console.error("Stripe failed to initialize.");
