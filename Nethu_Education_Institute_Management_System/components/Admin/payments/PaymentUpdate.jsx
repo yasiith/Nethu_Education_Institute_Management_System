@@ -3,8 +3,10 @@ import { useState } from "react";
 
 const StudentFilter = ({ onUpdate }) => {
   const [filters, setFilters] = useState({
+    studentID: "",
     grade: "",
     subject: "",
+    month: "",
     paymentStatus: "",
   });
 
@@ -14,6 +16,17 @@ const StudentFilter = ({ onUpdate }) => {
 
   return (
     <div className="p-4 bg-white shadow-md rounded-lg flex flex-col md:flex-row gap-4 items-center">
+      <select
+        name="studentID"
+        value={filters.studentID}
+        onChange={handleChange}
+        className="p-2 border rounded-md"
+      >
+        <option value="">Select Student ID</option>
+        <option value="Grade 1"> 01</option>
+        <option value="Grade 2"> 02</option>
+        <option value="Grade 3"> 03</option>
+      </select>
       {/* Grade Dropdown */}
       <select
         name="grade"
@@ -35,6 +48,18 @@ const StudentFilter = ({ onUpdate }) => {
         className="p-2 border rounded-md"
       >
         <option value="">Select Subject</option>
+        <option value="Math">Math</option>
+        <option value="Science">Science</option>
+        <option value="English">English</option>
+      </select>
+
+      <select
+        name="month"
+        value={filters.month}
+        onChange={handleChange}
+        className="p-2 border rounded-md"
+      >
+        <option value="">Select Month</option>
         <option value="Math">Math</option>
         <option value="Science">Science</option>
         <option value="English">English</option>
