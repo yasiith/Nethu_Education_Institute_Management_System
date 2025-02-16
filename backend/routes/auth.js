@@ -5,6 +5,7 @@ const { getStudentInfo,updateStudentInfo} = require('../controllers/userupdate')
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 const { createAnnouncement, updateAnnouncement, deleteAnnouncement,getAllAnnouncements } = require('../controllers/AnnouncementController');
+const Class = require('../models/Class');
 
 
 
@@ -47,6 +48,43 @@ router.get('/api/auth/test', (req, res) => {
     res.json({ msg: 'Test route works' });
 });
 
+
+// GET students by classid
+router.get('/api/class/:classid/students', async (req, res) => {
+    try {
+        const { classid } = req.params;
+
+        // Find class by classid
+        const classData = await Class.findOne({ classid });
+
+        if (!classData) {
+            return res.status(404).json({ message: 'Class not found' });
+        }
+
+        res.json({ students: classData.students });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Route to get user name by StudentID
+router.get('/api/user/name/:StudentID', async (req, res) => {
+    try {
+      const studentID = req.params.StudentID;
+      const user = await User.findOne({ StudentID: studentID });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Respond with the user's name
+      res.json({ name: user.name });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
 
 
 

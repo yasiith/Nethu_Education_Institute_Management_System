@@ -8,7 +8,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
 
   const studentMongoId =
-    typeof window !== "undefined" ? localStorage.getItem("studentMongoId") : null;
+    typeof window !== "undefined" ? localStorage.getItem("StudentID") : null;
   const name = localStorage.getItem("name");
 
   const toFindClasses = () => {

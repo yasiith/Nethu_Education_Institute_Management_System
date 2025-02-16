@@ -1,5 +1,5 @@
 const express = require('express');
-const { enrollInClass } = require('../controllers/studentController');
+const { enrollInClass, checkEnrollmentStatus, unenrollFromClass } = require('../controllers/studentController');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -14,6 +14,13 @@ const router = express.Router();
 
 // Enroll in a class
 router.post("/api/student/enroll/:classId", auth, checkRole('student'), enrollInClass);
+
+// Check enrollment status
+router.get("/api/student/enrollment-status/:classId", auth, checkRole('student'), checkEnrollmentStatus);
+
+// Unenroll from a class
+router.delete("/api/student/unenroll/:classId", auth, checkRole('student'), unenrollFromClass);
+
 
 
 router.post('/api/create-checkout-session', async (req, res) => {

@@ -37,8 +37,8 @@ const classSchema = new mongoose.Schema({
         required: true,
     },
     students: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User' 
+        type: String,
+        required: true,
     }],
     monthlyFees: {
         type: Map,
