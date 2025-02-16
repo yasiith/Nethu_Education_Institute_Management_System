@@ -115,5 +115,49 @@ router.get('/api/check-payment-status', async (req, res) => {
   }
 });
 
+router.post('/api/payments/create', async (req, res) => {
+  const { studentId, classId, month, year, amount, transactionId } = req.body;
+  console.log(`Received payment creation request for student ${studentId} in class ${classId} for ${month} ${year}`);
+
+  if (!studentId || !classId || !month || !year || !amount) {
+      console.error('Missing required fields');
+      return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  try {
+      const existingPayment = await Payment.findOne({ 
+          'student.StudentID': studentId, 
+          class: classId, 
+          month, 
+          year 
+      });
+
+      if (existingPayment) {
+          console.error('Payment for this month already exists');
+          return res.status(400).json({ message: 'Payment for this month already exists' });
+      }
+
+      const newPayment = new Payment({
+          student: {
+              StudentID: studentId,
+          },
+          class: classId,
+          month,
+          year,
+          amount,
+          status: 'Completed',
+          transactionId: transactionId || null,
+      });
+
+      await newPayment.save();
+      console.log('Payment recorded successfully:', newPayment);
+      res.status(201).json({ message: 'Payment recorded successfully', payment: newPayment });
+
+  } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 
 module.exports = router;
