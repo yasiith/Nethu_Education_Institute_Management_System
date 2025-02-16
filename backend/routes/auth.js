@@ -6,6 +6,7 @@ const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 const { createAnnouncement, updateAnnouncement, deleteAnnouncement,getAllAnnouncements } = require('../controllers/AnnouncementController');
 const Class = require('../models/Class');
+const Payment = require('../models/Payment');
 
 
 
@@ -85,6 +86,27 @@ router.get('/api/user/name/:StudentID', async (req, res) => {
       res.status(500).json({ message: 'Server error' });
     }
   });
+
+// Get all payment transactions for a specific student in a class
+router.get('/api/payments/:classId/:studentId', async (req, res) => {
+  const { classId, studentId } = req.params;
+
+  try {
+      const payments = await Payment.find({
+          class: classId,
+          'student.StudentID': studentId, // Querying nested student object
+      }).sort({ createdAt: -1 }); // Sort by latest transactions first
+
+      if (payments.length === 0) {
+          return res.status(200).json({ message: 'No payment transactions found' });
+      }
+
+      res.json(payments); // Return all transactions
+  } catch (error) {
+      res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 
 
 

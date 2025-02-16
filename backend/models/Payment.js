@@ -8,7 +8,6 @@ const paymentSchema = new mongoose.Schema({
           },
           name: {
             type: String,
-            required: true,
           },
     },
     class: {
