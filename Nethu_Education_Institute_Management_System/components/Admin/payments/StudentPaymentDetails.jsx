@@ -13,6 +13,8 @@ const StudentPaymentDetails = () => {
     const [error, setError] = useState(null);
     const [year, setYear] = useState();
     const [showTransactionHistory, setShowTransactionHistory] = useState(false); // State to manage visibility
+    const [selectedPayment, setSelectedPayment] = useState(null);
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
 
     useEffect(() => {
         if (!classId || !studentId) return;
@@ -65,6 +67,21 @@ const StudentPaymentDetails = () => {
         }
         const payment = paymentDetails.find(p => p.month === month && new Date(p.createdAt).getFullYear() === currentYear);
         return payment && payment.status === 'Completed' ? 'Paid' : 'Not Paid';
+    };
+
+    const fetchPaymentDetailsBySessionId = async (sessionId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/payment-details/${sessionId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch payment details');
+            }
+            const data = await response.json();
+            setSelectedPayment(data);
+            setIsPopupVisible(true);
+        } catch (error) {
+            console.error('Error fetching payment details:', error);
+            setError(error.message);
+        }
     };
 
     const handleSetAsPaid = async (month) => {
@@ -133,7 +150,19 @@ const StudentPaymentDetails = () => {
                                             <p><strong>Amount Paid:</strong> ${payment.amount}</p>
                                             <p><strong>Status:</strong> <span className={payment.status === 'Paid' ? 'text-green-500' : 'text-red-500'}>{payment.status}</span></p>
                                             <p><strong>Date:</strong> {new Date(payment.createdAt).toLocaleDateString()}</p>
-                                            <p><strong>Transaction ID:</strong> {payment.transactionId || 'N/A'}</p>
+                                            <p>
+                                                <strong>Session ID:</strong> 
+                                                {payment.transactionId !== 'Cash payment' ? (
+                                                    <span
+                                                        className="text-blue-500 cursor-pointer underline"
+                                                        onClick={() => fetchPaymentDetailsBySessionId(payment.transactionId)}
+                                                    >
+                                                        {payment.transactionId}
+                                                    </span>
+                                                ) : (
+                                                    <span> {payment.transactionId || 'N/A'}</span>
+                                                )}
+                                            </p>
                                         </li>
                                     ))}
                                 </ul>
@@ -175,6 +204,29 @@ const StudentPaymentDetails = () => {
                     </tbody>
                 </table>
             </div>
+    
+            {/* Popup for Payment Details */}
+            {isPopupVisible && selectedPayment && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-6 rounded-lg shadow-lg">
+                        <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
+                        <p><strong>Student ID:</strong> {selectedPayment.studentId}</p>
+                        <p><strong>Class ID:</strong> {selectedPayment.classId}</p>
+                        <p><strong>Month:</strong> {selectedPayment.month}</p>
+                        <p><strong>Year:</strong> {selectedPayment.year}</p>
+                        <p><strong>Amount:</strong> {selectedPayment.amount} {selectedPayment.currency}</p>
+                        <p><strong>Status:</strong> {selectedPayment.status}</p>
+                        <p><strong>Date:</strong> {new Date(selectedPayment.createdAt).toLocaleDateString()}</p>
+                        <p><strong>Payment Method:</strong> {selectedPayment.paymentMethod}</p>
+                        <button
+                            onClick={() => setIsPopupVisible(false)}
+                            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

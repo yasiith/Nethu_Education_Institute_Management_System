@@ -160,4 +160,43 @@ router.post('/api/payments/create', async (req, res) => {
 });
 
 
+router.get('/api/payment-details/:sessionId', async (req, res) => {
+  const sessionId = req.params.sessionId;
+  console.log("sessionId", sessionId);
+
+  try {
+      // Retrieve the Checkout Session
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      console.log("session", session);
+
+      if (!session) {
+          return res.status(404).json({ error: 'Session not found' });
+      }
+
+      // Retrieve the Payment Intent (for full payment details)
+      const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
+
+      // Construct the response
+      const paymentDetails = {
+          studentId: session.metadata?.studentId || 'N/A',
+          classId: session.metadata?.classId || 'N/A',
+          month: session.metadata?.month || 'N/A',
+          year: session.metadata?.year || 'N/A',
+          amount: paymentIntent.amount / 100, // Convert cents to dollars
+          currency: paymentIntent.currency,
+          status: paymentIntent.status, // 'succeeded', 'requires_payment_method', etc.
+          createdAt: new Date(paymentIntent.created * 1000).toLocaleString(),
+          transactionId: paymentIntent.id, // Stripe Payment Intent ID
+          paymentMethod: paymentIntent.payment_method_types[0], // e.g., 'card'
+      };
+
+      res.json(paymentDetails);
+  } catch (error) {
+      console.error('Error fetching payment details:', error);
+      res.status(500).json({ error: 'Failed to retrieve payment details' });
+  }
+});
+
+
+
 module.exports = router;
