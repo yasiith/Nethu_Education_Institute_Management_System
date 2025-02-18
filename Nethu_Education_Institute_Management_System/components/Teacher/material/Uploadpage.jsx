@@ -22,11 +22,38 @@ const ManageMaterialsPage = () => {
     "July", "August", "September", "October", "November", "December"
   ];
 
+  // Fetch materials on page load based on classId
+  useEffect(() => {
+    const fetchMaterials = async () => {
+      const classid = params?.classId;
+      if (!classid) return;
+
+      try {
+        const response = await fetch("http://localhost:5000/api/materials/getMaterialsbyclassid", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ classid }), // Send classid in the request body
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch materials.");
+
+        const data = await response.json();
+        setUploadedFiles(data);
+      } catch (error) {
+        setError("Error fetching materials.");
+      }
+    };
+
+    fetchMaterials();
+  }, [params?.classId]);
+
+
   // Toggle upload section
   const navigateToMaterials = () => {
     setIsUploadVisible(!isUploadVisible);
   };
-
 
 
   // Handle File Upload
@@ -42,10 +69,6 @@ const ManageMaterialsPage = () => {
     formData.append("description", description);
     formData.append("month", month);
     formData.append("classid", params?.classId); // Attach class ID
-
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
 
     try {
       setUploading(true);
@@ -105,13 +128,33 @@ const ManageMaterialsPage = () => {
       )}
 
       {/* Display uploaded materials */}
-      <UploadedFilesList files={uploadedFiles} />
+      <UploadedFilesList files={uploadedFiles} setUploadedFiles={setUploadedFiles} />
     </div>
   );
 };
 
 // Display uploaded materials
-const UploadedFilesList = ({ files }) => {
+const UploadedFilesList = ({ files, setUploadedFiles }) => {
+  const deleteFile = async (materialId) => {
+    console.log(materialId);
+    try {
+      const response = await fetch(`http://localhost:5000/api/materials/delete/${materialId}`, {
+        method: "DELETE",
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) throw new Error(result.message);
+
+      alert("Material deleted successfully!");
+      
+      // Remove the file from the UI
+      setUploadedFiles((prevFiles) => prevFiles.filter((file) => file._id !== materialId));
+    } catch (error) {
+      alert("Error deleting material.");
+    }
+  };
+
   return (
     <div className="mt-10">
       <h2 className="text-xl font-bold mb-4">Uploaded Materials</h2>
@@ -121,11 +164,27 @@ const UploadedFilesList = ({ files }) => {
         <ul>
           {files.map((fileData, index) => (
             <li key={index} className="mb-4 p-4 border rounded shadow-sm">
-              <h3 className="font-semibold">{fileData.title}</h3>
-              <p>{fileData.description}</p>
-              <a href={`http://localhost:5000${fileData.fileUrl}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-600 mt-2 block">
-                View File
-              </a>
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-semibold">Name: {fileData.title}</h3>
+                  <p>Description: {fileData.description}</p>
+                  <p>Month: {fileData.month}</p>
+                  <a 
+                    href={`http://localhost:5000${fileData.fileUrl}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-blue-500 hover:text-blue-600 mt-2 block"
+                  >
+                    View File
+                  </a>
+                </div>
+                <button
+                  onClick={() => deleteFile(fileData._id)}  // Call deleteFile function on click
+                  className="text-red-500 hover:text-red-700"
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>
