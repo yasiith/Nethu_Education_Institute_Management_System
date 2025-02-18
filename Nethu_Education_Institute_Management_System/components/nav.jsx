@@ -1,14 +1,34 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [dashboardPath, setDashboardPath] = useState("");
 
-  const loginHandel = () => {
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem("loggedIn") === "true";
+    setIsLoggedIn(loggedInStatus);
+
+    if (loggedInStatus) {
+      const userType = localStorage.getItem("role");
+      if (userType === "admin") setDashboardPath("/admin");
+      else if (userType === "teacher") setDashboardPath("/teachers");
+      else if (userType === "student") setDashboardPath("/student");
+    }
+  }, []);
+
+  const loginHandler = () => {
     router.push("/Login");
+  };
+
+  const logoutHandler = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    router.push("/");
   };
 
   const toggleMenu = () => {
@@ -22,13 +42,33 @@ const Navbar = () => {
           NEIMS
         </span>
         <div className="flex space-x-3 md:order-2 md:space-x-0">
-          <button
-            onClick={loginHandel}
-            type="button"
-            className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-orange-500 hover:bg-orange-600 rounded-3xl"
-          >
-            Login
-          </button>
+          {isLoggedIn && dashboardPath ? (
+            <Link href={dashboardPath}>
+              <button
+                type="button"
+                className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-green-500 hover:bg-green-600 rounded-3xl"
+              >
+                Dashboard
+              </button>
+            </Link>
+          ) : null}
+          {isLoggedIn ? (
+            <button
+              onClick={logoutHandler}
+              type="button"
+              className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-red-500 hover:bg-red-600 rounded-3xl"
+            >
+              Logout
+            </button>
+          ) : (
+            <button
+              onClick={loginHandler}
+              type="button"
+              className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-orange-500 hover:bg-orange-600 rounded-3xl"
+            >
+              Login
+            </button>
+          )}
           <button
             type="button"
             className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"

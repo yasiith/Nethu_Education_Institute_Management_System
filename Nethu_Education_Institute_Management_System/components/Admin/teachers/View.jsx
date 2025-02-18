@@ -5,15 +5,14 @@ import { useEffect, useState } from "react";
 const View = () => {
   const router = useRouter();
   const [teachers, setTeachers] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null);     // Error state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch teacher data from the backend
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Retrieve token from localStorage
+    const token = localStorage.getItem("token");
     if (!token) {
       setError("No token found. Please log in.");
-      setLoading(false); // Ensure loading stops if no token is found
+      setLoading(false);
       return;
     }
 
@@ -28,59 +27,56 @@ const View = () => {
           },
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch teachers.");
-        }
-
+        if (!response.ok) throw new Error("Failed to fetch teachers.");
         const data = await response.json();
-        setTeachers(data.data || []); // Set the fetched teacher data or an empty array if undefined
+        setTeachers(data.data || []);
       } catch (error) {
-        console.error("Error fetching teachers:", error);
-        setError(error.message); // Set error state
+        setError(error.message);
       } finally {
-        setLoading(false); // Stop loading regardless of success or failure
+        setLoading(false);
       }
     };
 
     fetchTeachers();
   }, []);
 
-  const handleBack = () => {
-    router.push("/admin/teachers");
-  };
-
   return (
-    <div>
-      <div className="flex justify-between items-center mb-5 p-5">
-        <button
-          onClick={handleBack}
-          className='bg-red-500 w-[200px] h-[70px] rounded-[30px] text-white font-bold text-4xl'
-        >
-          BACK
-        </button>
-        <h1 className="bg-[#D7D7D7] py-4 px-8 rounded-full text-[40px] font-bold text-[#3b3b3b]">
-          VIEW TEACHERS
-        </h1>
-      </div>
+    <div className="min-h-screen px-4 py-6 bg-gray-100">
+      <div className="container mx-auto">
+        <div className="flex flex-col items-center justify-between gap-4 mb-8 sm:flex-row">
+          <button
+            onClick={() => router.push("/admin/teachers")}
+            className="bg-red-500 w-full sm:w-[200px] py-3 sm:py-4 rounded-[30px] 
+                     text-white font-bold text-2xl sm:text-4xl hover:bg-red-600 
+                     transition-colors"
+          >
+            BACK
+          </button>
+          
+          <div className="bg-gray-300 w-full sm:w-auto text-center py-4 px-6 sm:px-8 
+                        rounded-[35px]">
+            <h1 className="text-2xl font-bold sm:text-4xl">VIEW TEACHERS</h1>
+          </div>
+        </div>
 
-      <div className="flex flex-col items-center pb-10 ml-10 mr-10">
-        {loading ? (
-          <p className="text-2xl text-gray-500">Loading...</p>
-        ) : error ? (
-          <p className="text-2xl text-red-500">Error: {error}</p>
-        ) : (
-          <div className="bg-gray-200 w-full p-4 rounded-xl">
-            <table className="table-auto w-full text-justify text-[30px]">
+        <div className="w-full p-4 overflow-x-auto bg-gray-200 rounded-xl">
+          {loading ? (
+            <p className="py-4 text-xl text-center text-gray-500">Loading...</p>
+          ) : error ? (
+            <p className="py-4 text-xl text-center text-red-500">Error: {error}</p>
+          ) : (
+            <table className="w-full min-w-[600px]">
               <thead>
-                <tr className="font-bold text-gray-800 text-[30px]">
-                  <th className="p-3">Teacher ID</th>
-                  <th className="p-3">Name</th>
-                  <th className="p-3">Email</th>
+                <tr className="text-lg font-bold text-gray-800 sm:text-2xl">
+                  <th className="p-3 text-left">Teacher ID</th>
+                  <th className="p-3 text-left">Name</th>
+                  <th className="p-3 text-left">Email</th>
                 </tr>
               </thead>
               <tbody>
                 {teachers.map((teacher) => (
-                  <tr key={teacher.TeacherID} className="bg-gray-100 text-gray-700">
+                  <tr key={teacher.TeacherID} 
+                      className="text-base text-gray-700 bg-gray-100 sm:text-xl">
                     <td className="p-3">{teacher.TeacherID || 'N/A'}</td>
                     <td className="p-3">{teacher.name || 'N/A'}</td>
                     <td className="p-3">{teacher.email || 'N/A'}</td>
@@ -88,8 +84,8 @@ const View = () => {
                 ))}
               </tbody>
             </table>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

@@ -36,6 +36,9 @@ const AdminNav = () => {
           <li className={`p-4 border-b border-gray-700 md:p-2 md:border-b-0 ${isLinkActive('/admin/teachers')} rounded-md transition-colors duration-200`}>
             <Link href="/admin/teachers">Teachers</Link>
           </li>
+          <li className={`p-4 border-b border-gray-700 md:p-2 md:border-b-0 ${isLinkActive('/admin/payments')} rounded-md transition-colors duration-200`}>
+            <Link href="/admin/payments/allClasses">Payments</Link>
+          </li>
           <li className={`p-4 md:p-2 ${isLinkActive('/admin/announcements')} rounded-md transition-colors duration-200`}>
             <Link href="/admin/announcements">Announcements</Link>
           </li>

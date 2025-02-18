@@ -1,8 +1,11 @@
-'use client'
+'use client';
 
 import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 const QuizCreatePage = () => {
+  const pathname = usePathname(); // Access the current URL path
+  const [classID, setClassID] = useState(''); // ClassID state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [questions, setQuestions] = useState([]);
@@ -12,39 +15,49 @@ const QuizCreatePage = () => {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [editingIndex, setEditingIndex] = useState(null);
 
+  // Extract ClassID from URL
+  useEffect(() => {
+    const pathSegments = pathname.split('/');
+    const classIDFromURL = pathSegments[pathSegments.indexOf('classes') + 1];
+    if (classIDFromURL) {
+      setClassID(classIDFromURL);
+    }
+  }, [pathname]);
+
   useEffect(() => {
     setQuestionNumber(questions.length + 1);
   }, [questions]);
 
   const addQuestion = () => {
     if (currentQuestion.trim() && correctAnswer.trim()) {
-      // Verify all options are filled
       if (currentOptions.some(option => option.trim() === '')) {
         alert('Please fill out all options');
         return;
       }
 
       if (editingIndex !== null) {
-        // Update existing question
-        const updatedQuestions = questions.map((q, index) => 
-          index === editingIndex ? {
-            questionText: currentQuestion,
-            options: currentOptions,
-            correctAnswer: correctAnswer
-          } : q
+        const updatedQuestions = questions.map((q, index) =>
+          index === editingIndex
+            ? {
+                questionText: currentQuestion,
+                options: currentOptions,
+                correctAnswer: correctAnswer,
+              }
+            : q
         );
         setQuestions(updatedQuestions);
         setEditingIndex(null);
       } else {
-        // Add new question
-        setQuestions([...questions, {
-          questionText: currentQuestion,
-          options: currentOptions,
-          correctAnswer: correctAnswer
-        }]);
+        setQuestions([
+          ...questions,
+          {
+            questionText: currentQuestion,
+            options: currentOptions,
+            correctAnswer: correctAnswer,
+          },
+        ]);
       }
 
-      // Reset fields
       setCurrentQuestion('');
       setCurrentOptions(['', '', '', '']);
       setCorrectAnswer('');
@@ -53,58 +66,47 @@ const QuizCreatePage = () => {
     }
   };
 
-  const editQuestion = (index) => {
-    const questionToEdit = questions[index];
-    setCurrentQuestion(questionToEdit.questionText);
-    setCurrentOptions(questionToEdit.options);
-    setCorrectAnswer(questionToEdit.correctAnswer);
-    setEditingIndex(index);
-  };
-
   const handleSave = async () => {
-    if (title.trim() && questions.length > 0) {
-      const quizData = { title, description, questions };
+    if (title.trim() && questions.length > 0 && classID.trim()) {
+      const quizData = {
+        classID,
+        title,
+        description,
+        questions,
+        // Add the teacher's ID as createdBy
+        createdBy: 'teacherUserID' // Replace 'teacherUserID' with the actual teacher ID from the JWT token
+      };
+  
       console.log('Sending quiz data:', quizData);
-      
+  
       try {
         const token = localStorage.getItem('token');
-        console.log('Token:', token);
-
         if (!token) {
           alert('You are not logged in. Please log in first.');
           return;
         }
-
-        console.log('Making request to:', 'http://localhost:5000/api/quizzes/create');
-        
+  
         const response = await fetch('http://localhost:5000/api/quizzes/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'x-auth-token': token,
-            'Accept': 'application/json'
           },
           body: JSON.stringify(quizData),
         });
-
-        console.log('Response status:', response.status);
-        
+  
         const responseData = await response.json();
-        console.log('Response data:', responseData);
-
         if (!response.ok) {
           throw new Error(responseData.message || `Server returned ${response.status}: ${response.statusText}`);
         }
-
+  
         alert('Quiz Created Successfully!');
-        // Clear the form after successful creation
         setTitle('');
         setDescription('');
         setQuestions([]);
         setCurrentQuestion('');
         setCurrentOptions(['', '', '', '']);
         setCorrectAnswer('');
-        
       } catch (err) {
         console.error('Detailed error:', err);
         if (err.name === 'TypeError' && err.message.includes('Failed to fetch')) {
@@ -117,6 +119,7 @@ const QuizCreatePage = () => {
       alert('Please add a title and at least one question');
     }
   };
+  
 
   return (
     <div className="p-4 sm:p-8 max-w-4xl mx-auto">
@@ -139,7 +142,7 @@ const QuizCreatePage = () => {
         className="border p-2 w-full mb-4 rounded-md"
       />
 
-      {/* Current Question Input */}
+      {/* Current Question */}
       <input
         type="text"
         placeholder={`Question ${editingIndex !== null ? editingIndex + 1 : questionNumber}`}
@@ -148,7 +151,7 @@ const QuizCreatePage = () => {
         className="border p-2 w-full mb-4 rounded-md"
       />
 
-      {/* Options Inputs */}
+      {/* Options */}
       {currentOptions.map((option, index) => (
         <input
           key={index}
@@ -164,7 +167,7 @@ const QuizCreatePage = () => {
         />
       ))}
 
-      {/* Correct Answer Input */}
+      {/* Correct Answer */}
       <input
         type="text"
         placeholder="Correct Answer"
@@ -181,26 +184,17 @@ const QuizCreatePage = () => {
       </button>
 
       {/* Questions Preview */}
-      <div className="mb-4">
-        <h2 className="text-xl font-semibold mb-2">Questions:</h2>
-        {questions.map((q, index) => (
-          <div key={index} className="border p-2 mb-2 rounded-md">
-            <p><strong>Q{index + 1}:</strong> {q.questionText}</p>
-            <ul className="list-disc pl-5">
-              {q.options.map((opt, idx) => (
-                <li key={idx}>{opt}</li>
-              ))}
-            </ul>
-            <p><strong>Answer:</strong> {q.correctAnswer}</p>
-            <button 
-              onClick={() => editQuestion(index)}
-              className="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded mt-2"
-            >
-              Edit
-            </button>
-          </div>
-        ))}
-      </div>
+      {questions.map((q, index) => (
+        <div key={index} className="border p-2 mb-2 rounded-md">
+          <p><strong>Q{index + 1}:</strong> {q.questionText}</p>
+          <ul>
+            {q.options.map((opt, idx) => (
+              <li key={idx}>{opt}</li>
+            ))}
+          </ul>
+          <p><strong>Answer:</strong> {q.correctAnswer}</p>
+        </div>
+      ))}
 
       <button
         onClick={handleSave}

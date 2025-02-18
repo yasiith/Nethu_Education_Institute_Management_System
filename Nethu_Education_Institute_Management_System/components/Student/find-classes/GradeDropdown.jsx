@@ -1,60 +1,23 @@
-'use client';
-import { useState } from 'react';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/solid';
-
+import React from 'react';
 
 const GradeDropdown = ({ uniqueGrades, selectedGrade, setSelectedGrade }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    // Toggle dropdown visibility
-    const toggleDropdown = () => setIsOpen(!isOpen);
-
-    // Handle grade selection
-    const handleSelectGrade = (grade) => {
-        setSelectedGrade(grade); // Set the selected grade from the prop
-        setIsOpen(false); // Close the dropdown after selecting
-    };
-
-    return (
-        <div className="relative inline-block text-left">
-            {/* Button */}
-            <button
-                onClick={toggleDropdown}
-                className="flex items-center px-4 py-2 bg-gray-200 rounded-2xl focus:outline-none"
-            >
-                <span className="mr-2 font-semibold text-3xl text-black">
-                    {selectedGrade || 'Grade'} {/* Default text when no grade is selected */}
-                </span>
-                {/* Arrow Icon */}
-                {isOpen ? (
-                    <ChevronUpIcon className="w-5 h-5 text-black transition-transform duration-200" />
-                ) : (
-                    <ChevronDownIcon className="w-5 h-5 text-black transition-transform duration-200" />
-                )}
-            </button>
-
-            {/* Dropdown menu */}
-            {isOpen && (
-                <div className="mt-2 w-40 bg-white border border-gray-300 rounded-lg shadow-lg">
-                    <ul className="py-1">
-                        {uniqueGrades.length > 0 ? (
-                            uniqueGrades.map((grade, index) => (
-                                <li
-                                    key={index}
-                                    onClick={() => handleSelectGrade(grade)}
-                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                                >
-                                    {grade}
-                                </li>
-                            ))
-                        ) : (
-                            <li className="px-4 py-2 text-gray-500">No grades found</li>
-                        )}
-                    </ul>
-                </div>
-            )}
-        </div>
-    );
+  return (
+    <div>
+      <label className="block text-gray-700 font-medium mb-2">Select Grade:</label>
+      <select
+        value={selectedGrade}
+        onChange={(e) => setSelectedGrade(e.target.value)}
+        className="border border-gray-300 rounded-md p-2 w-48"
+      >
+        <option value="">All Grades</option>
+        {uniqueGrades.map((grade, index) => (
+          <option key={index} value={grade}>
+            {grade}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
 };
 
 export default GradeDropdown;

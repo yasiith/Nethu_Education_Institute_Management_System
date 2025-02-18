@@ -5,15 +5,15 @@ import { useRouter } from "next/navigation";
 const View = () => {
   const router = useRouter();
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);  // Loading state
-  const [error, setError] = useState(null);      // Error state
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
   // Fetch student data from the backend
   useEffect(() => {
     const token = localStorage.getItem("token"); // Retrieve token from localStorage
     if (!token) {
       setError("No token found. Please log in.");
-      setLoading(false);  // Ensure loading stops if no token is found
+      setLoading(false); // Ensure loading stops if no token is found
       return; // Stop execution if no token is found
     }
 
@@ -34,16 +34,16 @@ const View = () => {
 
         const data = await response.json();
         console.log(data);
-        setStudents(data.data || []);  // Set the fetched student data or an empty array if undefined
+        setStudents(data.data || []); // Set the fetched student data or an empty array if undefined
       } catch (error) {
         console.error("Error fetching students:", error);
-        setError(error.message);  // Set error state
+        setError(error.message); // Set error state
       } finally {
-        setLoading(false);  // Stop loading regardless of success or failure
+        setLoading(false); // Stop loading regardless of success or failure
       }
     };
 
-    fetchStudents();  // Call the async function to fetch student data
+    fetchStudents(); // Call the async function to fetch student data
   }, []);
 
   const handleBack = () => {
@@ -52,7 +52,7 @@ const View = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-5 p-5">
+      <div className="flex items-center justify-between p-5 mb-5">
         <button
           onClick={handleBack}
           className="bg-red-500 w-[200px] h-[70px] rounded-[30px] text-white font-bold text-4xl"
@@ -64,18 +64,18 @@ const View = () => {
         </h1>
       </div>
 
-      <div className="flex flex-col items-center pb-10 ml-10 mr-10">
-        <div className="bg-gray-200 w-full p-4 rounded-xl">
+      <div className="flex flex-col items-center px-4 pb-10 sm:px-10">
+        <div className="w-full p-4 overflow-x-auto bg-gray-200 rounded-xl">
           {loading ? (
-            <p className="text-center text-lg">Loading students...</p>  // Loading message
+            <p className="text-lg text-center">Loading students...</p> // Loading message
           ) : error ? (
-            <p className="text-red-500 text-center">{error}</p>  // Error message
+            <p className="text-center text-red-500">{error}</p> // Error message
           ) : students.length === 0 ? (
-            <p className="text-center">No students found.</p>  // No students message
+            <p className="text-center">No students found.</p> // No students message
           ) : (
-            <table className="table-auto w-full text-justify text-[30px]">
+            <table className="table-auto w-full text-center text-[16px] sm:text-[20px]">
               <thead>
-                <tr className="font-bold text-gray-800 text-[30px]">
+                <tr className="font-bold text-gray-800 bg-gray-300">
                   <th className="p-3">Student ID</th>
                   <th className="p-3">Name</th>
                   <th className="p-3">Email</th>
@@ -83,10 +83,10 @@ const View = () => {
               </thead>
               <tbody>
                 {students.map((student) => (
-                  <tr key={student.StudentID} className="bg-gray-100 text-gray-700">
-                    <td className="p-3">{student.StudentID || 'N/A'}</td>
-                    <td className="p-3">{student.name || 'N/A'}</td>
-                    <td className="p-3">{student.email || 'N/A'}</td>
+                  <tr key={student.StudentID} className="text-gray-700 bg-gray-100 border-b">
+                    <td className="p-3">{student.StudentID || "N/A"}</td>
+                    <td className="p-3">{student.name || "N/A"}</td>
+                    <td className="p-3">{student.email || "N/A"}</td>
                   </tr>
                 ))}
               </tbody>

@@ -3,13 +3,11 @@ const jwt = require('jsonwebtoken');
 const Class = require('../models/Class');
 const mongoose = require('mongoose');
 
-// Controller to create a new class
+//Create class
 const createclass = async (req, res) => {
-    
-    //const item = localStorage.getItem('TeacherID');
-    const { teacherID ,grade, subject, date, description, privacy } = req.body;
-    
-    if (!teacherID || !grade || !subject || !date || !description || !privacy) {
+    const { teacherID, grade, subject, date, description, privacy, defaultMonthlyFee,year } = req.body;
+
+    if (!teacherID || !grade || !subject || !date || !privacy || !defaultMonthlyFee || !year === undefined) {
         return res.status(400).json({ status: "error", message: "All fields are required." });
     }
 
@@ -19,31 +17,49 @@ const createclass = async (req, res) => {
 
         // Default to "C001" if no classes exist
         let newClassID = "C001";
-        if (lastClass && lastClass.classid) { // Check if lastClass and lastClass.classid are defined
+        if (lastClass && lastClass.classid) {
             const lastClassNumber = parseInt(lastClass.classid.slice(1), 10); // Extract numeric part after "C"
             const nextClassNumber = (lastClassNumber + 1).toString().padStart(3, '0'); // Increment and pad to 3 digits
             newClassID = `C${nextClassNumber}`; // Generate the new `classid`
         }
 
+        // Initialize monthlyFees using the default fee for all months
+        const monthlyFees = {
+            January: defaultMonthlyFee,
+            February: defaultMonthlyFee,
+            March: defaultMonthlyFee,
+            April: defaultMonthlyFee,
+            May: defaultMonthlyFee,
+            June: defaultMonthlyFee,
+            July: defaultMonthlyFee,
+            August: defaultMonthlyFee,
+            September: defaultMonthlyFee,
+            October: defaultMonthlyFee,
+            November: defaultMonthlyFee,
+            December: defaultMonthlyFee
+        };
+
         // Create the new class with the generated `classid`
         const newClass = new Class({
-            classid: newClassID, // Ensure to use classid
+            classid: newClassID,
             grade,
             subject,
             date,
             description,
             privacy,
-            teacher:teacherID,
-        
+            teacher: teacherID,
+            monthlyFees, // Set the same fee for all months
+            year,
         });
 
         await newClass.save();
         res.json({ status: "ok", msg: 'Class created successfully', classid: newClassID });
     } catch (err) {
         console.error(err.message);
-        res.json({ message: 'Server error' }); // Properly formatted response
+        res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 // Controller to get all classes details
 const getAllClasses = async (req, res) => {
@@ -192,14 +208,57 @@ const getClassDetails = async (req, res) => {
     }
 };
   
+
+const Getgradesubject = async (req, res) => {
+    try {
+      // Fetch all classes
+      const classes = await Class.find();
+  
+      // Extract unique grades and subjects
+      const uniqueGrades = [...new Set(classes.map(cls => cls.grade))];
+      const uniqueSubjects = [...new Set(classes.map(cls => cls.subject))];
+  
+      res.status(200).json({
+        classes,
+        uniqueGrades,
+        uniqueSubjects,
+      });
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+      res.status(500).json({ message: 'Failed to fetch classes' });
+    }
+  };
+
+  
   
 
 
+  const getClassesByStudent = async (req, res) => {
+    const { studentId } = req.params;
+    try {
+      // Fetch classes where the studentId is in the students array
+      const classes = await Class.find({ students: studentId });
   
+      // Extract unique grades and subjects from the filtered classes
+      const uniqueGrades = [...new Set(classes.map(cls => cls.grade))];
+      const uniqueSubjects = [...new Set(classes.map(cls => cls.subject))];
+  
+      res.status(200).json({
+        classes,
+        uniqueGrades,
+        uniqueSubjects,
+      });
+    } catch (error) {
+      console.error('Error fetching classes by student:', error);
+      res.status(500).json({ message: 'Failed to fetch classes for the student' });
+    }
+  };
+
+
   
   
  // module.exports = { getClassesByTeacher };
   
 
-module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher, getFilteredClasses, getClassDetails};
+module.exports = {createclass,getAllClasses,deleteClass,getClassCount, getClassesByTeacher, getFilteredClasses, getClassDetails, Getgradesubject, getClassesByStudent};
 
