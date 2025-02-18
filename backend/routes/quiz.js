@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth'); // Middleware for JWT authentication
-const { GetquizzesbyClass, getQuizById, createQuiz } = require('../controllers/quizController');
+const { GetquizzesbyClassAndMonth, getQuizById, createQuiz } = require('../controllers/quizController');
 
 // @route POST /api/quizzes/create
 // @desc Create a new quiz
@@ -13,7 +13,7 @@ router.post('/create', auth, createQuiz);
 // @route GET /api/quizzes/class/:classID
 // @desc Get all quizzes by classID
 // @access Private (Teacher/Student)
-router.get('/class/:classID', auth, GetquizzesbyClass);
+router.get('/class/:classID/:month', auth, GetquizzesbyClassAndMonth);
 
 // @route GET /api/quizzes/class/:classId/quizzes/:quizId
 // @desc Get a specific quiz by ID

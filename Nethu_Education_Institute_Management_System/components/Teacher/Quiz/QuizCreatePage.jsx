@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 const QuizCreatePage = () => {
   const pathname = usePathname(); // Access the current URL path
   const [classID, setClassID] = useState(''); // ClassID state
+  const [month, setMonth] = useState(''); // Month state
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [questions, setQuestions] = useState([]);
@@ -15,12 +16,17 @@ const QuizCreatePage = () => {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [editingIndex, setEditingIndex] = useState(null);
 
+
   // Extract ClassID from URL
   useEffect(() => {
     const pathSegments = pathname.split('/');
     const classIDFromURL = pathSegments[pathSegments.indexOf('classes') + 1];
+    const monthFromURL = pathSegments[pathSegments.indexOf('months') + 1];
     if (classIDFromURL) {
       setClassID(classIDFromURL);
+    }
+    if (monthFromURL) {
+      setMonth(monthFromURL);
     }
   }, [pathname]);
 
@@ -73,6 +79,7 @@ const QuizCreatePage = () => {
         title,
         description,
         questions,
+        month,
         // Add the teacher's ID as createdBy
         createdBy: 'teacherUserID' // Replace 'teacherUserID' with the actual teacher ID from the JWT token
       };
@@ -119,7 +126,7 @@ const QuizCreatePage = () => {
       alert('Please add a title and at least one question');
     }
   };
-  
+
 
   return (
     <div className="p-4 sm:p-8 max-w-4xl mx-auto">

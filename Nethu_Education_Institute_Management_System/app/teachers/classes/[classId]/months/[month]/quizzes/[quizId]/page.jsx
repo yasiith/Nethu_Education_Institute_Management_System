@@ -11,12 +11,12 @@ const ViewQuizPage = () => {
   
   const params = useParams();
   const router = useRouter();
-  const { classId, quizId } = params;
+  const { classId, quizId, month } = params;
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      if (!quizId || !classId) {
-        setError('Quiz ID or Class ID is missing');
+      if (!quizId || !classId || !month) {
+        setError('Quiz ID or Class ID or month is missing in the URL');
         setLoading(false);
         return;
       }
@@ -91,7 +91,7 @@ const ViewQuizPage = () => {
   };
 
   const handleBackToQuizzes = () => {
-    router.push(`/teachers/classes/${classId}/quizzes`);
+    router.push(`/teachers/classes/${classId}/months`);
   };
 
   if (loading) {

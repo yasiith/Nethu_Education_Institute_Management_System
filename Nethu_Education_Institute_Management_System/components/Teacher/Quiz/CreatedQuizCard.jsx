@@ -2,19 +2,17 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { HiOutlineEye } from 'react-icons/hi';
 
-const QuizCard = ({ quiz = {}, classId }) => {
+const QuizCard = ({ quiz = {}, classId, month }) => {
   const router = useRouter();
-
   const toViewQuiz = () => {
     if (!quiz._id || !classId) {
       console.error('Quiz ID or Class ID is missing!');
       return;
     }
-    router.push(`/teachers/classes/${classId}/quizzes/${quiz._id}`);
+    router.push(`/teachers/classes/${classId}/months/${month}/quizzes/${quiz._id}`);
   };
 
-  console.log('Quiz ID:', quiz._id);
-  console.log('Class ID:', classId);
+ 
 
   return (
     <div className="flex justify-center items-center p-6">
