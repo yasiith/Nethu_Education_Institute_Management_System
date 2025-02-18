@@ -7,16 +7,13 @@ const Quiz = require('../models/Quiz'); // Corrected model import
 // @desc Get all quizzes by ClassID
 // @route GET /api/quizzes/class/:classID
 // @access Private (Teacher/Student)
-const GetquizzesbyClass = async (req, res) => {
+const GetquizzesbyClassAndMonth = async (req, res) => {
   try {
-    const { classID } = req.params;
+    const { classID, month } = req.params; // Extracting classID and month from request parameters
 
-    // Find quizzes by classID
-    const quizzes = await Quiz.find({ classID });
+    // Find quizzes by classID and month
+    const quizzes = await Quiz.find({ classID, month });
 
-    if (quizzes.length === 0) {
-      return res.status(404).json({ message: 'No quizzes found for this class' });
-    }
 
     res.status(200).json(quizzes);
   } catch (err) {
@@ -24,6 +21,7 @@ const GetquizzesbyClass = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch quizzes', error: err.message });
   }
 };
+
 
 // @desc Get a specific quiz by ID
 // @route GET /api/quizzes/class/:classId/quizzes/:quizId
@@ -51,10 +49,10 @@ const getQuizById = async (req, res) => {
 // @access Private (Teacher only)
 const createQuiz = async (req, res) => {
   try {
-    const { classID, title, description, questions } = req.body;
+    const { classID, title, description, questions, month } = req.body;
     const createdBy = req.user.id; // Get the teacher's ID from the JWT token
 
-    if (!classID || !title || !questions || questions.length === 0) {
+    if (!classID || !title || !questions || !month || questions.length === 0) {
       return res.status(400).json({ message: 'Class ID, Title, and Questions are required' });
     }
 
@@ -64,6 +62,7 @@ const createQuiz = async (req, res) => {
       description,
       questions,
       createdBy,
+      month,
     });
 
     await quiz.save();
@@ -75,4 +74,4 @@ const createQuiz = async (req, res) => {
   }
 };
 
-module.exports = { GetquizzesbyClass, getQuizById, createQuiz };
+module.exports = { GetquizzesbyClassAndMonth, getQuizById, createQuiz };

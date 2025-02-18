@@ -9,13 +9,13 @@ const CreateNewQuizCard = () => {
 
   const toQuizCreatePage = () => {
     if (params?.classId) {
-      router.push(`/teachers/classes/${params.classId}/quizzes/quiz-create`);
+      router.push(`/teachers/classes/${params.classId}/months/${params.month}/quizzes/quiz-create`);
     } else {
       console.error('Error: classId is undefined');
       alert('Unable to navigate: Class ID is missing.');
     }
   };
-
+  console.log(params);
   return (
     <div className="flex justify-center items-center p-6">
       <div className="max-w-lg w-full bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 p-8 rounded-xl shadow-lg hover:shadow-2xl transition-transform duration-500 hover:scale-105">

@@ -6,6 +6,7 @@ import ErrorCard from './Error'; // Import the ErrorCard component
 const QuizzesList = () => {
   const params = useParams();
   const classId = params?.classId;
+  const month = params?.month;
   
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,15 +28,16 @@ const QuizzesList = () => {
           return;
         }
 
-        const response = await fetch(`http://localhost:5000/api/quizzes/class/${classId}`, {
+        const response = await fetch(`http://localhost:5000/api/quizzes/class/${classId}/${month}`, {
           method: 'GET',
           headers: {
             'x-auth-token': token
           }
         });
+        
 
         if (!response.ok) {
-          throw new Error('No quizzes for this class yet!!!');
+          throw new Error('No quizzes for this month yet!!!');
         }
 
         const data = await response.json();
