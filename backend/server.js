@@ -11,6 +11,7 @@ const adminDashBoardRoutes = require('./routes/adminDashBoardRoutes');
 const quizRoutes = require('./routes/quiz');
 const webhookroutes = require('./routes/webhook');
 const chatbotRoutes = require('./routes/chatbot');
+const materialRoutes = require('./routes/material');
 const cors = require('cors');
 
 const app = express();
@@ -35,6 +36,8 @@ app.use(classRoutes);
 app.use(studentRoutes);
 app.use(adminDashBoardRoutes);
 app.use('/api/chatbot', chatbotRoutes);
+
+app.use("/api/materials", materialRoutes);
 
 
 
