@@ -1,8 +1,9 @@
+const path = require("path");
+const fs = require("fs");
 const Material = require("../models/material");
 
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
 const mongoose = require("mongoose");
 
 const router = express.Router();
@@ -17,12 +18,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-
-
 // Upload Material API
 const uploadMaterial = async (req, res) => {
   try {
-    const { title, description, month,classid } = req.body;
+    const { title, description, month, classid } = req.body;
     if (!req.file || !title || !description || !month || !req.body.classid) {
       return res.status(400).json({ message: "All fields are required." });
     }
@@ -54,22 +53,49 @@ const getMaterials = async (req, res) => {
   }
 };
 
+// Get Materials by Class ID
 const getMaterialsbyclassid = async (req, res) => {
-    try {
-      const { classid } = req.query;
-  
-      if (!classid) {
-        return res.status(400).json({ message: "Class ID is required" });
-      }
-  
-      // Fetch materials for the specified classId
-      const materials = await Material.find({ classid });
-  
-      res.status(200).json(materials);
-    } catch (error) {
-      res.status(500).json({ message: "Server error", error });
-    }
-  };
-  
+  try {
+    const { classid } = req.body;
 
-module.exports = { uploadMaterial, getMaterials,getMaterialsbyclassid, upload };
+    if (!classid) {
+      return res.status(400).json({ message: "Class ID is required" });
+    }
+
+    // Fetch materials for the specified classId
+    const materials = await Material.find({ classid });
+
+    res.status(200).json(materials);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+// Delete Material
+const deleteMaterial = async (req, res) => {
+  const { materialId } = req.params; // Material ID to delete
+
+  try {
+    // Find the material by ID
+    const material = await Material.findByIdAndDelete(materialId);
+
+    if (!material) {
+      return res.status(404).json({ message: "Material not found." });
+    }
+
+    // File path to delete
+    const filePath = path.join(__dirname, "../uploads", material.fileUrl);
+
+    // Check if the file exists before trying to delete it
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath); // Synchronously delete the file
+    }
+
+    res.status(200).json({ message: "Material deleted successfully." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error deleting material." });
+  }
+};
+
+module.exports = { uploadMaterial, getMaterials, getMaterialsbyclassid, deleteMaterial, upload };

@@ -1,3 +1,4 @@
+//backend\server.js
 require('dotenv').config();
 
 const express = require('express');
@@ -38,6 +39,9 @@ app.use(adminDashBoardRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 
 app.use("/api/materials", materialRoutes);
+
+app.use('/uploads', express.static('uploads'));
+
 
 
 
