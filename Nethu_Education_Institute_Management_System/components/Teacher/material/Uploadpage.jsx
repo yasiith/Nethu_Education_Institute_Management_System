@@ -92,13 +92,13 @@ const ManageMaterialsPage = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 border rounded shadow-md">
+    <div className=" max-w-xl mx-auto mt-10 p-6 border rounded shadow-md">
       <button
         onClick={navigateToMaterials}
         className="flex-1 bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600 flex items-center justify-center gap-2 transition-all"
       >
         <FileText size={20} />
-        Manage Materials
+        Add New Materials
       </button>
 
       {isUploadVisible && (
@@ -163,7 +163,7 @@ const UploadedFilesList = ({ files, setUploadedFiles }) => {
       ) : (
         <ul>
           {files.map((fileData, index) => (
-            <li key={index} className="mb-4 p-4 border rounded shadow-sm">
+            <li key={index} className="bg-blue-100 mb-4 p-4 border rounded shadow-sm">
               <div className="flex justify-between items-center">
                 <div>
                   <h3 className="font-semibold">Name: {fileData.title}</h3>
@@ -179,11 +179,12 @@ const UploadedFilesList = ({ files, setUploadedFiles }) => {
                   </a>
                 </div>
                 <button
-                  onClick={() => deleteFile(fileData._id)}  // Call deleteFile function on click
-                  className="text-red-500 hover:text-red-700"
-                >
-                  Delete
-                </button>
+                        onClick={() => deleteFile(fileData._id)}
+                        className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+                      >
+                        Delete
+                      </button>
+
               </div>
             </li>
           ))}
