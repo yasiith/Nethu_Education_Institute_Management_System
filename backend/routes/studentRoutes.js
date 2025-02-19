@@ -21,6 +21,17 @@ router.get("/api/student/enrollment-status/:classId", auth, checkRole('student')
 // Unenroll from a class
 router.delete("/api/student/unenroll/:classId", auth, checkRole('student'), unenrollFromClass);
 
+// get student info by StudentID
+router.get('/api/student/getstudentinfo/:StudentID', async (req, res) => {
+  const { StudentID } = req.params;
+  try {
+      const student =
+          await User.findOne({ StudentID });
+      if (!student) { return res.status(404).json({ message: 'Student not found' }); }
+      res.json(student);  // return the student info
+  } catch (error) { console.error(error); res.status(500).json({ message: 'Server error' }); }
+}
+);
 
 
 router.post('/api/create-checkout-session', async (req, res) => {

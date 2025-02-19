@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require('../models/User');
-const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeacher,deleteStudent,getStudents,getTeachers, deleteTeacher } = require('../controllers/authController');
+const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeacher,deleteStudent,getStudents,getTeachers, deleteTeacher, updatePassword } = require('../controllers/authController');
 const { getStudentInfo,updateStudentInfo} = require('../controllers/userupdate');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
@@ -42,7 +42,8 @@ router.put('/api/auth/announcements/:id', auth, checkRole('admin'), updateAnnoun
 router.delete('/api/auth/announcements/:id', auth, checkRole('admin'), deleteAnnouncement); // Delete an existing announcement
 router.get('/api/auth/announcements', auth, checkRole('admin'), getAllAnnouncements); // fetch all announcements
 
-
+// Update password
+router.put('/api/update-password', updatePassword);
 
 // Test route
 router.get('/api/auth/test', (req, res) => {
