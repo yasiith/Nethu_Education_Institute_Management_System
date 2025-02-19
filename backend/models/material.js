@@ -7,6 +7,7 @@ const materialSchema = new mongoose.Schema({
     fileUrl: { type: String, required: true },
     month: { type: String, required: true },
     uploadedAt: { type: Date, default: Date.now },
+    privacy: { type: String, required: true },
     classid: { type: String,required: true,unique: false,
     }
   });
