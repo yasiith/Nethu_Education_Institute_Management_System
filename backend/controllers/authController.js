@@ -99,7 +99,7 @@ exports.loginUser = async (req, res) => {
     };
 
     // Sign the JWT with the additional ID field
-    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' }, (err, token) => {
       if (err) throw err;
 
       // Send the response based on user role
