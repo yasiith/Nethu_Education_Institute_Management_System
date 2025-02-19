@@ -209,3 +209,24 @@ exports.getTeachers = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+// Update Password
+exports.updatePassword = async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+
+    await user.save();
+
+    res.json({ status: "ok", msg: 'Password updated successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+};
