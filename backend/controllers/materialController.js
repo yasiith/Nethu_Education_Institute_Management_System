@@ -21,8 +21,8 @@ const upload = multer({ storage });
 // Upload Material API
 const uploadMaterial = async (req, res) => {
   try {
-    const { title, description, month, classid } = req.body;
-    if (!req.file || !title || !description || !month || !req.body.classid) {
+    const { title, description, month, privacy, classid } = req.body;
+    if (!req.file || !title || !description || !month || !privacy || !req.body.classid) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
@@ -31,6 +31,7 @@ const uploadMaterial = async (req, res) => {
       description,
       fileUrl: `/uploads/${req.file.filename}`,
       month,
+      privacy,
       classid,
     });
 
@@ -98,4 +99,29 @@ const deleteMaterial = async (req, res) => {
   }
 };
 
-module.exports = { uploadMaterial, getMaterials, getMaterialsbyclassid, deleteMaterial, upload };
+const togglePrivacy = async (req, res) => {
+  try {
+    const { privacy } = req.body;
+    const { materialId } = req.params;
+
+    if (!["Public", "Private"].includes(privacy)) {
+      return res.status(400).json({ message: "Invalid privacy value." });
+    }
+
+    const updatedMaterial = await Material.findByIdAndUpdate(
+      materialId,
+      { privacy },
+      { new: true }
+    );
+
+    if (!updatedMaterial) {
+      return res.status(404).json({ message: "Material not found." });
+    }
+
+    res.json({ message: "Privacy updated successfully.", material: updatedMaterial });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating privacy." });
+  }
+};
+
+module.exports = { uploadMaterial, getMaterials, getMaterialsbyclassid, deleteMaterial, togglePrivacy, upload };

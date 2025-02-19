@@ -1,7 +1,7 @@
 //backend\routes\material.js
 
 const express = require("express");
-const { uploadMaterial, getMaterials,getMaterialsbyclassid,deleteMaterial, upload } = require("../controllers/materialController");
+const { uploadMaterial, getMaterials,getMaterialsbyclassid,deleteMaterial,togglePrivacy, upload } = require("../controllers/materialController");
 
 const router = express.Router();
 
@@ -12,5 +12,7 @@ router.post("/getMaterialsbyclassid", getMaterialsbyclassid);
 
 // Delete material by ID
 router.delete("/delete/:materialId", deleteMaterial); // Add the delete route
+
+router.patch('/togglePrivacy/:materialId', togglePrivacy);
 
 module.exports = router;
