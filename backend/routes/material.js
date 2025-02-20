@@ -1,13 +1,15 @@
 //backend\routes\material.js
 
 const express = require("express");
-const { uploadMaterial, getMaterials,getMaterialsbyclassid,deleteMaterial,togglePrivacy, upload } = require("../controllers/materialController");
+const { uploadMaterial, getMaterials,getMaterialsbyclassid,deleteMaterial,togglePrivacy, getMaterialsforstudent, upload } = require("../controllers/materialController");
 
 const router = express.Router();
 
 router.post("/upload", upload.single("file"), uploadMaterial);
 //router.get("/materials", getMaterials);
 router.post("/getMaterialsbyclassid", getMaterialsbyclassid);
+
+router.post("/getMaterialsforstudent", getMaterialsforstudent);
 
 
 // Delete material by ID

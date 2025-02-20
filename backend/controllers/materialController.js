@@ -124,4 +124,27 @@ const togglePrivacy = async (req, res) => {
   }
 };
 
-module.exports = { uploadMaterial, getMaterials, getMaterialsbyclassid, deleteMaterial, togglePrivacy, upload };
+const getMaterialsforstudent = async (req, res) => {
+  try {
+    const { classid, month, privacy } = req.body;
+
+    if (!classid) {
+      return res.status(400).json({ message: "Class ID is required" });
+    }
+    if(!month){
+      return res.status(400).json({ message: "Month is required" });
+    }
+    if(!privacy){
+      return res.status(400).json({ message: "Privacy is required" });
+    }
+
+    // Fetch materials for the specified classId
+    const materials = await Material.find({ classid, month, privacy });
+
+    res.status(200).json(materials);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+module.exports = { uploadMaterial, getMaterials, getMaterialsbyclassid, deleteMaterial, togglePrivacy,getMaterialsforstudent, upload };
