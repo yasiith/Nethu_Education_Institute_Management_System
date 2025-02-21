@@ -1,10 +1,12 @@
 const express = require('express');
 const User = require('../models/User');
-const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeacher,deleteStudent,getStudents,getTeachers, deleteTeacher } = require('../controllers/authController');
+const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeacher,deleteStudent,getStudents,getTeachers, deleteTeacher, updatePassword } = require('../controllers/authController');
 const { getStudentInfo,updateStudentInfo} = require('../controllers/userupdate');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 const { createAnnouncement, updateAnnouncement, deleteAnnouncement,getAllAnnouncements } = require('../controllers/AnnouncementController');
+const Class = require('../models/Class');
+const Payment = require('../models/Payment');
 
 
 
@@ -40,11 +42,70 @@ router.put('/api/auth/announcements/:id', auth, checkRole('admin'), updateAnnoun
 router.delete('/api/auth/announcements/:id', auth, checkRole('admin'), deleteAnnouncement); // Delete an existing announcement
 router.get('/api/auth/announcements', auth, checkRole('admin'), getAllAnnouncements); // fetch all announcements
 
-
+// Update password
+router.put('/api/update-password', updatePassword);
 
 // Test route
 router.get('/api/auth/test', (req, res) => {
     res.json({ msg: 'Test route works' });
+});
+
+
+// GET students by classid
+router.get('/api/class/:classid/students', async (req, res) => {
+    try {
+        const { classid } = req.params;
+
+        // Find class by classid
+        const classData = await Class.findOne({ classid });
+
+        if (!classData) {
+            return res.status(404).json({ message: 'Class not found' });
+        }
+
+        res.json({ students: classData.students });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Route to get user name by StudentID
+router.get('/api/user/name/:StudentID', async (req, res) => {
+    try {
+      const studentID = req.params.StudentID;
+      const user = await User.findOne({ StudentID: studentID });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Respond with the user's name
+      res.json({ name: user.name });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+
+// Get all payment transactions for a specific student in a class
+router.get('/api/payments/:classId/:studentId', async (req, res) => {
+  const { classId, studentId } = req.params;
+
+  try {
+      const payments = await Payment.find({
+          class: classId,
+          'student.StudentID': studentId, // Querying nested student object
+      }).sort({ createdAt: -1 }); // Sort by latest transactions first
+
+      if (payments.length === 0) {
+          return res.status(200).json({ message: 'No payment transactions found' });
+      }
+
+      res.json(payments); // Return all transactions
+  } catch (error) {
+      res.status(500).json({ message: 'Server error', error: error.message });
+  }
 });
 
 

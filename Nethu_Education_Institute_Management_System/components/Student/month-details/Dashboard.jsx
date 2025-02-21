@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Materials from "./Materials";
+import OnlineClasses from "./OnlineClasses";
+import Quizzes from "./Quizzes";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -54,7 +57,18 @@ const Dashboard = () => {
   return (
     <div className="p-10">
       <h1 className="text-4xl font-bold mb-4">Paid Content {month} {year}</h1>
-      {/* Add your content here */}
+      <hr className="my-2 border-t-2 border-gray-300" />
+      <h1 className="text-2xl font-semi bold">Class Materials</h1>
+      <hr className="my-2 border-t-2 border-gray-300" />
+      <Materials />
+      <hr className="my-2 border-t-2 border-gray-300" />
+      <h1 className="text-2xl font-semi bold">Online Classes</h1>
+      <hr className="my-2 border-t-2 border-gray-300" />
+      <OnlineClasses />
+      <hr className="my-2 border-t-2 border-gray-300" />
+      <h1 className="text-2xl font-semi bold">Quizzes</h1>
+      <hr className="my-2 border-t-2 border-gray-300" />
+      <Quizzes />
     </div>
   );
 };

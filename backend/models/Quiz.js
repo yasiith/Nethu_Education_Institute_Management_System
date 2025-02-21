@@ -7,6 +7,11 @@ const QuizSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+    
+    month: {
+        type: String,
+        required: true,
+    },
       
     description: { type: String },
     questions: [

@@ -1,5 +1,5 @@
 const express = require('express');
-const { enrollInClass } = require('../controllers/studentController');
+const { enrollInClass, checkEnrollmentStatus, unenrollFromClass } = require('../controllers/studentController');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
@@ -14,6 +14,24 @@ const router = express.Router();
 
 // Enroll in a class
 router.post("/api/student/enroll/:classId", auth, checkRole('student'), enrollInClass);
+
+// Check enrollment status
+router.get("/api/student/enrollment-status/:classId", auth, checkRole('student'), checkEnrollmentStatus);
+
+// Unenroll from a class
+router.delete("/api/student/unenroll/:classId", auth, checkRole('student'), unenrollFromClass);
+
+// get student info by StudentID
+router.get('/api/student/getstudentinfo/:StudentID', async (req, res) => {
+  const { StudentID } = req.params;
+  try {
+      const student =
+          await User.findOne({ StudentID });
+      if (!student) { return res.status(404).json({ message: 'Student not found' }); }
+      res.json(student);  // return the student info
+  } catch (error) { console.error(error); res.status(500).json({ message: 'Server error' }); }
+}
+);
 
 
 router.post('/api/create-checkout-session', async (req, res) => {
@@ -107,6 +125,89 @@ router.get('/api/check-payment-status', async (req, res) => {
     res.status(500).json({ error: "Failed to check payment status" });
   }
 });
+
+router.post('/api/payments/create', async (req, res) => {
+  const { studentId, classId, month, year, amount, transactionId } = req.body;
+  console.log(`Received payment creation request for student ${studentId} in class ${classId} for ${month} ${year}`);
+
+  if (!studentId || !classId || !month || !year || !amount) {
+      console.error('Missing required fields');
+      return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  try {
+      const existingPayment = await Payment.findOne({ 
+          'student.StudentID': studentId, 
+          class: classId, 
+          month, 
+          year 
+      });
+
+      if (existingPayment) {
+          console.error('Payment for this month already exists');
+          return res.status(400).json({ message: 'Payment for this month already exists' });
+      }
+
+      const newPayment = new Payment({
+          student: {
+              StudentID: studentId,
+          },
+          class: classId,
+          month,
+          year,
+          amount,
+          status: 'Completed',
+          transactionId: transactionId || null,
+      });
+
+      await newPayment.save();
+      console.log('Payment recorded successfully:', newPayment);
+      res.status(201).json({ message: 'Payment recorded successfully', payment: newPayment });
+
+  } catch (error) {
+      console.error('Server error:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+
+router.get('/api/payment-details/:sessionId', async (req, res) => {
+  const sessionId = req.params.sessionId;
+  console.log("sessionId", sessionId);
+
+  try {
+      // Retrieve the Checkout Session
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      console.log("session", session);
+
+      if (!session) {
+          return res.status(404).json({ error: 'Session not found' });
+      }
+
+      // Retrieve the Payment Intent (for full payment details)
+      const paymentIntent = await stripe.paymentIntents.retrieve(session.payment_intent);
+
+      // Construct the response
+      const paymentDetails = {
+          studentId: session.metadata?.studentId || 'N/A',
+          classId: session.metadata?.classId || 'N/A',
+          month: session.metadata?.month || 'N/A',
+          year: session.metadata?.year || 'N/A',
+          amount: paymentIntent.amount / 100, // Convert cents to dollars
+          currency: paymentIntent.currency,
+          status: paymentIntent.status, // 'succeeded', 'requires_payment_method', etc.
+          createdAt: new Date(paymentIntent.created * 1000).toLocaleString(),
+          transactionId: paymentIntent.id, // Stripe Payment Intent ID
+          paymentMethod: paymentIntent.payment_method_types[0], // e.g., 'card'
+      };
+
+      res.json(paymentDetails);
+  } catch (error) {
+      console.error('Error fetching payment details:', error);
+      res.status(500).json({ error: 'Failed to retrieve payment details' });
+  }
+});
+
 
 
 module.exports = router;

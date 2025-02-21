@@ -52,6 +52,10 @@ const ClassDetailPage = () => {
     router.push(`/teachers/classes/${classId}/quizzes`);
   };
 
+  const navigateToMonths = () => {
+    router.push(`/teachers/classes/${classId}/months`);
+  };
+  
   const navigateToMaterials = () => {
     router.push(`/teachers/classes/${classId}/materials`);
   };
@@ -109,7 +113,7 @@ const ClassDetailPage = () => {
     {/* Action Buttons */}
     <div className="flex flex-col gap-4 p-6 border-t border-gray-200 md:flex-row">
       <button
-        onClick={navigateToQuizzes}
+        onClick={navigateToMonths}
         className="flex items-center justify-center flex-1 gap-2 px-6 py-3 text-white transition-all bg-blue-500 rounded-md hover:bg-blue-600"
       >
         <ListChecks size={20} />

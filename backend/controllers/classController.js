@@ -235,7 +235,6 @@ const Getgradesubject = async (req, res) => {
 
   const getClassesByStudent = async (req, res) => {
     const { studentId } = req.params;
-  
     try {
       // Fetch classes where the studentId is in the students array
       const classes = await Class.find({ students: studentId });
