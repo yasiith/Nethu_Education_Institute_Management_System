@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Class = require('../models/Class'); // Import Class model
+const Payment = require('../models/Payment'); // Import Payment model
 
 // Register Admin
 exports.registerAdmin = async (req, res) => {
@@ -228,5 +230,60 @@ exports.updatePassword = async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
+  }
+};
+
+
+// Get students by class ID
+exports.getStudentsByClassId = async (req, res) => {
+  try {
+      const { classid } = req.params;
+      const classData = await Class.findOne({ classid });
+
+      if (!classData) {
+          return res.status(404).json({ message: 'Class not found' });
+      }
+
+      res.json({ students: classData.students });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Get user name by Student ID
+exports.getUserNameByStudentID = async (req, res) => {
+  try {
+      const { StudentID } = req.params;
+      const user = await User.findOne({ StudentID });
+
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.json({ name: user.name });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Get all payment transactions for a specific student in a class
+exports.getPaymentsByClassAndStudent = async (req, res) => {
+  try {
+      const { classId, studentId } = req.params;
+      const payments = await Payment.find({
+          class: classId,
+          'student.StudentID': studentId, // Querying nested student object
+      }).sort({ createdAt: -1 });
+
+      if (payments.length === 0) {
+          return res.status(200).json({ message: 'No payment transactions found' });
+      }
+
+      res.json(payments);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
