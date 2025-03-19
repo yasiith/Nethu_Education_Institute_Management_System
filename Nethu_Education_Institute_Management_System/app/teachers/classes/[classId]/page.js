@@ -63,6 +63,12 @@ const ClassDetailPage = () => {
   const navigateToPayments = () => {
     router.push(`/teachers/classes/${classId}/payments`);
   };
+  const navigateToOnlineMeeting = () => {
+    router.push(`/teachers/classes/${classId}/online-meeting`);
+  };
+  const navigateToMonthsMeeting = () => {
+    router.push(`/teachers/classes/${classId}/months-meetings`);
+  };
 
   return (
     <div className="flex min-h-screen f bg-gray-50">
@@ -71,7 +77,7 @@ const ClassDetailPage = () => {
 
       {/* Main Content */}
 <div className="flex items-center justify-center flex-1 p-6 ">
-  <div className="items-center w-full max-w-4xl overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg">
+  <div className="items-center w-full max-w-4xl overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg md:w-3/4 lg:w-3/5">
     {/* Header Section */}
     <div className="p-6 text-center text-white bg-gradient-to-r from-purple-500 to-indigo-400">
       <h1 className="text-4xl font-bold">{classDetails.grade}</h1>
@@ -133,10 +139,16 @@ const ClassDetailPage = () => {
         <FileText size={20} />
         Manage Payments
       </button>
+      <button
+        onClick={navigateToMonthsMeeting}
+        className="flex items-center justify-center flex-1 gap-2 px-6 py-3 text-white transition-all rounded-md hover:bg-yellow-600 bg-yellow-500"
+      >
+        <FileText size={20} />
+        Online Meeting
+      </button>
     </div>
   </div>
 </div>
-
     </div>
   );
 };
