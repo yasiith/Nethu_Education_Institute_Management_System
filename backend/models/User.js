@@ -30,6 +30,9 @@ const UserSchema = new mongoose.Schema({
     enum: ['admin', 'teacher', 'student'],
     default: 'student',
   },
+  zoomEmail: {
+    type: String,
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', UserSchema);
