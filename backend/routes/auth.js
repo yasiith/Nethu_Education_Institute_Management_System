@@ -4,7 +4,7 @@ const { registerAdmin, createUser, loginUser, getUser, createStudent, createTeac
 const { getStudentInfo,updateStudentInfo} = require('../controllers/userupdate');
 const auth = require('../middleware/auth');
 const checkRole = require('../middleware/checkRole');
-const { createAnnouncement, updateAnnouncement, deleteAnnouncement,getAllAnnouncements } = require('../controllers/AnnouncementController');
+const { createAnnouncement, updateAnnouncement, deleteAnnouncement,getAllAnnouncements } = require('../controllers/announcementController');
 const Class = require('../models/Class');
 const Payment = require('../models/Payment');
 
