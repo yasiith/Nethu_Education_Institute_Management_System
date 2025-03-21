@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -45,6 +45,39 @@ const Dashboard = () => {
   const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
   const [deletePopup, setDeletePopup] = useState(false); // State to control delete confirmation popup
   const [selectedForDelete, setSelectedForDelete] = useState(null); // Store the row selected for deletion
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("No token found. Please log in.");
+        return;
+      }
+  
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/announcements", {
+          method: "GET", 
+          headers: {
+            "x-auth-token": token, 
+            "Content-Type": "application/json", 
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+  
+        const result = await response.json();
+        setData(result.announcements); 
+      } catch (error) {
+        console.error("Error fetching announcements:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
