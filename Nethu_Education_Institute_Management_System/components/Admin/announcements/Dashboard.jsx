@@ -134,25 +134,70 @@ const Dashboard = () => {
     });
 }
 
-  const handleEdit = (id) => {
-    const selectedRow = data.find((row) => row.id === id);
-    setFormData(selectedRow);
+const handleEdit = (id) => {
+  console.log("Editing announcement with ID:", id);
+  const selectedRow = data.find((row) => row._id === id);
+  console.log(selectedRow);
+  
+  if (selectedRow) {
+    setFormData({
+      date: selectedRow.date,
+      grade: selectedRow.grade,
+      subject: selectedRow.subject,
+      description: selectedRow.description
+    });
     setEditingId(id);
+    console.log(editingId);
     setError("");
-  };
+  } else {
+    console.error("Announcement not found!");
+  }
+};
 
-  const handleUpdate = () => {
-    if (validateForm()) {
-      setData(
-        data.map((row) =>
-          row.id === editingId ? { ...formData, id: editingId } : row
-        )
-      );
-      setEditingId(null);
-      setFormData({ date: "", grade: "", subject: "", description: "" });
+
+  const handleUpdate = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("No token found. Please log in.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/announcements/${editingId}`, {
+        method: "PUT",
+        headers: {
+          "x-auth-token": token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // Include relevant fields for the update
+          
+          grade: formData.grade,
+          subject: formData.subject,
+          description: formData.description,
+        }),
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        alert("Update successful!");
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.id === editingId ? { ...formData, id: editingId } : item
+          )
+        );
+        setEditingId(null); // Reset editing mode
+        setFormData({ date: "", grade: "", subject: "", description: "" }); // Clear the form
+      } else {
+        alert(`Error: ${result.message || "Failed to update"}`);
+      }
+    } catch (error) {
+      console.error("Error during update:", error);
+      alert("An error occurred while updating.");
     }
   };
-
+  
+  
   const handleCancel = () => {
     setEditingId(null);
     setFormData({ date: "", grade: "", subject: "", description: "" });
@@ -250,13 +295,15 @@ const Dashboard = () => {
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id} className="border-b">
-              <td className="py-3 px-5 text-center">{row.date}</td>
+            <tr key={row._id} className="border-b">
+              <td className="py-3 px-5 text-center">
+                {new Date(row.date).toISOString().split('T')[0]} {/* Or use date-fns or moment */}
+              </td>
               <td className="py-3 px-5 text-center">{row.grade}</td>
               <td className="py-3 px-5 text-center">{row.subject}</td>
               <td className="py-3 px-5 text-center">{row.description}</td>
               <td className="py-3 px-5 flex justify-center items-center space-x-3">
-                {editingId === row.id ? (
+                {editingId === row._id ? (
                   <>
                     <button
                       className="bg-green-500 text-white px-4 py-2 rounded-lg"
@@ -275,13 +322,13 @@ const Dashboard = () => {
                   <>
                     <button
                       className="bg-blue-500 text-white px-4 py-2 rounded"
-                      onClick={() => handleEdit(row.id)}
+                      onClick={() => handleEdit(row._id)}
                     >
                       UPDATE
                     </button>
                     <button
                       className="bg-red-500 text-white px-4 py-2 rounded"
-                      onClick={() => handleDeleteClick(row.id)}
+                      onClick={() => handleDeleteClick(row._id)}
                     >
                       DELETE
                     </button>
