@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation"; // Import useParams
 
 const Sidebar = () => {
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
+  const { classId } = useParams(); // Get classId from the URL
+  const [selectedClass, setSelectedClass] = useState(classId || null); // Initialize selectedClass with classId from URL
 
   const handleLogout = async () => {
     try {
@@ -51,6 +54,7 @@ const Sidebar = () => {
   }, []);
 
   const handleClassClick = (classId) => {
+    setSelectedClass(classId); // Update selectedClass state
     window.location.href = `/teachers/classes/${classId}`;
   };
 
@@ -74,7 +78,7 @@ const Sidebar = () => {
 
       <div
         className={`fixed top-0 left-0 z-20 h-screen bg-[#03045E] text-white flex flex-col items-center p-4 transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0" : "-translate-x-full bg"
         } md:translate-x-0 md:w-1/5`}
       >
         <h1 className="mb-6 text-4xl font-semibold">NEIMS</h1>
@@ -94,7 +98,11 @@ const Sidebar = () => {
                   <div
                     key={classItem._id}
                     onClick={() => handleClassClick(classItem.classid)}
-                    className="flex flex-col items-center w-full p-4 transition duration-300 bg-teal-500 rounded-md shadow-md cursor-pointer hover:bg-teal-600"
+                    className={`flex flex-col items-center w-full p-4 transition duration-300 rounded-md shadow-md cursor-pointer ${
+                      selectedClass === classItem.classid
+                        ? "bg-teal-500" // Highlight selected class
+                        : "bg-teal-800 hover:bg-teal-600"
+                    }`}
                   >
                     <h2 className="font-bold text-center text-white text-md">
                       {classItem.year}
