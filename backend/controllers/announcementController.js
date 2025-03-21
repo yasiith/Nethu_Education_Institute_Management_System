@@ -20,7 +20,7 @@ const createAnnouncement = async (req, res) => {
 
         // Save the announcement
         await newAnnouncement.save();
-        res.status(201).send({ message: 'Announcement created successfully.', announcement: newAnnouncement });
+        res.status(201).send({ message: 'Announcement created successfully.', announcement: newAnnouncement, status: 'ok' });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'Error creating announcement.', error: error.message });

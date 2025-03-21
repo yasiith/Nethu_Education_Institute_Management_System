@@ -62,12 +62,44 @@ const Dashboard = () => {
     return true;
   };
 
-  const handleAdd = () => {
-    if (validateForm()) {
-      setData([...data, { ...formData, id: data.length + 1 }]);
-      setFormData({ date: "", grade: "", subject: "", description: "" });
+  const handleAdd = async () => {
+    
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("No token found. Please log in.");
+      return;
     }
-  };
+
+    fetch("http://localhost:5000/api/auth/announcements", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "x-auth-token": token,
+      },
+      body: JSON.stringify({
+        date: formData.date,
+        grade: formData.grade,
+        subject: formData.subject,
+        description: formData.description,
+      }),
+    })
+
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      if (data.status === "ok") {
+        alert("Announcement added successfully!");
+        router.push("/admin/announcements");
+      } else {
+        alert("Announcement addition failed.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error adding announcemet", error);
+      alert("An error occurred during adding announcemet.");
+    });
+}
 
   const handleEdit = (id) => {
     const selectedRow = data.find((row) => row.id === id);
