@@ -121,5 +121,45 @@ router.delete('/api/meeting/:id', async (req, res) => {
 
 
 
+// Fetch Monthly Fees by classid
+router.get('/api/monthly-fees/:classid', async (req, res) => {
+  try {
+      const classData = await Class.findOne({ classid: req.params.classid });
+
+      if (!classData) {
+          return res.status(404).json({ message: 'Class not found' });
+      }
+
+      res.json({ monthlyFees: classData.monthlyFees });
+  } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+
+// Update Monthly Fees by classid
+router.put('/api/monthly-fees/:classid', async (req, res) => {
+  try {
+      const { month, amount } = req.body;
+
+      if (!month || amount === undefined) {
+          return res.status(400).json({ message: 'Month and amount are required' });
+      }
+
+      const classData = await Class.findOne({ classid: req.params.classid });
+
+      if (!classData) {
+          return res.status(404).json({ message: 'Class not found' });
+      }
+
+      classData.monthlyFees.set(month, amount);
+      await classData.save();
+
+      res.json({ message: 'Monthly fee updated successfully', monthlyFees: classData.monthlyFees });
+  } catch (error) {
+      res.status(500).json({ message: 'Server error', error });
+  }
+});
+
 
 module.exports = router;
