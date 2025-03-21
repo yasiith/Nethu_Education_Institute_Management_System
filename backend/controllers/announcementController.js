@@ -65,7 +65,7 @@ const updateAnnouncement = async (req, res) => {
             return res.status(404).send({ message: 'Announcement not found.' });
         }
 
-        res.status(200).send({ message: 'Announcement updated successfully.', announcement: updatedAnnouncement });
+        res.status(200).send({ message: 'Announcement updated successfully.', announcement: updatedAnnouncement, status: 'ok' });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'Error updating announcement.', error: error.message });
@@ -84,7 +84,7 @@ const deleteAnnouncement = async (req, res) => {
             return res.status(404).send({ message: 'Announcement not found.' });
         }
 
-        res.status(200).send({ message: 'Announcement deleted successfully.' });
+        res.status(200).send({ message: 'Announcement deleted successfully.',status: 'ok' });
     } catch (error) {
         console.error(error);
         res.status(500).send({ message: 'Error deleting announcement.', error: error.message });

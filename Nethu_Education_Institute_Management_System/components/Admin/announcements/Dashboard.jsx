@@ -44,7 +44,7 @@ const Dashboard = () => {
   const [error, setError] = useState(""); // State for handling errors
   const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
   const [deletePopup, setDeletePopup] = useState(false); // State to control delete confirmation popup
-  const [selectedForDelete, setSelectedForDelete] = useState(null); // Store the row selected for deletion
+  const [selectedForDelete, setSelectedForDelete] = useState(); // Store the row selected for deletion
 
 
   useEffect(() => {
@@ -205,16 +205,60 @@ const handleEdit = (id) => {
   };
 
   const handleDeleteClick = (id) => {
-    const selectedRow = data.find((row) => row.id === id);
-    setSelectedForDelete(selectedRow); // Set the selected row for deletion
-    setDeletePopup(true); // Show the delete confirmation popup
+    const selectedRow = data.find((row) => row._id === id);
+    
+    if (selectedRow) {
+      setSelectedForDelete(selectedRow); // Set the selected row for deletion
+      setDeletePopup(true); // Show the delete confirmation popup
+      setError(""); // Clear any previous errors
+    } else {
+      console.error("Announcement not found!");
+      setError("Announcement not found!"); // Show an error message if not found
+    }
   };
-
-  const handleConfirmDelete = () => {
-    setData(data.filter((row) => row.id !== selectedForDelete.id));
-    setDeletePopup(false); // Hide the delete confirmation popup
-    setSelectedForDelete(null); // Reset the selected row
+  
+  // UseEffect to log selectedForDelete when it changes
+  useEffect(() => {
+    if (selectedForDelete) {
+      console.log("Selected row for deletion:", selectedForDelete);
+    }
+  }, [selectedForDelete]);
+  
+  const handleConfirmDelete = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("No token found. Please log in.");
+      return; // Optionally, you can redirect the user to the login page here
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/announcements/${selectedForDelete._id}`, {
+        method: "DELETE",
+        headers: {
+          "x-auth-token": token, // Include the token here
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+  
+      const result = await response.json();
+      if (result.status === "ok") {
+        setData(data.filter((row) => row._id !== selectedForDelete._id)); // Update local state
+        setDeletePopup(false); // Hide the delete confirmation popup
+        setSelectedForDelete(null); // Reset the selected row
+        alert("Announcement deleted successfully!");
+      } else {
+        alert("Failed to delete the announcement.");
+      }
+    } catch (error) {
+      console.error("Error deleting announcement:", error);
+      alert(`An error occurred while deleting the announcement: ${error.message}`);
+    }
   };
+  
 
   const handleCancelDelete = () => {
     setDeletePopup(false); // Hide the delete confirmation popup
