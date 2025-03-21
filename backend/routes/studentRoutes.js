@@ -104,6 +104,22 @@ router.get('/api/meetings/teacher', async (req, res) => {
 });
 
 
+// DELETE a meeting by ID
+router.delete('/api/meeting/:id', async (req, res) => {
+  try {
+      const meeting = await ZoomMeeting.findByIdAndDelete(req.params.id);
+      
+      if (!meeting) {
+          return res.status(404).json({ message: 'Meeting not found' });
+      }
+      
+      res.status(200).json({ message: 'Meeting deleted successfully' });
+  } catch (error) {
+      res.status(500).json({ message: 'Error deleting meeting', error: error.message });
+  }
+});
+
+
 
 
 module.exports = router;

@@ -32,7 +32,7 @@ const Sidebar = () => {
 
   return (
     <div className="fixed top-0 right-0 z-20 h-screen text-white flex flex-col items-center p-4 transition-transform duration-300 md:translate-x-0 md:w-1/5 bg-blue-300">
-      <h2 className="text-xl mb-4">Upcoming Meetings</h2>
+      <h2 className="text-xl mb-4">Meetings</h2>
 
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}

@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import axios from 'axios';
 
 const MeetingCreatePage = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const [classId, setClassID] = useState('');
   const [month, setMonth] = useState('');
   const [formData, setFormData] = useState({
@@ -38,10 +39,9 @@ const MeetingCreatePage = () => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-    
+
     try {
       const token = localStorage.getItem('token');
-      
       const response = await axios.post('http://localhost:5000/api/zoom/meetings', { ...formData, classId, month }, {
         headers: {
           'x-auth-token': token,
@@ -49,13 +49,19 @@ const MeetingCreatePage = () => {
         },
       });
 
-      setMessage(`Meeting created successfully! Join URL: ${response.data.data.joinUrl}`);
+      setMessage(`Meeting created successfully!`);
       setFormData({
         topic: '',
         startTime: '',
         duration: '',
         studentsAllowed: '',
       });
+
+      // Redirect to months meetings page after a short delay
+      setTimeout(() => {
+        router.push(`/teachers/classes/${classId}/months-meetings`);
+      }, 1500);
+      
     } catch (error) {
       setMessage('Error creating meeting. Please try again.');
     }
@@ -66,6 +72,7 @@ const MeetingCreatePage = () => {
   return (
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg">
       <h2 className="text-3xl font-bold text-center text-white mb-6">Create Zoom Meeting</h2>
+      {message && <p className="text-center text-white bg-green-500 p-2 rounded">{message}</p>}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label className="block text-white text-lg font-semibold mb-2">Meeting Topic</label>
