@@ -37,6 +37,10 @@ const zoomMeetingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hostEmail: {
+    type: String,
+    required: true,
+  },
   studentsAllowed: [{
     type: String, // Student IDs
   }],

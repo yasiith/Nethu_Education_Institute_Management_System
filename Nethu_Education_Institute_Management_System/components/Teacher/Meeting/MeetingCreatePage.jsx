@@ -14,6 +14,7 @@ const MeetingCreatePage = () => {
     startTime: '',
     duration: '',
     studentsAllowed: '',
+    hostEmail: '',
   });
 
   const [message, setMessage] = useState('');
@@ -55,6 +56,7 @@ const MeetingCreatePage = () => {
         startTime: '',
         duration: '',
         studentsAllowed: '',
+        hostEmail: '',
       });
 
       // Redirect to months meetings page after a short delay
@@ -106,6 +108,19 @@ const MeetingCreatePage = () => {
             name="duration"
             placeholder="Enter meeting duration"
             value={formData.duration}
+            onChange={handleChange}
+            className="w-full p-3 rounded-lg border-2 border-transparent focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-white text-lg font-semibold mb-2">Host Email Address</label>
+          <input
+            type="text"
+            name="hostEmail"
+            placeholder="Enter Host Email Address"
+            value={formData.hostEmail}
             onChange={handleChange}
             className="w-full p-3 rounded-lg border-2 border-transparent focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
             required

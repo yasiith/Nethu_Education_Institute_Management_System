@@ -22,13 +22,14 @@ const generateZoomToken = async () => {
 
 // Create Zoom Meeting
 exports.createZoomMeeting = async (req, res) => {
-  const { topic ,classId , month ,startTime, duration, studentsAllowed } = req.body;
+  const { topic, classId, month, startTime, duration, studentsAllowed, hostEmail } = req.body;
   const teacherId = req.user.TeacherID;
 
   try {
     const accessToken = await generateZoomToken();
 
-    const meetingResponse = await axios.post('https://api.zoom.us/v2/users/me/meetings', {
+    // Use the host's email in the API endpoint
+    const meetingResponse = await axios.post(`https://api.zoom.us/v2/users/${hostEmail}/meetings`, {
       topic,
       classId,
       month,
@@ -58,6 +59,7 @@ exports.createZoomMeeting = async (req, res) => {
       duration,
       joinUrl: meetingResponse.data.join_url,
       password: meetingResponse.data.password,
+      hostEmail, // Save the host's email
     });
 
     await zoomMeeting.save();
