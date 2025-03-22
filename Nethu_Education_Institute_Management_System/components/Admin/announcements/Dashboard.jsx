@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -44,7 +44,40 @@ const Dashboard = () => {
   const [error, setError] = useState(""); // State for handling errors
   const [showPopup, setShowPopup] = useState(false); // State to control popup visibility
   const [deletePopup, setDeletePopup] = useState(false); // State to control delete confirmation popup
-  const [selectedForDelete, setSelectedForDelete] = useState(null); // Store the row selected for deletion
+  const [selectedForDelete, setSelectedForDelete] = useState(); // Store the row selected for deletion
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("No token found. Please log in.");
+        return;
+      }
+  
+      try {
+        const response = await fetch("http://localhost:5000/api/auth/announcements", {
+          method: "GET", 
+          headers: {
+            "x-auth-token": token, 
+            "Content-Type": "application/json", 
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+  
+        const result = await response.json();
+        setData(result.announcements); 
+      } catch (error) {
+        console.error("Error fetching announcements:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -62,32 +95,109 @@ const Dashboard = () => {
     return true;
   };
 
-  const handleAdd = () => {
-    if (validateForm()) {
-      setData([...data, { ...formData, id: data.length + 1 }]);
-      setFormData({ date: "", grade: "", subject: "", description: "" });
+  const handleAdd = async () => {
+    
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("No token found. Please log in.");
+      return;
     }
-  };
 
-  const handleEdit = (id) => {
-    const selectedRow = data.find((row) => row.id === id);
-    setFormData(selectedRow);
+    fetch("http://localhost:5000/api/auth/announcements", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "x-auth-token": token,
+      },
+      body: JSON.stringify({
+        date: formData.date,
+        grade: formData.grade,
+        subject: formData.subject,
+        description: formData.description,
+      }),
+    })
+
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      if (data.status === "ok") {
+        alert("Announcement added successfully!");
+        router.push("/admin/announcements");
+      } else {
+        alert("Announcement addition failed.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error adding announcemet", error);
+      alert("An error occurred during adding announcemet.");
+    });
+}
+
+const handleEdit = (id) => {
+  console.log("Editing announcement with ID:", id);
+  const selectedRow = data.find((row) => row._id === id);
+  console.log(selectedRow);
+  
+  if (selectedRow) {
+    setFormData({
+      date: selectedRow.date,
+      grade: selectedRow.grade,
+      subject: selectedRow.subject,
+      description: selectedRow.description
+    });
     setEditingId(id);
+    console.log(editingId);
     setError("");
-  };
+  } else {
+    console.error("Announcement not found!");
+  }
+};
 
-  const handleUpdate = () => {
-    if (validateForm()) {
-      setData(
-        data.map((row) =>
-          row.id === editingId ? { ...formData, id: editingId } : row
-        )
-      );
-      setEditingId(null);
-      setFormData({ date: "", grade: "", subject: "", description: "" });
+
+  const handleUpdate = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("No token found. Please log in.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/announcements/${editingId}`, {
+        method: "PUT",
+        headers: {
+          "x-auth-token": token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // Include relevant fields for the update
+          
+          grade: formData.grade,
+          subject: formData.subject,
+          description: formData.description,
+        }),
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        alert("Update successful!");
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.id === editingId ? { ...formData, id: editingId } : item
+          )
+        );
+        setEditingId(null); // Reset editing mode
+        setFormData({ date: "", grade: "", subject: "", description: "" }); // Clear the form
+      } else {
+        alert(`Error: ${result.message || "Failed to update"}`);
+      }
+    } catch (error) {
+      console.error("Error during update:", error);
+      alert("An error occurred while updating.");
     }
   };
-
+  
+  
   const handleCancel = () => {
     setEditingId(null);
     setFormData({ date: "", grade: "", subject: "", description: "" });
@@ -95,16 +205,60 @@ const Dashboard = () => {
   };
 
   const handleDeleteClick = (id) => {
-    const selectedRow = data.find((row) => row.id === id);
-    setSelectedForDelete(selectedRow); // Set the selected row for deletion
-    setDeletePopup(true); // Show the delete confirmation popup
+    const selectedRow = data.find((row) => row._id === id);
+    
+    if (selectedRow) {
+      setSelectedForDelete(selectedRow); // Set the selected row for deletion
+      setDeletePopup(true); // Show the delete confirmation popup
+      setError(""); // Clear any previous errors
+    } else {
+      console.error("Announcement not found!");
+      setError("Announcement not found!"); // Show an error message if not found
+    }
   };
-
-  const handleConfirmDelete = () => {
-    setData(data.filter((row) => row.id !== selectedForDelete.id));
-    setDeletePopup(false); // Hide the delete confirmation popup
-    setSelectedForDelete(null); // Reset the selected row
+  
+  // UseEffect to log selectedForDelete when it changes
+  useEffect(() => {
+    if (selectedForDelete) {
+      console.log("Selected row for deletion:", selectedForDelete);
+    }
+  }, [selectedForDelete]);
+  
+  const handleConfirmDelete = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("No token found. Please log in.");
+      return; // Optionally, you can redirect the user to the login page here
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:5000/api/auth/announcements/${selectedForDelete._id}`, {
+        method: "DELETE",
+        headers: {
+          "x-auth-token": token, // Include the token here
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+  
+      const result = await response.json();
+      if (result.status === "ok") {
+        setData(data.filter((row) => row._id !== selectedForDelete._id)); // Update local state
+        setDeletePopup(false); // Hide the delete confirmation popup
+        setSelectedForDelete(null); // Reset the selected row
+        alert("Announcement deleted successfully!");
+      } else {
+        alert("Failed to delete the announcement.");
+      }
+    } catch (error) {
+      console.error("Error deleting announcement:", error);
+      alert(`An error occurred while deleting the announcement: ${error.message}`);
+    }
   };
+  
 
   const handleCancelDelete = () => {
     setDeletePopup(false); // Hide the delete confirmation popup
@@ -185,13 +339,15 @@ const Dashboard = () => {
         </thead>
         <tbody>
           {data.map((row) => (
-            <tr key={row.id} className="border-b">
-              <td className="py-3 px-5 text-center">{row.date}</td>
+            <tr key={row._id} className="border-b">
+              <td className="py-3 px-5 text-center">
+                {new Date(row.date).toISOString().split('T')[0]} {/* Or use date-fns or moment */}
+              </td>
               <td className="py-3 px-5 text-center">{row.grade}</td>
               <td className="py-3 px-5 text-center">{row.subject}</td>
               <td className="py-3 px-5 text-center">{row.description}</td>
               <td className="py-3 px-5 flex justify-center items-center space-x-3">
-                {editingId === row.id ? (
+                {editingId === row._id ? (
                   <>
                     <button
                       className="bg-green-500 text-white px-4 py-2 rounded-lg"
@@ -210,13 +366,13 @@ const Dashboard = () => {
                   <>
                     <button
                       className="bg-blue-500 text-white px-4 py-2 rounded"
-                      onClick={() => handleEdit(row.id)}
+                      onClick={() => handleEdit(row._id)}
                     >
                       UPDATE
                     </button>
                     <button
                       className="bg-red-500 text-white px-4 py-2 rounded"
-                      onClick={() => handleDeleteClick(row.id)}
+                      onClick={() => handleDeleteClick(row._id)}
                     >
                       DELETE
                     </button>
