@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import { ChevronDown, Calendar, BookOpen, Users, DollarSign, FileText, Layers } from "lucide-react";
 
 const CreateForm = ({ onClose, onSuccess }) => {
   const [grade, setGrade] = useState("");
@@ -23,7 +23,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
 
     // Validate that all required fields are filled out
     if (!grade || !subject || !date || !classPrivacy || !defaultMonthlyFee || !year) {
-      alert("Please fill out all fields.");
+      setError("Please fill out all required fields.");
       return;
     }
 
@@ -34,7 +34,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
       description,
       privacy: classPrivacy,
       teacherID,
-      defaultMonthlyFee: parseFloat(defaultMonthlyFee) || 0, // Convert to number, default to 0
+      defaultMonthlyFee: parseFloat(defaultMonthlyFee) || 0,
       year,
     };
 
@@ -63,106 +63,149 @@ const CreateForm = ({ onClose, onSuccess }) => {
         setClassPrivacy("");
         setDefaultMonthlyFee("");
         setYear("");
-        setError(""); // Clear error message on success
+        setError("");
       } else {
-        alert(data.message || "Error creating class");
+        setError(data.message || "Error creating class");
       }
     } catch (error) {
       console.error("Error creating class:", error);
-      alert("Error creating class: " + error.message);
+      setError("Error creating class: " + error.message);
     }
   };
 
   return (
-    <div className="flex flex-col items-center pt-10">
+    <div className="flex flex-col bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto">
+      <h2 className="text-3xl font-bold text-teal-700 mb-8 text-center">Create New Class</h2>
+      
       {/* Error Message */}
-      {error && <div className="text-red-500 mb-4">{error}</div>}
+      {error && (
+        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-lg">
+          <p className="text-red-700">{error}</p>
+        </div>
+      )}
 
-      {/* Grade Input */}
-      <div className="flex flex-col mb-4 w-[1000px]">
-        <input
-          type="text"
-          placeholder="GRADE"
-          value={grade}
-          onChange={(e) => setGrade(e.target.value)}
-          className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
-        />
-      </div>
-      {/* Year Input */}
-      <div className="flex flex-col mb-4 w-[1000px]">
-        <input
-          type="text"
-          placeholder="YEAR"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Grade Input */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-gray-700 mb-1">Grade Level</label>
+          <div className="relative">
+            <Layers className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-600 h-5 w-5" />
+            <input
+              type="text"
+              placeholder="Enter grade level"
+              value={grade}
+              onChange={(e) => setGrade(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 bg-gray-50 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+            />
+          </div>
+        </div>
         
-      </div>
-      {/* Subject Input */}
-      <div className="flex flex-col mb-4 w-[1000px]">
-        <input
-          type="text"
-          placeholder="SUBJECT"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
-        />
-      </div>
+        {/* Year Input */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-gray-700 mb-1">Academic Year</label>
+          <div className="relative">
+            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-600 h-5 w-5" />
+            <input
+              type="text"
+              placeholder="e.g. 2024-2025"
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 bg-gray-50 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+            />
+          </div>
+        </div>
+        
+        {/* Subject Input */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-gray-700 mb-1">Subject</label>
+          <div className="relative">
+            <BookOpen className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-600 h-5 w-5" />
+            <input
+              type="text"
+              placeholder="Enter subject name"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 bg-gray-50 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+            />
+          </div>
+        </div>
 
-      {/* Date Input */}
-      <div className="flex flex-col mb-4 w-[1000px] relative">
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
-        />
+        {/* Date Input */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-gray-700 mb-1">Start Date</label>
+          <div className="relative">
+            <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-600 h-5 w-5" />
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 bg-gray-50 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+            />
+          </div>
+        </div>
+
+        {/* Class Privacy Dropdown */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-gray-700 mb-1">Class Privacy</label>
+          <div className="relative">
+            <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-600 h-5 w-5" />
+            <select
+              value={classPrivacy}
+              onChange={(e) => setClassPrivacy(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 bg-gray-50 rounded-lg appearance-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+            >
+              <option value="">Select Privacy</option>
+              <option value="Public">Public</option>
+              <option value="Private">Private</option>
+            </select>
+            <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-5 w-5" />
+          </div>
+        </div>
+        
+        {/* Default Monthly Fee Input */}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium text-gray-700 mb-1">Monthly Fee</label>
+          <div className="relative">
+            <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-teal-600 h-5 w-5" />
+            <input
+              type="number"
+              placeholder="Enter default monthly fee"
+              value={defaultMonthlyFee}
+              onChange={(e) => setDefaultMonthlyFee(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 bg-gray-50 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Description Input */}
-      <div className="flex flex-col mb-4 w-[1000px]">
-        <input
-          type="text"
-          placeholder="DESCRIPTION"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
-        />
+      <div className="flex flex-col mt-6">
+        <label className="text-sm font-medium text-gray-700 mb-1">Description</label>
+        <div className="relative">
+          <FileText className="absolute left-3 top-3 text-teal-600 h-5 w-5" />
+          <textarea
+            placeholder="Enter class description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={4}
+            className="w-full pl-10 pr-4 py-3 border border-gray-300 bg-gray-50 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+          />
+        </div>
       </div>
 
-      {/* Class Privacy Dropdown */}
-      <div className="flex flex-col mb-4 w-[1000px] relative">
-        <select
-          value={classPrivacy}
-          onChange={(e) => setClassPrivacy(e.target.value)}
-          className="appearance-none w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200 pr-10"
+      {/* Action Buttons */}
+      <div className="flex justify-end mt-8 space-x-4">
+        <button
+          onClick={onClose}
+          className="px-6 py-3 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition"
         >
-          <option value="">Select Privacy</option>
-          <option value="Public">Public</option>
-          <option value="Private">Private</option>
-        </select>
-        <FaChevronDown className="absolute right-5 top-1/2 transform -translate-y-1/2 text-[#616060]" />
-      </div>
-
-      {/* Default Monthly Fee Input */}
-      <div className="flex flex-col mb-4 w-[1000px]">
-        <input
-          type="number"
-          placeholder="Default Monthly Fee (You can change this later)"
-          value={defaultMonthlyFee}
-          onChange={(e) => setDefaultMonthlyFee(e.target.value)}
-          className="w-full text-center text-3xl h-[100px] text-[#616060] font-bold p-5 rounded-[30px] bg-gray-200"
-        />
-      </div>
-
-      {/* Create Button */}
-      <div className="flex flex-col mt-4 mb-4 ml-[790px] w-[200px]">
+          Cancel
+        </button>
         <button
           onClick={handleCreate}
-          className="bg-teal-400 text-white font-bold text-lg py-3 px-10 rounded-full hover:bg-teal-500"
+          className="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-600 text-white font-medium rounded-lg hover:from-green-600 hover:to-teal-700 transition shadow-md"
         >
-          CREATE
+          Create Class
         </button>
       </div>
     </div>

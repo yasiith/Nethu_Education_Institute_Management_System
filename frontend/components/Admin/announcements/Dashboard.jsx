@@ -9,31 +9,7 @@ const Dashboard = () => {
     router.push("/admin");
   };
 
-  const initialData = [
-    {
-      id: 1,
-      date: "2024-09-30",
-      grade: "9",
-      subject: "Sinhala",
-      description: "No classes today"
-    },
-    {
-      id: 2,
-      date: "2024-09-30",
-      grade: "10",
-      subject: "Math",
-      description: "Exam on Chapter 4"
-    },
-    {
-      id: 3,
-      date: "2024-09-30",
-      grade: "8",
-      subject: "Math",
-      description: "Class cancelled"
-    }
-  ];
-
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({
     date: "",
@@ -323,26 +299,26 @@ const handleEdit = (id) => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 p-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center mb-10">
           <button
             onClick={toAdminOverview}
-            className="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-lg text-white font-medium flex items-center transition-all transform hover:scale-105 shadow-lg mb-4 md:mb-0"
+            className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-white font-medium flex items-center transition-all transform hover:scale-105 shadow-lg mb-4 md:mb-0"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Back to Dashboard
           </button>
-          <h1 className="text-3xl font-bold text-gray-800 px-6 py-3 bg-white rounded-lg shadow-md border-l-4 border-indigo-500">
+          <h1 className="text-3xl font-bold text-gray-800 px-6 py-3 bg-white rounded-lg shadow-md border-l-4 border-green-500">
             Announcements Management
           </h1>
         </div>
 
         {/* Add/Edit Form Card */}
         <div className="bg-white rounded-lg shadow-lg mb-8 overflow-hidden">
-          <div className="bg-indigo-600 px-6 py-4">
+          <div className="bg-teal-600 px-6 py-4">
             <h2 className="text-xl font-semibold text-white">
               {editingId ? "Edit Announcement" : "Add New Announcement"}
             </h2>
@@ -356,7 +332,7 @@ const handleEdit = (id) => {
                   name="date"
                   value={formData.date}
                   onChange={handleInputChange}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
                 />
               </div>
               <div>
@@ -396,7 +372,7 @@ const handleEdit = (id) => {
             <div className="mt-6 flex">
               <button
                 className={`${
-                  editingId ? "bg-yellow-500 hover:bg-yellow-600" : "bg-emerald-500 hover:bg-emerald-600"
+                  editingId ? "bg-teal-500 hover:bg-teal-600" : "bg-green-500 hover:bg-green-600"
                 } text-white px-6 py-2 rounded-lg shadow-md font-medium transition-all transform hover:scale-105 mr-3 flex items-center`}
                 onClick={editingId ? handleUpdate : handleAdd}
               >
@@ -463,8 +439,8 @@ const handleEdit = (id) => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                       {new Date(row.date).toISOString().split('T')[0]}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                         {row.grade}
                       </span>
                     </td>
@@ -500,7 +476,7 @@ const handleEdit = (id) => {
                         ) : (
                           <>
                             <button
-                              className="bg-blue-500 hover:bg-blue-600 text-white rounded-md p-2 transition-colors"
+                              className="bg-green-500 hover:bg-green-600 text-white rounded-md p-2 transition-colors"
                               onClick={() => handleEdit(row._id)}
                               title="Edit"
                             >
@@ -531,7 +507,7 @@ const handleEdit = (id) => {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
-              <p className="text-lg">No announcements found. Add a new one to get started.</p>
+              <p className="text-base text-center">No announcements found. Add a new one to get started.</p>
             </div>
           )}
         </div>

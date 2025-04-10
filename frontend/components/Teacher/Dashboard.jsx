@@ -2,11 +2,13 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import CreateForm from "./gradeCreateForm";
+import { PlusCircle, Book, Calendar, Layers, ArrowRight, Loader2 } from "lucide-react";
 
 const TeacherDashboard = () => {
   const [classes, setClasses] = useState([]);
   const [showGradeCreateForm, setShowGradeCreateForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [teacherName, setTeacherName] = useState("Teacher Name");
   const router = useRouter();
 
   // Create a ref for the create grade form
@@ -30,12 +32,10 @@ const TeacherDashboard = () => {
         }
       );
 
-      if (!response.ok) {
-        // alert("No classes available");
+      if (response.ok) {
+        const data = await response.json();
+        setClasses(data);
       }
-
-      const data = await response.json();
-      setClasses(data);
     } catch (error) {
       console.error("Error loading classes:", error);
       alert("Error loading classes: " + error.message);
@@ -47,16 +47,17 @@ const TeacherDashboard = () => {
   // Only fetch classes once after mounting
   useEffect(() => {
     fetchClasses();
+    // You would typically fetch the teacher name here as well
+    // For now we'll just use the placeholder
   }, []);
 
   const handleCreateSuccess = () => {
     fetchClasses(); // Refresh class list after successful creation
+    setShowGradeCreateForm(false);
   };
 
   const handleClassClick = (classId) => {
-
     router.push(`/teachers/classes/${classId}`);
-
   };
 
   const toggleGradeCreateForm = () => {
@@ -73,76 +74,145 @@ const TeacherDashboard = () => {
     }
   };
 
+  const getSubjectIcon = (subject) => {
+    // You could expand this to have different icons for different subjects
+    return <Book className="w-6 h-6" />;
+  };
+
   return (
-    <div className="pt-10">
-      <div className="inline-block pl-10">
-        <div className="p-5 whitespace-nowrap">
-          <h1 className="text-4xl font-bold">Welcome, Teacher Name</h1>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50">
+      {/* Header Section */}
+      <div className="bg-gradient-to-br from-green-50 to-teal-50 text-black shadow-sm">
+        <div className="container px-4 py-8 mx-auto">
+          <h1 className="text-3xl md:text-4xl font-bold">
+            Welcome, {teacherName}
+          </h1>
+          <p className="mt-2 text-green-600">Teacher Dashboard</p>
         </div>
       </div>
-      <div>
-        <div className="flex items-center justify-center">
-          <div className="flex flex-col bg-gray-200 p-5 rounded-2xl">
-            <h2 className=" text-4xl font-semibold">Created Classes</h2>
+
+      {/* Main Content */}
+      <div className="container px-4 mx-auto py-8">
+        {/* Classes Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center space-x-3">
+            <div className="bg-teal-600 p-2 rounded-lg shadow-md">
+              <Layers className="w-6 h-6 text-white" />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Your Classes</h2>
           </div>
+          
+          <button
+            onClick={toggleGradeCreateForm}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition-all transform hover:scale-105"
+          >
+            <PlusCircle className="w-5 h-5" />
+            <span>Create Grade</span>
+          </button>
         </div>
-      </div>
 
-      {loading ? (
-        <div>Loading classes...</div>
-      ) : (
-        <>
-          <div className="flex flex-wrap justify-center gap-4 mt-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-              {classes.length > 0 ? (
-                classes.map((classItem) => (
-                  <div
-                    key={classItem._id} // ensure _id or another unique identifier
-                    onClick={() => handleClassClick(classItem.classid)}
-
-                    className="cursor-pointer p-4 bg-teal-500 rounded-lg shadow-md  hover:bg-teal-600 transition duration-300 flex flex-col items-center"
-                  >
-                    <h2 className="text-xl font-bold text-white text-center">
-                      {classItem.year}
-                    </h2>
-                    <h2 className="text-xl font-bold text-white text-center">
+        {/* Classes Cards Grid */}
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="w-10 h-10 text-teal-600 animate-spin" />
+            <span className="ml-3 text-teal-600 font-medium">Loading classes...</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {classes.length > 0 ? (
+              classes.map((classItem) => (
+                <div
+                  key={classItem._id}
+                  onClick={() => handleClassClick(classItem.classid)}
+                  className="group cursor-pointer bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-teal-500"
+                >
+                  <div className="h-2 bg-gradient-to-r from-green-500 to-teal-500"></div>
+                  <div className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="p-3 bg-teal-100 rounded-lg">
+                        {getSubjectIcon(classItem.subject)}
+                      </div>
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        <span>{classItem.year}</span>
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
                       Grade {classItem.grade}
-                    </h2>
-                    <p className="text-xl font-bold text-white text-center">
+                    </h3>
+                    <p className="text-lg font-medium text-teal-700 mb-4">
                       {classItem.subject}
                     </p>
+                    
+                    <div className="flex justify-end mt-2">
+                      <span className="inline-flex items-center text-sm font-medium text-green-600 group-hover:text-green-800">
+                        View Class <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </span>
+                    </div>
                   </div>
-                ))
-              ) : (
-                <p className="text-gray-500 col-span-full text-center">
-                  No classes available.
-                </p>
-              )}
-            </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full">
+                <div className="flex flex-col items-center justify-center py-12 px-4 bg-white rounded-xl shadow text-center">
+                  <div className="bg-green-100 p-4 rounded-full mb-4">
+                    <Book className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">No Classes Yet</h3>
+                  <p className="text-gray-500 mb-6">You haven't created any classes yet. Create your first class to get started.</p>
+                  <button
+                    onClick={toggleGradeCreateForm}
+                    className="px-5 py-3 bg-teal-600 text-white rounded-lg flex items-center gap-2 hover:bg-teal-700 transition-colors"
+                  >
+                    <PlusCircle className="w-5 h-5" />
+                    <span>Create New Grade</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
+        )}
 
-          <div className="mt-10 mb-10 w-full flex justify-center">
+        {/* Create Grade Button (Mobile Friendly) */}
+        {classes.length > 0 && !showGradeCreateForm && (
+          <div className="mt-10 mb-10 w-full flex justify-center sm:hidden">
             <button
-              className="w-[1000px] h-[100px] bg-[#dadada] text-[#616060] font-bold rounded-[30px] text-4xl hover:bg-gray-300 hover:text-black"
+              className="w-full px-4 py-4 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold rounded-xl shadow-lg flex items-center justify-center gap-2 hover:from-green-600 hover:to-teal-600 transition-colors"
               onClick={toggleGradeCreateForm}
             >
-              CREATE A GRADE +
+              <PlusCircle className="w-6 h-6" />
+              <span className="text-xl">CREATE A GRADE</span>
             </button>
           </div>
+        )}
 
-          {showGradeCreateForm && (
-            <div
-              className="mt-5 w-full flex justify-center"
-              ref={createFormRef}
-            >
+        {/* Create Grade Form */}
+        {showGradeCreateForm && (
+          <div className="mt-8 w-full" ref={createFormRef}>
+            <div className="bg-white rounded-xl shadow-lg p-6 border-t-4 border-green-500">
               <CreateForm
                 onClose={() => setShowGradeCreateForm(false)}
                 onSuccess={handleCreateSuccess}
               />
             </div>
-          )}
-        </>
-      )}
+          </div>
+        )}
+      </div>
+
+      {/* Add animation styles */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .grid > div {
+          animation: fadeIn 0.3s ease-out forwards;
+          animation-delay: calc(var(--index) * 0.1s);
+          opacity: 0;
+        }
+      `}</style>
     </div>
   );
 };

@@ -24,7 +24,6 @@ const Page = () => {
 
   return (
     <div>
-      <Sidebar />
       {/* Pass classId to UploadPage as a prop */}
       <UploadPage classId={classId} />
     </div>
