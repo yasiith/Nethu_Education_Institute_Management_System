@@ -7,6 +7,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [StudentID, setStudentID] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toStudentDashboard = () => {
     router.push("/admin/students");
@@ -14,10 +15,12 @@ const Register = () => {
 
   function handleStudentRegistration(e) {
     e.preventDefault();
+    setIsSubmitting(true);
     
     const token = localStorage.getItem("token");
     if (!token) {
       alert("No token found. Please log in.");
+      setIsSubmitting(false);
       return;
     }
 
@@ -38,6 +41,7 @@ const Register = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        setIsSubmitting(false);
         if (data.status === "ok") {
           alert("Student registered successfully!");
           router.push("/admin/students/student-register");
@@ -48,90 +52,129 @@ const Register = () => {
       .catch((error) => {
         console.error("Error during student registration:", error);
         alert("An error occurred during registration.");
+        setIsSubmitting(false);
       });
   }
 
   return (
-    <div className="min-h-screen px-4 py-6 bg-gray-100">
-      {/* Header */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-gray-300 w-full sm:w-4/5 md:w-3/4 lg:w-1/2 text-center py-4 rounded-[35px]">
-          <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">STUDENT MANAGEMENT</h1>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex flex-col items-center justify-center gap-6 mx-auto lg:flex-row max-w-7xl">
-        {/* Left Section */}
-        <div className="flex flex-col items-center w-full gap-6 sm:w-auto">
-          {/* Register Box */}
-          <div className="bg-teal-500 w-full sm:w-[350px] h-[250px] sm:h-[300px] rounded-[45px] flex items-center justify-center text-white text-center p-5 transition-all">
-            <div className="flex flex-col leading-none">
-              <p className="text-3xl mb-3 sm:text-[40px] font-semibold">REGISTER</p>
-              <p className="text-4xl sm:text-[60px] font-bold">STUDENT</p>
-            </div>
-          </div>
-
-          {/* Back Button */}
-          <button
-            onClick={toStudentDashboard}
-            className="bg-red-500 w-full sm:w-[350px] py-4 rounded-[30px] text-white font-bold text-3xl sm:text-[50px] hover:bg-red-600 transition-colors"
-          >
-            BACK
-          </button>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6">
+      <div className="max-w-5xl mx-auto">
+        {/* Header with subtle animation */}
+        <div className="mb-12 text-center">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-teal-600">
+              Student Management
+            </span>
+          </h1>
+          <p className="mt-3 max-w-md mx-auto text-base text-teal-600 sm:text-lg md:mt-5 md:text-xl">
+            Register new students in the system
+          </p>
         </div>
 
-        {/* Right Section - Form */}
-        <div className="bg-gray-400 w-full sm:w-[400px] p-6 sm:p-8 rounded-[40px] flex flex-col gap-4">
-          {/* Form Fields */}
-          <div className="space-y-4">
-            <div className="flex flex-col gap-2">
-              <label className="text-base font-bold text-white sm:text-lg">
-                Full Name
-              </label>
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full p-2 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500 outline-none"
-              />
+        <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+          <div className="md:flex">
+            {/* Left side - decorative panel */}
+            <div className="bg-gradient-to-br from-teal-500 to-teal-700 md:w-2/5 p-8 flex flex-col justify-between">
+              <div className="text-white">
+                <h2 className="text-3xl font-bold mb-4">Register Student</h2>
+                <p className="opacity-80 mb-6">
+                  Add a new student to your institution's database with their basic information.
+                </p>
+                
+                <div className="hidden md:block mt-8">
+                  <div className="w-full h-1 bg-white bg-opacity-20 rounded mb-3"></div>
+                  <div className="w-2/3 h-1 bg-white bg-opacity-20 rounded mb-3"></div>
+                  <div className="w-1/2 h-1 bg-white bg-opacity-20 rounded"></div>
+                </div>
+              </div>
+              
+              <button
+                onClick={toStudentDashboard}
+                className="mt-6 group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-teal-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-150"
+              >
+                ← Back to Dashboard
+              </button>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="text-base font-bold text-white sm:text-lg">
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-2 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500 outline-none"
-              />
-            </div>
+            {/* Right side - Form */}
+            <div className="md:w-3/5 p-8">
+              <form onSubmit={handleStudentRegistration} className="space-y-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    Full Name
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500"
+                      placeholder="Enter student's full name"
+                    />
+                  </div>
+                </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="text-base font-bold text-white sm:text-lg">
-                Student ID
-              </label>
-              <input
-                type="text"
-                placeholder="Student ID"
-                value={StudentID}
-                onChange={(e) => setStudentID(e.target.value)}
-                className="w-full p-2 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500 outline-none"
-              />
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email Address
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500"
+                      placeholder="Enter student's email address"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="studentId" className="block text-sm font-medium text-gray-700">
+                    Student ID
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="studentId"
+                      name="studentId"
+                      type="text"
+                      required
+                      value={StudentID}
+                      onChange={(e) => setStudentID(e.target.value)}
+                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500"
+                      placeholder="Enter student ID number"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-150 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Processing...
+                      </>
+                    ) : (
+                      "Register Student"
+                    )}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
-
-          {/* Submit Button */}
-          <button
-            onClick={handleStudentRegistration}
-            className="bg-red-500 w-full py-3 mt-4 rounded-[30px] text-white font-bold text-lg hover:bg-red-600 transition-colors"
-          >
-            ADD STUDENT
-          </button>
         </div>
       </div>
     </div>

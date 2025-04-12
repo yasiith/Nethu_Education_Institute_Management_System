@@ -12,6 +12,7 @@ const Update = () => {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [messageType, setMessageType] = useState('');
+  const [teacherFound, setTeacherFound] = useState(false);
 
   const toTeacherDashboard = () => {
     router.push('/admin/teachers');
@@ -38,16 +39,25 @@ const Update = () => {
       if (res.ok) {
         setFullName(data.data.name);
         setEmail(data.data.email);
+        setNewFullName(data.data.name);
+        setNewEmail(data.data.email);
         setMessage("Teacher information retrieved successfully.");
         setMessageType('success');
+        setTeacherFound(true);
       } else {
+        setFullName('');
+        setEmail('');
+        setNewFullName('');
+        setNewEmail('');
         setMessage(data.error || "Teacher not found.");
         setMessageType('error');
+        setTeacherFound(false);
       }
     } catch (error) {
       console.error("Error fetching teacher information:", error);
       setMessage("An error occurred while retrieving the teacher information.");
       setMessageType('error');
+      setTeacherFound(false);
     } finally {
       setIsLoading(false);
     }
@@ -75,8 +85,6 @@ const Update = () => {
       if (res.ok) {
         setFullName(data.data.name);
         setEmail(data.data.email);
-        setNewFullName("");
-        setNewEmail("");
         setMessage("Teacher updated successfully!");
         setMessageType('success');
       } else {
@@ -93,127 +101,170 @@ const Update = () => {
   };
 
   return (
-    <div className="bg-gray-100">
-      <div className="container px-4 py-6 mx-auto">
-        <div className="flex justify-center mb-8">
-          <div className="bg-gray-300 w-full sm:w-4/5 md:w-3/4 lg:w-1/2 text-center py-4 rounded-[35px]">
-            <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">TEACHER MANAGEMENT</h1>
-          </div>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 py-12 px-4 sm:px-6">
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800">
+              Teacher Management
+            </span>
+          </h1>
+          <p className="mt-3 max-w-md mx-auto text-base text-blue-600 sm:text-lg md:mt-5">
+            Update teacher information
+          </p>
         </div>
 
-        <div className="flex flex-col items-center justify-center max-w-6xl gap-6 mx-auto lg:flex-row">
-          <div className="flex flex-col items-center w-full gap-6 sm:w-auto">
-            <div className="bg-teal-500 w-full sm:w-[400px] h-[300px] rounded-[35px] flex items-center justify-center hover:bg-teal-600 transition-colors">
-              <div className="flex flex-col text-center text-white">
-                <p className="text-4xl sm:text-[50px] font-semibold">UPDATE</p>
-                <p className="text-5xl sm:text-[75px] font-bold leading-none">TEACHER</p>
+        {/* Main Content */}
+        <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+          <div className="md:flex">
+            {/* Left Section - Design Panel */}
+            <div className="bg-gradient-to-br from-blue-500 to-blue-700 md:w-2/5 p-8 flex flex-col justify-between">
+              <div className="text-white">
+                <h2 className="text-3xl font-bold mb-4">Update Teacher</h2>
+                <p className="opacity-80 mb-6">
+                  Modify existing teacher information in your institution's database.
+                </p>
+                
+                <div className="hidden md:block mt-8">
+                  <svg className="w-24 h-24 mx-auto text-white opacity-20" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                  </svg>
+                </div>
               </div>
+              
+              <button
+                onClick={toTeacherDashboard}
+                className="mt-6 group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-blue-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150"
+              >
+                ← Back to Dashboard
+              </button>
             </div>
-            
-            <button 
-              onClick={toTeacherDashboard}
-              className="bg-red-500 w-full sm:w-[400px] py-4 rounded-[30px] text-white font-bold text-3xl sm:text-[50px] hover:bg-red-600 transition-colors">
-              BACK
-            </button>
-          </div>
 
-          <div className="bg-gray-400 w-full sm:w-[400px] p-6 sm:p-8 rounded-[40px] flex flex-col gap-4">
-            <div className="space-y-4">
-              <div className="form-group">
-                <label className="block mb-2 text-lg font-bold text-white">
-                  Enter Teacher ID
-                </label>
-                <input
-                  type="text"
-                  value={teacherID}
-                  onChange={(e) => setTeacherID(e.target.value)}
-                  placeholder="Teacher ID"
-                  className="w-full p-3 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500 outline-none"
-                />
+            {/* Right Section - Form */}
+            <div className="md:w-3/5 p-8">
+              <div className="space-y-6">
+                {/* Search Section */}
+                <div className="bg-blue-50 p-6 rounded-xl">
+                  <h3 className="text-lg font-medium text-blue-800 mb-4">Find Teacher</h3>
+                  <div className="flex space-x-3">
+                    <input
+                      type="text"
+                      value={teacherID}
+                      onChange={(e) => setTeacherID(e.target.value)}
+                      placeholder="Enter Teacher ID"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                    <button 
+                      onClick={handleFindTeacher}
+                      disabled={isLoading}
+                      className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      {isLoading ? (
+                        <span className="flex items-center">
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Searching
+                        </span>
+                      ) : "Search"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Message Display */}
+                {message && (
+                  <div className={`p-4 rounded-lg ${messageType === 'success' ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-red-50 text-red-800 border border-red-200'}`}>
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        {messageType === 'success' ? (
+                          <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium">{message}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Teacher Information */}
+                {teacherFound && (
+                  <div className="space-y-6">
+                    {/* Current Info Display */}
+                    <div className="bg-gray-50 p-6 rounded-xl">
+                      <h3 className="text-lg font-medium text-gray-800 mb-4">Current Information</h3>
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                          <div className="px-3 py-2 bg-gray-100 text-gray-800 rounded-lg">{fullName}</div>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                          <div className="px-3 py-2 bg-gray-100 text-gray-800 rounded-lg">{email}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* New Info Inputs */}
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-800 mb-4">Update Information</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label htmlFor="newFullName" className="block text-sm font-medium text-gray-700">
+                            New Full Name
+                          </label>
+                          <input
+                            id="newFullName"
+                            type="text"
+                            value={newFullName}
+                            onChange={(e) => setNewFullName(e.target.value)}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="newEmail" className="block text-sm font-medium text-gray-700">
+                            New Email
+                          </label>
+                          <input
+                            id="newEmail"
+                            type="email"
+                            value={newEmail}
+                            onChange={(e) => setNewEmail(e.target.value)}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Update Button */}
+                    <div>
+                      <button
+                        onClick={handleUpdateTeacher}
+                        disabled={isLoading}
+                        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        {isLoading ? (
+                          <span className="flex items-center">
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Updating
+                          </span>
+                        ) : "Update Teacher"}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
-
-              <button 
-                onClick={handleFindTeacher}
-                disabled={isLoading}
-                className={`w-full py-3 rounded-[30px] text-white font-bold text-lg
-                         ${isLoading ? 'bg-gray-500' : 'bg-red-500 hover:bg-red-600'}
-                         transition-colors`}>
-                {isLoading ? 'Searching...' : 'SEARCH'}
-              </button>
-
-              <div className="mt-4 space-y-4">
-                <div className="form-group">
-                  <label className="block mb-2 text-lg font-bold text-white">
-                    Current Full Name
-                  </label>
-                  <input
-                    type="text"
-                    value={fullName}
-                    readOnly
-                    placeholder="Full Name"
-                    className="w-full p-3 rounded-[30px] bg-gray-100"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="block mb-2 text-lg font-bold text-white">
-                    Current Email
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    readOnly
-                    placeholder="Email"
-                    className="w-full p-3 rounded-[30px] bg-gray-100"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-4 space-y-4">
-                <div className="form-group">
-                  <label className="block mb-2 text-lg font-bold text-white">
-                    New Full Name
-                  </label>
-                  <input
-                    type="text"
-                    value={newFullName}
-                    onChange={(e) => setNewFullName(e.target.value)}
-                    placeholder="New Full Name"
-                    className="w-full p-3 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500 outline-none"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="block mb-2 text-lg font-bold text-white">
-                    New Email
-                  </label>
-                  <input
-                    type="email"
-                    value={newEmail}
-                    onChange={(e) => setNewEmail(e.target.value)}
-                    placeholder="New Email"
-                    className="w-full p-3 rounded-[30px] border-none focus:ring-2 focus:ring-teal-500 outline-none"
-                  />
-                </div>
-              </div>
-
-              <button 
-                onClick={handleUpdateTeacher}
-                disabled={isLoading}
-                className={`w-full py-3 rounded-[30px] text-white font-bold text-lg
-                         ${isLoading ? 'bg-gray-500' : 'bg-red-500 hover:bg-red-600'}
-                         transition-colors mt-4`}>
-                {isLoading ? 'Updating...' : 'UPDATE TEACHER'}
-              </button>
-
-              {message && (
-                <div className={`mt-4 p-3 rounded-lg text-center font-medium
-                             ${messageType === 'success' 
-                               ? 'bg-green-100 text-green-800' 
-                               : 'bg-red-100 text-red-800'}`}>
-                  {message}
-                </div>
-              )}
             </div>
           </div>
         </div>

@@ -5,18 +5,16 @@ import Chatbot from "@/components/Chatbot";
 
 const Page = () => {
   return (
-    <div className="relative min-h-screen">
-      {/* Background with reduced opacity */}
-      <div 
-        className="absolute inset-0 bg-[url('/assets/images/pattern.svg')] bg-auto bg-center bg-fixed opacity-20 z-0"
-      ></div>
+    <div className="flex flex-col min-h-screen">
       {/* Content (ensures it's above the overlay) */}
-      <div className="relative z-10">
+      <div className="relative z-10 flex-grow">
         <AdminNav />
-        <Dashboard />
+        <div className="flex-grow">
+          <Dashboard />
+        </div>
         <Chatbot />
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };
