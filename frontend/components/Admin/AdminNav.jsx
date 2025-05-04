@@ -1,49 +1,103 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Add this import
-import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import { RiDashboardLine, RiUserLine, RiTeamLine, RiWalletLine, RiNotification3Line, RiMenuLine, RiCloseLine } from 'react-icons/ri';
 
 const AdminNav = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname(); // Get current path
+  const pathname = usePathname();
+  
+  // Close mobile menu when changing routes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  // Function to determine if a link is active
-  const isLinkActive = (path) => {
-    return pathname === path ? 'bg-blue-800' : '';
-  };
+  const navItems = [
+    { path: '/admin', label: 'Overview', icon: <RiDashboardLine className="mr-2" /> },
+    { path: '/admin/students', label: 'Students', icon: <RiUserLine className="mr-2" /> },
+    { path: '/admin/teachers', label: 'Teachers', icon: <RiTeamLine className="mr-2" /> },
+    { path: '/admin/payments/allClasses', label: 'Payments', icon: <RiWalletLine className="mr-2" /> },
+    { path: '/admin/announcements', label: 'Announcements', icon: <RiNotification3Line className="mr-2" /> },
+  ];
 
   return (
-    <nav className='py-4 font-semibold text-white bg-blue-950'>
-      <div className='container flex items-center justify-between px-4 mx-auto md:px-10'>
-        <h1 className='text-4xl'><Link href="/">NEIMS</Link></h1>
-        <div className='md:hidden'>
-          <button onClick={toggleMenu} className='text-2xl'>
-            {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+    <nav className="py-4 font-semibold text-white bg-blue-950 sticky top-0 z-50 shadow-lg">
+      <div className="container flex items-center justify-between px-4 mx-auto md:px-10">
+        <Link href="/" className="text-4xl font-bold tracking-tighter transition-transform hover:scale-105">
+          NEIMS
+        </Link>
+        
+        <div className="md:hidden">
+          <button 
+            onClick={toggleMenu} 
+            className="p-2 text-2xl rounded-full hover:bg-blue-800 transition-colors"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+          >
+            {isOpen ? <RiCloseLine /> : <RiMenuLine />}
           </button>
         </div>
-        <ul className={`md:flex items-center space-x-8 text-xl ${isOpen ? 'block' : 'hidden'} md:block absolute md:static top-16 left-0 w-full md:w-auto bg-blue-950 md:bg-transparent`}>
-          <li className={`p-4 border-b border-gray-700 md:p-2 md:border-b-0 ${isLinkActive('/admin')} rounded-md transition-colors duration-200`}>
-            <Link href="/admin">Overview</Link>
-          </li>
-          <li className={`p-4 border-b border-gray-700 md:p-2 md:border-b-0 ${isLinkActive('/admin/students')} rounded-md transition-colors duration-200`}>
-            <Link href="/admin/students">Students</Link>
-          </li>
-          <li className={`p-4 border-b border-gray-700 md:p-2 md:border-b-0 ${isLinkActive('/admin/teachers')} rounded-md transition-colors duration-200`}>
-            <Link href="/admin/teachers">Teachers</Link>
-          </li>
-          <li className={`p-4 border-b border-gray-700 md:p-2 md:border-b-0 ${isLinkActive('/admin/payments')} rounded-md transition-colors duration-200`}>
-            <Link href="/admin/payments/allClasses">Payments</Link>
-          </li>
-          <li className={`p-4 md:p-2 ${isLinkActive('/admin/announcements')} rounded-md transition-colors duration-200`}>
-            <Link href="/admin/announcements">Announcements</Link>
-          </li>
+        
+        {/* Desktop Navigation */}
+        <ul className="hidden md:flex items-center space-x-2 text-lg">
+          {navItems.map((item) => (
+            <li key={item.path}>
+              <Link 
+                href={item.path}
+                className={`flex items-center px-4 py-2 rounded-md transition-all duration-200 hover:bg-blue-800 hover:shadow-md ${
+                  pathname === item.path 
+                    ? 'bg-blue-800 shadow-md' 
+                    : ''
+                }`}
+              >
+                {item.icon}
+                {item.label}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
+      
+      {/* Mobile Navigation */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden overflow-hidden"
+          >
+            <ul className="px-4 py-2 space-y-1">
+              {navItems.map((item) => (
+                <motion.li 
+                  key={item.path}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link 
+                    href={item.path}
+                    className={`flex items-center p-3 rounded-md transition-all duration-200 hover:bg-blue-800 ${
+                      pathname === item.path 
+                        ? 'bg-blue-800' 
+                        : ''
+                    }`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

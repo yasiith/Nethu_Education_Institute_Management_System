@@ -2,12 +2,15 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiHome, FiImage, FiBookOpen, FiUsers, FiMail, FiMenu, FiX } from "react-icons/fi";
 
 const Navbar = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dashboardPath, setDashboardPath] = useState("");
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const loggedInStatus = localStorage.getItem("loggedIn") === "true";
@@ -19,6 +22,14 @@ const Navbar = () => {
       else if (userType === "teacher") setDashboardPath("/teachers");
       else if (userType === "student") setDashboardPath("/student");
     }
+    
+    // Add scroll effect
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const loginHandler = () => {
@@ -35,114 +46,129 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  const navItems = [
+    { href: "#home_section", label: "Home", icon: <FiHome className="mr-2" /> },
+    { href: "/", label: "Gallery", icon: <FiImage className="mr-2" /> },
+    { href: "#classes_section", label: "Classes", icon: <FiBookOpen className="mr-2" /> },
+    { href: "#teachers_section", label: "Teachers", icon: <FiUsers className="mr-2" /> },
+    { href: "#contact_section", label: "Contact", icon: <FiMail className="mr-2" /> }
+  ];
+
   return (
-    <nav className="fixed top-0 z-20 w-full border-b bg-blue-950 backdrop-blur-sm">
-      <div className="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
-        <span className="self-center text-2xl font-semibold text-white whitespace-nowrap">
-          NEIMS
-        </span>
-        <div className="flex space-x-3 md:order-2 md:space-x-0">
+    <motion.nav 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`fixed top-0 z-20 w-full border-b bg-blue-950 backdrop-blur-sm transition-all duration-300 ${
+        scrolled ? "shadow-lg py-1" : "py-2"
+      }`}
+    >
+      <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 py-2 mx-auto">
+        <Link href="/">
+          <span className="self-center text-xl font-bold text-white whitespace-nowrap hover:text-blue-300 transition-colors duration-300">
+            NEIMS
+          </span>
+        </Link>
+        
+        <div className="flex items-center space-x-3 md:order-2">
           {isLoggedIn && dashboardPath ? (
             <Link href={dashboardPath}>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
-                className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-green-500 hover:bg-green-600 rounded-3xl"
+                className="px-4 py-1 text-sm font-medium text-center text-white bg-green-500 hover:bg-green-600 rounded-full shadow-md transition-all duration-300"
               >
                 Dashboard
-              </button>
+              </motion.button>
             </Link>
           ) : null}
+          
           {isLoggedIn ? (
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={logoutHandler}
               type="button"
-              className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-red-500 hover:bg-red-600 rounded-3xl"
+              className="px-4 py-1 text-sm font-medium text-center text-white bg-red-500 hover:bg-red-600 rounded-full shadow-md transition-all duration-300"
             >
               Logout
-            </button>
+            </motion.button>
           ) : (
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={loginHandler}
               type="button"
-              className="px-10 py-2 pt-2 text-lg font-medium text-center text-white bg-orange-500 hover:bg-orange-600 rounded-3xl"
+              className="px-4 py-1 text-sm font-medium text-center text-white bg-orange-500 hover:bg-orange-600 rounded-full shadow-md transition-all duration-300"
             >
               Login
-            </button>
+            </motion.button>
           )}
+          
           <button
             type="button"
-            className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="inline-flex items-center justify-center p-1 text-white rounded-lg md:hidden hover:bg-blue-800 focus:outline-none transition-colors duration-300"
             onClick={toggleMenu}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
           >
-            <svg
-              className="w-6 h-6"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
+            {isOpen ? <FiX size={20} /> : <FiMenu size={20} />}
           </button>
         </div>
-        <div
-          className={`${
-            isOpen ? "block" : "hidden"
-          } items-center justify-between w-full md:flex md:w-auto md:order-1`}
-          id="navbar-sticky"
-        >
-          <ul className="flex flex-col p-4 mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-transparent dark:bg-blue-950 md:dark:bg-transparent">
-            <li>
-              <Link
-                href="#home_section"
-                className="block px-3 py-2 text-white md:hover:text-blue-500 md:p-0"
-                aria-current="page"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/"
-                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
-              >
-                Gallery
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#classes_section"
-                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
-              >
-                Classes
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#teachers_section"
-                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
-              >
-                Teachers
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="#contact_section"
-                className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
-              >
-                Contact
-              </Link>
-            </li>
+        
+        {/* Desktop Navigation Menu */}
+        <div className="hidden md:flex md:w-auto md:order-1">
+          <ul className="flex items-center space-x-8">
+            {navItems.map((item, index) => (
+              <li key={index}>
+                <Link href={item.href}>
+                  <span className="group relative flex items-center text-white font-medium text-sm hover:text-blue-300 transition-colors duration-300">
+                    {item.label}
+                    <motion.span 
+                      className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 group-hover:w-full transition-all duration-300"
+                      layout
+                    />
+                  </span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
+        
+        {/* Mobile Navigation Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="w-full md:hidden order-3 overflow-hidden"
+            >
+              <ul className="flex flex-col space-y-4 p-4 mt-2 bg-blue-900 rounded-lg">
+                {navItems.map((item, index) => (
+                  <motion.li 
+                    key={index}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Link 
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center px-3 py-2 text-white rounded-lg hover:bg-blue-800 transition-colors duration-300"
+                    >
+                      {item.icon}
+                      {item.label}
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 
