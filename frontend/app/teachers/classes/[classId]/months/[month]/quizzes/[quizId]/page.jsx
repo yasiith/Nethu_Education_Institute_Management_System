@@ -53,7 +53,7 @@ const ViewQuizPage = () => {
     };
 
     fetchQuiz();
-  }, [quizId, classId]);
+  }, [quizId, classId, month]);
 
   const handleDeleteQuiz = async () => {
     const token = localStorage.getItem('token');
@@ -108,6 +108,12 @@ const ViewQuizPage = () => {
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
         <AlertCircle className="w-12 h-12 text-red-600" />
         <p className="mt-4 text-lg text-red-600">{error}</p>
+        <button 
+          onClick={() => router.back()}
+          className="px-4 py-2 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+        >
+          Go Back
+        </button>
       </div>
     );
   }
@@ -117,6 +123,12 @@ const ViewQuizPage = () => {
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
         <BookOpen className="w-12 h-12 text-gray-400" />
         <p className="mt-4 text-lg text-gray-600">Quiz not found</p>
+        <button 
+          onClick={() => router.back()}
+          className="px-4 py-2 mt-4 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+        >
+          Go Back
+        </button>
       </div>
     );
   }
@@ -124,33 +136,37 @@ const ViewQuizPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
       {/* Top Navigation Bar */}
-      <div className="p-4 bg-white shadow-md">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <button
-            onClick={handleBackToQuizzes}
-            className="flex items-center text-gray-600 hover:text-gray-900"
-          >
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Back
-          </button>
-          <div className="flex space-x-4">
+      <nav className='relative w-full bg-blue-950 shadow-lg'>
+        <div className='w-full flex justify-between items-center h-16 px-4 md:px-6 lg:px-8'>
+          {/* Logo */}
+          <div className='flex-shrink-0 ml-0'>
+            <span className='text-2xl font-bold text-white'>
+              <button onClick={handleBackToQuizzes} className='hover:text-blue-300 transition-colors duration-200 flex items-center'>
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                NEIMS
+              </button>
+            </span>
+          </div>
+          
+          {/* Action Buttons */}
+          <div className='flex space-x-3'>
             <button
               onClick={handleEditQuiz}
-              className="flex items-center px-4 py-2 text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+              className='bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-2 rounded-lg font-medium text-base shadow-md hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 flex items-center'
             >
               <Edit2 className="w-4 h-4 mr-2" />
               Edit Quiz
             </button>
             <button
               onClick={handleDeleteQuiz}
-              className="flex items-center px-4 py-2 text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700"
+              className='bg-gradient-to-r from-red-500 to-rose-500 text-white px-4 py-2 rounded-lg font-medium text-base shadow-md hover:from-red-600 hover:to-rose-600 transition-all duration-200 flex items-center'
             >
               <Trash2 className="w-4 h-4 mr-2" />
               Delete Quiz
             </button>
           </div>
         </div>
-      </div>
+      </nav>
 
       {/* Quiz Content */}
       <div className="max-w-4xl px-4 py-8 mx-auto">

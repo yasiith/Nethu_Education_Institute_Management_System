@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import CreateForm from "./gradeCreateForm";
-import { PlusCircle, Book, Calendar, Layers, ArrowRight, Loader2 } from "lucide-react";
+import { PlusCircle, Book, Calendar, Layers, ArrowRight, Loader2, Globe, Lock } from "lucide-react";
 
 const TeacherDashboard = () => {
   const [classes, setClasses] = useState([]);
@@ -74,9 +74,57 @@ const TeacherDashboard = () => {
     }
   };
 
+  const toggleClassVisibility = async (classId, currentStatus) => {
+    // Prevent the click from bubbling up to the parent (which would navigate to class detail)
+    event.stopPropagation();
+    
+    const newStatus = currentStatus === 'public' ? 'private' : 'public';
+    
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/classes/updateClassVisibility`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            classId: classId,
+            visibility: newStatus
+          })
+        }
+      );
+
+      if (response.ok) {
+        // Update the local state to reflect the change
+        setClasses(classes.map(classItem => {
+          if (classItem.classid === classId) {
+            return { ...classItem, visibility: newStatus };
+          }
+          return classItem;
+        }));
+      } else {
+        throw new Error('Failed to update class visibility');
+      }
+    } catch (error) {
+      console.error("Error updating class visibility:", error);
+      alert("Error updating class visibility: " + error.message);
+    }
+  };
+
   const getSubjectIcon = (subject) => {
     // You could expand this to have different icons for different subjects
     return <Book className="w-6 h-6" />;
+  };
+
+  const getVisibilityIcon = (visibility) => {
+    return visibility === 'public' 
+      ? <Globe className="w-5 h-5 text-green-600" /> 
+      : <Lock className="w-5 h-5 text-gray-600" />;
+  };
+
+  const getVisibilityText = (visibility) => {
+    return visibility === 'public' ? 'Public' : 'Private';
   };
 
   return (
@@ -145,6 +193,24 @@ const TeacherDashboard = () => {
                       {classItem.subject}
                     </p>
                     
+                    {/* Visibility Badge */}
+                    <div className="flex justify-between items-center mt-4">
+                      <div className="flex items-center text-sm">
+                        <div className="flex items-center px-3 py-1 rounded-full bg-gray-100">
+                          {getVisibilityIcon(classItem.visibility || 'private')}
+                          <span className="ml-1 font-medium">{getVisibilityText(classItem.visibility || 'private')}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Toggle Button */}
+                      <button 
+                        onClick={(e) => toggleClassVisibility(classItem.classid, classItem.visibility || 'private')}
+                        className="text-xs px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded text-gray-700 transition-colors"
+                      >
+                        Change
+                      </button>
+                    </div>
+
                     <div className="flex justify-end mt-2">
                       <span className="inline-flex items-center text-sm font-medium text-green-600 group-hover:text-green-800">
                         View Class <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />

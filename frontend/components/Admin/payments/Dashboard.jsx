@@ -142,25 +142,4 @@ const DataTable = ({ data = sampleData, columns = sampleColumns }) => {
   );
 };
 
-// Sample data
-const sampleColumns = [
-  { key: 'studentId', label: 'Student ID' },
-  { key: 'name', label: 'Name' },
-  { key: 'grade', label: 'Grade' },
-  { key: 'subject', label: 'Subject' },
-  { key: 'month', label: 'Month' },
-  { key: 'paymentStatus', label: 'Payment Status' }
-];
-
-const sampleData = [
-  { studentId: 'STU001', name: 'John Smith', grade: '6', subject: 'Mathematics', month: 'January', paymentStatus: 'Paid' },
-  { studentId: 'STU002', name: 'Emma Wilson', grade: '7', subject: 'Physics', month: 'February', paymentStatus: 'Pending' },
-  { studentId: 'STU003', name: 'Michael Brown', grade: '8', subject: 'Chemistry', month: 'March', paymentStatus: 'Paid' },
-  { studentId: 'STU004', name: 'Sarah Davis', grade: '6', subject: 'Biology', month: 'January', paymentStatus: 'Overdue' },
-  { studentId: 'STU005', name: 'James Anderson', grade: '7', subject: 'Mathematics', month: 'February', paymentStatus: 'Paid' },
-  { studentId: 'STU006', name: 'Lisa Chen', grade: '8', subject: 'Physics', month: 'March', paymentStatus: 'Pending' },
-  { studentId: 'STU007', name: 'David Kim', grade: '6', subject: 'Chemistry', month: 'January', paymentStatus: 'Paid' },
-  { studentId: 'STU008', name: 'Rachel Patel', grade: '7', subject: 'Biology', month: 'February', paymentStatus: 'Paid' }
-];
-
 export default DataTable;
