@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Calendar, User, Shield, BookText, FileText, ListChecks, Clock, Award, Layers, Globe } from 'lucide-react';
+import { Calendar, User, Shield, BookText, FileText, ListChecks, Clock, Award, Layers, Globe, Lock } from 'lucide-react';
 import Sidebar from '@components/Teacher/Sidebar';
 import Calendar1 from '@components/Teacher/Calander';
 
@@ -11,6 +11,7 @@ const ClassDetailPage = () => {
   const [classDetails, setClassDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  const [updatingVisibility, setUpdatingVisibility] = useState(false);
 
   useEffect(() => {
     if (classId) {
@@ -35,6 +36,45 @@ const ClassDetailPage = () => {
     }
   }, [classId]);
 
+  const toggleClassVisibility = async () => {
+    if (!classDetails || updatingVisibility) return;
+    
+    setUpdatingVisibility(true);
+    const currentVisibility = classDetails.visibility || 'private';
+    const newVisibility = currentVisibility === 'public' ? 'private' : 'public';
+    
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/classes/updateClassVisibility`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            classId: classId,
+            visibility: newVisibility
+          })
+        }
+      );
+
+      if (response.ok) {
+        // Update the local state to reflect the change
+        setClassDetails({
+          ...classDetails,
+          visibility: newVisibility
+        });
+      } else {
+        throw new Error('Failed to update class visibility');
+      }
+    } catch (error) {
+      console.error("Error updating class visibility:", error);
+      alert("Error updating class visibility: " + error.message);
+    } finally {
+      setUpdatingVisibility(false);
+    }
+  };
+
   // Navigation handlers
   const navigateToQuizzes = () => {
     router.push(`/teachers/classes/${classId}/quizzes`);
@@ -58,6 +98,18 @@ const ClassDetailPage = () => {
   
   const navigateToMonthsMeeting = () => {
     router.push(`/teachers/classes/${classId}/months-meetings`);
+  };
+
+  // Helper function to get visibility icon
+  const getVisibilityIcon = (visibility) => {
+    return visibility === 'public' 
+      ? <Globe size={20} className="text-teal-600" /> 
+      : <Lock size={20} className="text-teal-600" />;
+  };
+
+  // Helper function to get visibility text
+  const getVisibilityText = (visibility) => {
+    return visibility === 'public' ? 'Public' : 'Private';
   };
 
   if (loading) {
@@ -169,15 +221,27 @@ const ClassDetailPage = () => {
                       </div>
                     </div>
                     
+                    {/* Visibility Status with Toggle Button */}
                     <div className="p-4 bg-teal-50 rounded-lg">
-                      <div className="flex items-center">
-                        <div className="p-3 bg-teal-100 rounded-full">
-                          <Shield size={20} className="text-teal-600" />
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div className="p-3 bg-teal-100 rounded-full">
+                            {getVisibilityIcon(classDetails.visibility || 'private')}
+                          </div>
+                          <div className="ml-4">
+                            <p className="text-sm font-medium text-gray-500">Visibility</p>
+                            <p className="text-lg font-semibold text-gray-800">
+                              {getVisibilityText(classDetails.visibility || 'private')}
+                            </p>
+                          </div>
                         </div>
-                        <div className="ml-4">
-                          <p className="text-sm font-medium text-gray-500">Privacy</p>
-                          <p className="text-lg font-semibold text-gray-800">{classDetails.privacy}</p>
-                        </div>
+                        <button 
+                          onClick={toggleClassVisibility}
+                          disabled={updatingVisibility}
+                          className="px-3 py-1 text-sm text-white bg-teal-600 rounded-md hover:bg-teal-700 transition-colors disabled:opacity-50"
+                        >
+                          {updatingVisibility ? 'Changing...' : 'Change'}
+                        </button>
                       </div>
                     </div>
                     
