@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('Clone') {
       steps {
-        git 'https://github.com/your/repo.git'
+        git 'https://github.com/yasiith/Nethu_Education_Institute_Management_System'
       }
     }
 
