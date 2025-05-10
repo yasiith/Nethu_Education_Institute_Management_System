@@ -27,7 +27,7 @@ const Dashboard = () => {
 
       try {
         const response = await fetch(
-          `http://143.110.187.69:5000/api/check-payment-status?studentId=${studentId}&classId=${classId}&month=${month}&year=${year}`
+          `https://nethu-education-institute-management.onrender.com/api/check-payment-status?studentId=${studentId}&classId=${classId}&month=${month}&year=${year}`
         );
         const data = await response.json();
 

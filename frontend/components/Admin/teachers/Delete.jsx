@@ -34,7 +34,7 @@ const DeleteTeacher = () => {
     setIsLoading(true);
     try {
       const res = await fetch(
-        `http://143.110.187.69:5000/api/auth/delete-teacher/${teacherID}`,
+        `https://nethu-education-institute-management.onrender.com/api/auth/delete-teacher/${teacherID}`,
         {
           method: "DELETE",
           headers: {

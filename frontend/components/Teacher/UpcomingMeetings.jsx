@@ -18,7 +18,7 @@ const Sidebar = () => {
     // Fetch meetings by teacherId and classId
     const fetchMeetings = async () => {
       try {
-        const response = await axios.get(`http://143.110.187.69:5000/api/meetings?teacherId=${teacherID}&classId=${classID}`);
+        const response = await axios.get(`https://nethu-education-institute-management.onrender.com/api/meetings?teacherId=${teacherID}&classId=${classID}`);
         setMeetings(response.data);
         setLoading(false);
       } catch (err) {

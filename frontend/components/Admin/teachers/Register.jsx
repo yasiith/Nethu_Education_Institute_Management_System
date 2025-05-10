@@ -29,7 +29,7 @@ const Register = () => {
       return;
     }
 
-    fetch("http://143.110.187.69:5000/api/auth/create-teacher", {
+    fetch("https://nethu-education-institute-management.onrender.com/api/auth/create-teacher", {
       method: "POST",
       crossDomain: true,
       headers: {

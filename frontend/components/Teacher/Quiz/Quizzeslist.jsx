@@ -28,7 +28,7 @@ const QuizzesList = () => {
           return;
         }
 
-        const response = await fetch(`http://143.110.187.69:5000/api/quizzes/class/${classId}/${month}`, {
+        const response = await fetch(`https://nethu-education-institute-management.onrender.com/api/quizzes/class/${classId}/${month}`, {
           method: 'GET',
           headers: {
             'x-auth-token': token

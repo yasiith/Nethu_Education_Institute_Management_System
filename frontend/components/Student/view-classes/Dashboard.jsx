@@ -19,7 +19,7 @@ const UserViewPage = () => {
   useEffect(() => {
     const fetchClassDetails = async () => {
       try {
-        const response = await fetch(`http://143.110.187.69:5000/api/classes/${classId}`);
+        const response = await fetch(`https://nethu-education-institute-management.onrender.com/api/classes/${classId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch class details");
         }
@@ -32,7 +32,7 @@ const UserViewPage = () => {
         const paymentStatuses = {};
         for (const month of Object.keys(data.monthlyFees)) {
           const paymentStatusResponse = await fetch(
-            `http://143.110.187.69:5000/api/check-payment-status?studentId=${studentId}&classId=${classId}&month=${month}&year=${year}`
+            `https://nethu-education-institute-management.onrender.com/api/check-payment-status?studentId=${studentId}&classId=${classId}&month=${month}&year=${year}`
           );
           if (paymentStatusResponse.ok) {
             const paymentStatusData = await paymentStatusResponse.json();
@@ -59,7 +59,7 @@ const UserViewPage = () => {
     try {
       // Step 1: Check if the student has already paid for this month
       const paymentStatusResponse = await fetch(
-        `http://143.110.187.69:5000/api/check-payment-status?studentId=${studentId}&classId=${classId}&month=${month}&year=${year}`
+        `https://nethu-education-institute-management.onrender.com/api/check-payment-status?studentId=${studentId}&classId=${classId}&month=${month}&year=${year}`
       );
 
       if (!paymentStatusResponse.ok) {
@@ -88,7 +88,7 @@ const UserViewPage = () => {
         return;
       }
 
-      const sessionResponse = await fetch("http://143.110.187.69:5000/api/create-checkout-session", {
+      const sessionResponse = await fetch("https://nethu-education-institute-management.onrender.com/api/create-checkout-session", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

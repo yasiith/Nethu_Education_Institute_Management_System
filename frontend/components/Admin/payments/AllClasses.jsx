@@ -12,7 +12,7 @@ const AllClasses = () => {
     const fetchClasses = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('http://143.110.187.69:5000/api/classes');
+        const response = await fetch('https://nethu-education-institute-management.onrender.com/api/classes');
         const data = await response.json();
         setClasses(data);
       } catch (error) {

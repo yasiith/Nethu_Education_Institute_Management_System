@@ -20,7 +20,7 @@ const View = () => {
 
     const fetchStudents = async () => {
       try {
-        const response = await fetch(`http://143.110.187.69:5000/api/auth/viewstudents`, {
+        const response = await fetch(`https://nethu-education-institute-management.onrender.com/api/auth/viewstudents`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

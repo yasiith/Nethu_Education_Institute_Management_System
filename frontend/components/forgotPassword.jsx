@@ -17,7 +17,7 @@ const ForgotPassword = () => {
     setMessage("");
 
     try {
-      const response = await fetch("http://143.110.187.69:5000/api/auth/forgot-password", {
+      const response = await fetch("https://nethu-education-institute-management.onrender.com/api/auth/forgot-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

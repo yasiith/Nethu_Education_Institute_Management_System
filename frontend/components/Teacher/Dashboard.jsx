@@ -23,7 +23,7 @@ const TeacherDashboard = () => {
 
     try {
       const response = await fetch(
-        `http://143.110.187.69:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
+        `https://nethu-education-institute-management.onrender.com/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
         {
           method: "GET",
           headers: {
@@ -82,7 +82,7 @@ const TeacherDashboard = () => {
     
     try {
       const response = await fetch(
-        `http://143.110.187.69:5000/api/classes/updateClassVisibility`,
+        `https://nethu-education-institute-management.onrender.com/api/classes/updateClassVisibility`,
         {
           method: "PUT",
           headers: {
