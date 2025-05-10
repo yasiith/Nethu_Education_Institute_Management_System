@@ -12,10 +12,7 @@ RUN npm install
 # Copy the rest of the application files
 COPY . ./
 
-# Build the application (if needed)
-RUN npm run build
-
-# Stage 2: Run the app
+# Stage 2: Run the app in development mode
 FROM node:18-alpine
 
 WORKDIR /app
@@ -26,5 +23,5 @@ COPY --from=build /app /app
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Start the app
-CMD ["npm", "start"]
+# Run the app in development mode (this replaces the build and start commands)
+CMD ["npm", "run", "dev"]
