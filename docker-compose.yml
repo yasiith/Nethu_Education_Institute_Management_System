@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend # Assuming your backend Dockerfile is in a directory called "backend"
+    container_name: app-backend
+    ports:
+      - "5000:5000" # Maps host port 5000 to container port 5000
+
+  frontend:
+    build:
+      context: ./frontend # Assuming your frontend Dockerfile is in a directory called "frontend"
+    container_name: app-frontend
+    ports:
+      - "3000:3000" # Maps host port 3000 to container port 3000
+    depends_on:
+      - backend # Ensures backend starts before frontend

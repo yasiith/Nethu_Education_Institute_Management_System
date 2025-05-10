@@ -7,13 +7,13 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json ./
 
-# Install dependencies
-RUN npm install --production
+# Install production dependencies and axios explicitly
+RUN npm install --production && npm install axios
 
 # Copy app files
 COPY . .
 
-# Expose backend port (e.g., 5000)
+# Expose backend port
 EXPOSE 5000
 
 # Start the application
