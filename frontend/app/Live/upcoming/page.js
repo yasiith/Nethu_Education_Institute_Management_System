@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Header from '@components/Live/Header';
 import Sidebar from '@components/Live/Sidebar';
 import Upcoming from '@components/Live/Upcoming/page';
-import Footer from '@components/Footer';
 
 const Layout = () => {
   const [activeTab, setActiveTab] = useState('Home');

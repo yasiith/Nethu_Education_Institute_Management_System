@@ -1,5 +1,5 @@
 // frontend/app/chatbot/page.jsx
-import Chatbot from '@/components/Chatbot';
+import Chatbot from '@components/Chatbot';
 
 export default function ChatbotPage() {
   return (
