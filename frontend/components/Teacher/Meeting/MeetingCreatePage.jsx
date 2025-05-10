@@ -43,7 +43,7 @@ const MeetingCreatePage = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/api/zoom/meetings', { ...formData, classId, month }, {
+      const response = await axios.post('http://143.110.187.69:5000/api/zoom/meetings', { ...formData, classId, month }, {
         headers: {
           'x-auth-token': token,
           'Content-Type': 'application/json',

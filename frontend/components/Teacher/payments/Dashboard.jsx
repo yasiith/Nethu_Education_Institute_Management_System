@@ -31,7 +31,7 @@ const Sidebar = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
+        `http://143.110.187.69:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
         {
           method: "GET",
           headers: {
@@ -189,7 +189,7 @@ const ManagePaymentsPage = () => {
   const fetchMonthlyFees = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/api/monthly-fees/${classId}`);
+      const response = await axios.get(`http://143.110.187.69:5000/api/monthly-fees/${classId}`);
       setMonthlyFees(response.data.monthlyFees);
       setLocalFees(response.data.monthlyFees); // Initializing local state for editing
     } catch (err) {
@@ -221,7 +221,7 @@ const ManagePaymentsPage = () => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/monthly-fees/${classId}`, {
+      const response = await axios.put(`http://143.110.187.69:5000/api/monthly-fees/${classId}`, {
         month: selectedMonth,
         amount: newAmount,
       });

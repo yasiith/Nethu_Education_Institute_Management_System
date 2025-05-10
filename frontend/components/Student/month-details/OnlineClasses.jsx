@@ -13,7 +13,7 @@ const OnlineClasses = () => {
     const fetchMeetings = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/meetings?classId=${classId}&month=${month}`
+          `http://143.110.187.69:5000/api/meetings?classId=${classId}&month=${month}`
         );
         if (!response.ok) {
           throw new Error('Failed to fetch meetings');

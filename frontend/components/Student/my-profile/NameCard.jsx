@@ -21,7 +21,7 @@ const StudentProfile = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/api/student/getstudentinfo/${StudentID}`);
+        const response = await fetch(`http://143.110.187.69:5000/api/student/getstudentinfo/${StudentID}`);
         if (!response.ok) {
           throw new Error("Failed to fetch student data");
         }
@@ -51,7 +51,7 @@ const StudentProfile = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/update-password", {
+      const response = await fetch("http://143.110.187.69:5000/api/update-password", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

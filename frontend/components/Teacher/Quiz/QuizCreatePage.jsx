@@ -100,7 +100,7 @@ const QuizCreatePage = () => {
           return;
         }
   
-        const response = await fetch('http://localhost:5000/api/quizzes/create', {
+        const response = await fetch('http://143.110.187.69:5000/api/quizzes/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

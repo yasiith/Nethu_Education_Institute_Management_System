@@ -34,7 +34,7 @@ const DeleteStudent = () => {
     setIsLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:5000/api/auth/delete-student/${studentID}`,
+        `http://143.110.187.69:5000/api/auth/delete-student/${studentID}`,
         {
           method: "DELETE",
           headers: {

@@ -27,7 +27,7 @@ const ClassDetails = () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/student/enrollment-status/${classId}`,
+          `http://143.110.187.69:5000/api/student/enrollment-status/${classId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const ClassDetails = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/student/enroll/${classId}`,
+        `http://143.110.187.69:5000/api/student/enroll/${classId}`,
         {
           method: "POST",
           headers: {
@@ -99,7 +99,7 @@ const ClassDetails = () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/student/unenroll/${classId}`,
+        `http://143.110.187.69:5000/api/student/unenroll/${classId}`,
         {
           method: "DELETE",
           headers: {

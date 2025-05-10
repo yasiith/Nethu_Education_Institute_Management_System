@@ -23,7 +23,7 @@ const TeacherDashboard = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
+        `http://143.110.187.69:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
         {
           method: "GET",
           headers: {
@@ -82,7 +82,7 @@ const TeacherDashboard = () => {
     
     try {
       const response = await fetch(
-        `http://localhost:5000/api/classes/updateClassVisibility`,
+        `http://143.110.187.69:5000/api/classes/updateClassVisibility`,
         {
           method: "PUT",
           headers: {

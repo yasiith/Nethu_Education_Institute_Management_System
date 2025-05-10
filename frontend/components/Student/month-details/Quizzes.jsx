@@ -23,7 +23,7 @@ const Quizzes = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/api/quizzes/class/${classId}/${month}`
+          `http://143.110.187.69:5000/api/quizzes/class/${classId}/${month}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch quizzes");
@@ -48,7 +48,7 @@ const Quizzes = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/quizzes/check-attempt?studentId=${studentId}&quizId=${quizId}`
+        `http://143.110.187.69:5000/api/quizzes/check-attempt?studentId=${studentId}&quizId=${quizId}`
       );
       const data = await response.json();
 

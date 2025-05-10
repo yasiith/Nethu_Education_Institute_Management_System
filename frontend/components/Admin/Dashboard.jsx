@@ -27,9 +27,9 @@ const Dashboard = () => {
     const fetchCounts = async () => {
       try {
         const [students, classes, teachers] = await Promise.all([
-          axios.get("http://localhost:5000/api/student-count"),
-          axios.get("http://localhost:5000/api/class-count"),
-          axios.get("http://localhost:5000/api/teacher-count")
+          axios.get("http://143.110.187.69:5000/api/student-count"),
+          axios.get("http://143.110.187.69:5000/api/class-count"),
+          axios.get("http://143.110.187.69:5000/api/teacher-count")
         ]);
 
         setStudentCount(students.data.studentCount);

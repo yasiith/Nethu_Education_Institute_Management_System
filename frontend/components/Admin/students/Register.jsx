@@ -24,7 +24,7 @@ const Register = () => {
       return;
     }
 
-    fetch("http://localhost:5000/api/auth/create-student", {
+    fetch("http://143.110.187.69:5000/api/auth/create-student", {
       method: "POST",
       crossDomain: true,
       headers: {

@@ -30,7 +30,7 @@ const ViewQuizPage = () => {
         }
 
         const response = await fetch(
-          `http://localhost:5000/api/quizzes/class/${classId}/quizzes/${quizId}`,
+          `http://143.110.187.69:5000/api/quizzes/class/${classId}/quizzes/${quizId}`,
           {
             method: 'GET',
             headers: {
@@ -67,7 +67,7 @@ const ViewQuizPage = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/quizzes/class/${classId}/quizzes/${quizId}`,
+        `http://143.110.187.69:5000/api/quizzes/class/${classId}/quizzes/${quizId}`,
         {
           method: 'DELETE',
           headers: {

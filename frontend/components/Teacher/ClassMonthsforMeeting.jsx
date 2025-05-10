@@ -38,7 +38,7 @@ const Sidebar = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
+        `http://143.110.187.69:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
         {
           method: "GET",
           headers: {
@@ -203,7 +203,7 @@ const ClassMonths = () => {
     const fetchMeetings = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/meetings/teacher?teacherId=${teacherID}&classId=${classID}`
+          `http://143.110.187.69:5000/api/meetings/teacher?teacherId=${teacherID}&classId=${classID}`
         );
         setMeetings(response.data);
         setLoading(false);
@@ -222,7 +222,7 @@ const ClassMonths = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/meeting/${meetingId}`);
+      await axios.delete(`http://143.110.187.69:5000/api/meeting/${meetingId}`);
       setMeetings(meetings.filter(meeting => meeting._id !== meetingId));
     } catch (error) {
       console.error('Error deleting meeting:', error);

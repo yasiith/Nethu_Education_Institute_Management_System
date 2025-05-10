@@ -28,7 +28,7 @@ const QuizAttemptPage = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/api/quizzes/quize/${quizId}`);
+        const response = await fetch(`http://143.110.187.69:5000/api/quizzes/quize/${quizId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch quiz");
         }
@@ -109,7 +109,7 @@ const QuizAttemptPage = () => {
     }));
 
     try {
-      const response = await fetch("http://localhost:5000/api/quizzes/submit", {
+      const response = await fetch("http://143.110.187.69:5000/api/quizzes/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quizId, studentId, answers: formattedAnswers, classId }),

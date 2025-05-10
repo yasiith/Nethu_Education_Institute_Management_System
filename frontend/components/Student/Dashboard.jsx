@@ -19,7 +19,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (studentMongoId) {
       setLoading(true);
-      fetch(`http://localhost:5000/classes/student/${studentMongoId}`)
+      fetch(`http://143.110.187.69:5000/classes/student/${studentMongoId}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.classes) {

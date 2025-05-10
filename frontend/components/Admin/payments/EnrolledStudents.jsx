@@ -23,13 +23,13 @@ const EnrolledStudents = () => {
         
         const fetchEnrolledStudents = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/class/${classId}/students`);
+                const response = await fetch(`http://143.110.187.69:5000/api/class/${classId}/students`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch students');
                 }
                 const data = await response.json();
                 const studentsWithNames = await Promise.all(data.students.map(async (studentId) => {
-                    const nameResponse = await fetch(`http://localhost:5000/api/user/name/${studentId}`);
+                    const nameResponse = await fetch(`http://143.110.187.69:5000/api/user/name/${studentId}`);
                     if (!nameResponse.ok) {
                         throw new Error(`Failed to fetch name for student ${studentId}`);
                     }

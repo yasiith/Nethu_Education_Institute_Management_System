@@ -29,7 +29,7 @@ const Register = () => {
       return;
     }
 
-    fetch("http://localhost:5000/api/auth/create-teacher", {
+    fetch("http://143.110.187.69:5000/api/auth/create-teacher", {
       method: "POST",
       crossDomain: true,
       headers: {
