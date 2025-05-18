@@ -32,7 +32,7 @@ const Dashboard = () => {
       }
   
       try {
-        const response = await fetch("http://143.110.187.69:5000/api/auth/announcements", {
+        const response = await fetch("http://localhost:5000/api/auth/announcements", {
           method: "GET", 
           headers: {
             "x-auth-token": token, 
@@ -79,7 +79,7 @@ const Dashboard = () => {
       return;
     }
 
-    fetch("http://143.110.187.69:5000/api/auth/announcements", {
+    fetch("http://localhost:5000/api/auth/announcements", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const handleEdit = (id) => {
     }
   
     try {
-      const response = await fetch(`http://143.110.187.69:5000/api/auth/announcements/${editingId}`, {
+      const response = await fetch(`http://localhost:5000/api/auth/announcements/${editingId}`, {
         method: "PUT",
         headers: {
           "x-auth-token": token,
@@ -205,7 +205,7 @@ const handleEdit = (id) => {
     }
   
     try {
-      const response = await fetch(`http://143.110.187.69:5000/api/auth/announcements/${selectedForDelete._id}`, {
+      const response = await fetch(`http://localhost:5000/api/auth/announcements/${selectedForDelete._id}`, {
         method: "DELETE",
         headers: {
           "x-auth-token": token,

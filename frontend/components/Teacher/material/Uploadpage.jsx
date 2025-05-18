@@ -30,7 +30,7 @@ const Sidebar = () => {
 
     try {
       const response = await fetch(
-        `http://143.110.187.69:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
+        `http://localhost:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
         {
           method: "GET",
           headers: {
@@ -185,7 +185,7 @@ const ManageMaterialsPage = () => {
 
       try {
         setLoading(true);
-        const response = await fetch("http://143.110.187.69:5000/api/materials/getMaterialsbyclassid", {
+        const response = await fetch("http://localhost:5000/api/materials/getMaterialsbyclassid", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ classid }),
@@ -232,7 +232,7 @@ const ManageMaterialsPage = () => {
       setUploading(true);
       setError(null);
       
-      const response = await fetch("http://143.110.187.69:5000/api/materials/upload", {
+      const response = await fetch("http://localhost:5000/api/materials/upload", {
         method: "POST",
         body: formData,
       });
@@ -251,7 +251,7 @@ const ManageMaterialsPage = () => {
       setPrivacy('');
       
       // Refresh materials list
-      const refreshResponse = await fetch("http://143.110.187.69:5000/api/materials/getMaterialsbyclassid", {
+      const refreshResponse = await fetch("http://localhost:5000/api/materials/getMaterialsbyclassid", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ classid: params?.classId }),
@@ -476,7 +476,7 @@ const MaterialCard = ({ fileData, setUploadedFiles }) => {
   const togglePrivacy = async (materialId, currentPrivacy) => {
     try {
       const newPrivacy = currentPrivacy === "Public" ? "Private" : "Public";
-      await fetch(`http://143.110.187.69:5000/api/materials/togglePrivacy/${materialId}`, {
+      await fetch(`http://localhost:5000/api/materials/togglePrivacy/${materialId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ privacy: newPrivacy }),
@@ -493,7 +493,7 @@ const MaterialCard = ({ fileData, setUploadedFiles }) => {
     if (!confirm("Are you sure you want to delete this material?")) return;
     
     try {
-      const response = await fetch(`http://143.110.187.69:5000/api/materials/delete/${materialId}`, {
+      const response = await fetch(`http://localhost:5000/api/materials/delete/${materialId}`, {
         method: "DELETE",
       });
   
@@ -541,7 +541,7 @@ const MaterialCard = ({ fileData, setUploadedFiles }) => {
             
             <div className="ml-0 mt-4 md:mt-0 md:ml-4 flex flex-row md:flex-col space-y-0 space-x-2 md:space-y-2 md:space-x-0">
               <a 
-                href={`http://143.110.187.69:5000${fileData.fileUrl}`} 
+                href={`http://localhost:5000${fileData.fileUrl}`} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600 flex items-center justify-center gap-2 text-sm"

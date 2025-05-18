@@ -40,7 +40,7 @@ const CreateForm = ({ onClose, onSuccess }) => {
 
     try {
       const response = await fetch(
-        "http://143.110.187.69:5000/api/classes/createclass",
+        "http://localhost:5000/api/classes/createclass",
         {
           method: "POST",
           headers: {

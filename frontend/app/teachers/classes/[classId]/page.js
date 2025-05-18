@@ -18,7 +18,7 @@ const ClassDetailPage = () => {
       const fetchClassDetails = async () => {
         try {
           const response = await fetch(
-            `http://143.110.187.69:5000/api/classes/${classId}`
+            `http://localhost:5000/api/classes/${classId}`
           );
           if (!response.ok) {
             throw new Error('Failed to fetch class details');
@@ -45,7 +45,7 @@ const ClassDetailPage = () => {
     
     try {
       const response = await fetch(
-        `http://143.110.187.69:5000/api/classes/updateClassVisibility`,
+        `http://localhost:5000/api/classes/updateClassVisibility`,
         {
           method: "PUT",
           headers: {

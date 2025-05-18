@@ -64,7 +64,7 @@ const Chatbot = ({ userGrade = null, className = '' }) => {
     setUserMessage('');
 
     try {
-      const response = await fetch('http://143.110.187.69:5000/api/chatbot/chat', {
+      const response = await fetch('http://localhost:5000/api/chatbot/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -80,7 +80,7 @@ const Chatbot = ({ userGrade = null, className = '' }) => {
       if (data.hasRelevantContent && data.topicFound) {
         // Fetch related questions for this topic
         try {
-          const questionsResponse = await fetch(`http://143.110.187.69:5000/api/chatbot/relatedQuestions/${data.topicFound}?grade=${studentGrade}`);
+          const questionsResponse = await fetch(`http://localhost:5000/api/chatbot/relatedQuestions/${data.topicFound}?grade=${studentGrade}`);
           const questionsData = await questionsResponse.json();
           
           if (questionsData.questions && questionsData.questions.length > 0) {

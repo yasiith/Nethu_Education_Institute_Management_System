@@ -22,7 +22,7 @@ const StudentPaymentDetails = () => {
 
         const fetchPaymentDetails = async () => {
             try {
-                const response = await fetch(`http://143.110.187.69:5000/api/payments/${classId}/${studentId}`);
+                const response = await fetch(`http://localhost:5000/api/payments/${classId}/${studentId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch payment details');
                 }
@@ -38,7 +38,7 @@ const StudentPaymentDetails = () => {
 
         const fetchClassDetails = async () => {
             try {
-                const response = await fetch(`http://143.110.187.69:5000/api/classes/${classId}`);
+                const response = await fetch(`http://localhost:5000/api/classes/${classId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch class details');
                 }
@@ -52,7 +52,7 @@ const StudentPaymentDetails = () => {
 
         const fetchStudentName = async () => {
             try {
-                const response = await fetch(`http://143.110.187.69:5000/api/user/name/${studentId}`);
+                const response = await fetch(`http://localhost:5000/api/user/name/${studentId}`);
                 if (response.ok) {
                     const data = await response.json();
                     setStudentName(data.name || '');
@@ -85,7 +85,7 @@ const StudentPaymentDetails = () => {
 
     const fetchPaymentDetailsBySessionId = async (sessionId) => {
         try {
-            const response = await fetch(`http://143.110.187.69:5000/api/payment-details/${sessionId}`);
+            const response = await fetch(`http://localhost:5000/api/payment-details/${sessionId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch payment details');
             }
@@ -103,7 +103,7 @@ const StudentPaymentDetails = () => {
         if (!isConfirmed) return;
 
         try {
-            const response = await fetch('http://143.110.187.69:5000/api/payments/create', {
+            const response = await fetch('http://localhost:5000/api/payments/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

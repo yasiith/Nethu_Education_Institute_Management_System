@@ -26,7 +26,7 @@ const Update = () => {
       }
       setIsLoading(true);
       try {
-        const res = await fetch(`http://143.110.187.69:5000/api/auth/getstudentinfo/${studentID}`, {
+        const res = await fetch(`http://localhost:5000/api/auth/getstudentinfo/${studentID}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const Update = () => {
       }
       setIsLoading(true);
       try {
-        const res = await fetch(`http://143.110.187.69:5000/api/auth/updatestudent/${studentID}`, {
+        const res = await fetch(`http://localhost:5000/api/auth/updatestudent/${studentID}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

@@ -26,7 +26,7 @@ const ViewQuizPage = () => {
           return;
         }
 
-        const response = await fetch(`http://143.110.187.69:5000/api/quizzes/${quizId}`, {
+        const response = await fetch(`http://localhost:5000/api/quizzes/${quizId}`, {
           method: 'GET',
           headers: {
             'x-auth-token': token,

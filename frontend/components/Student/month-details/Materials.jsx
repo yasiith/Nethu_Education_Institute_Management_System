@@ -23,7 +23,7 @@ const Materials = () => {
       console.log("Fetching materials for:", { classid, month, privacy });
 
       try {
-        const response = await fetch("http://143.110.187.69:5000/api/materials/getMaterialsforstudent", {
+        const response = await fetch("http://localhost:5000/api/materials/getMaterialsforstudent", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ classid, month, privacy }),
@@ -174,7 +174,7 @@ const Materials = () => {
                   </div>
                   
                   <a 
-                    href={`http://143.110.187.69:5000${fileData.fileUrl}`} 
+                    href={`http://localhost:5000${fileData.fileUrl}`} 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-colors duration-200"

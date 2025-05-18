@@ -36,7 +36,7 @@ const Sidebar = () => {
 
     try {
       const response = await fetch(
-        `http://143.110.187.69:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
+        `http://localhost:5000/api/classes/getClassesByTeacher?teacherId=${teacherID}`,
         {
           method: "GET",
           headers: {
