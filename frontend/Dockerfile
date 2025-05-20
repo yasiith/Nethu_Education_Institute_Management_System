@@ -1,27 +1,17 @@
-# Stage 1: Build the app
-FROM node:18-alpine AS build
-
+# Use Node.js base image
+FROM node:20-alpine
+# Set working directory
 WORKDIR /app
-
-# Copy package.json and package-lock.json to ensure npm install is based on the lock file
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application files
-COPY . ./
-
-# Stage 2: Run the app in development mode
-FROM node:18-alpine
-
-WORKDIR /app
-
-# Copy the built app from the build stage
-COPY --from=build /app /app
-
-# Expose the port the app runs on
+# Copy package files
+COPY package.json package-lock.json ./
+# Install dependencies with --force flag to ignore platform checks
+RUN npm install --force
+# Copy app files
+COPY . .
+# Build Next.js app
+RUN npm run build
+# Expose frontend port
 EXPOSE 3000
+# Start Next.js app
+CMD ["npm", "run", "start"]
 
-# Run the app in development mode (this replaces the build and start commands)
-CMD ["npm", "run", "dev"]

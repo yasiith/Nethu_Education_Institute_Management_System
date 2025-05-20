@@ -1,13 +1,21 @@
-FROM node:18-alpine
+# Use Node.js base image
+FROM node:20-alpine
 
+# Set working directory
 WORKDIR /app
 
-COPY package*.json ./
+# Copy package files
+COPY package.json package-lock.json ./
 
-RUN npm install
+# Install production dependencies and axios explicitly
+RUN npm install --production && npm install axios
 
+# Copy app files
 COPY . .
 
+# Expose backend port
 EXPOSE 5000
 
-CMD ["npm", "run", "dev"]
+# Start the application
+CMD ["node", "server.js"]
+
