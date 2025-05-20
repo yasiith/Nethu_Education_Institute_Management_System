@@ -211,10 +211,10 @@ const getClassDetails = async (req, res) => {
 
 const Getgradesubject = async (req, res) => {
     try {
-      // Fetch all classes
-      const classes = await Class.find();
+      // Fetch only public classes
+      const classes = await Class.find({ privacy: 'Public' });
   
-      // Extract unique grades and subjects
+      // Extract unique grades and subjects from public classes
       const uniqueGrades = [...new Set(classes.map(cls => cls.grade))];
       const uniqueSubjects = [...new Set(classes.map(cls => cls.subject))];
   
@@ -228,6 +228,7 @@ const Getgradesubject = async (req, res) => {
       res.status(500).json({ message: 'Failed to fetch classes' });
     }
   };
+  
 
   
   

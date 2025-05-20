@@ -13,7 +13,7 @@ import Commerce from '@public/assets/images/2 blue.png'
 const Teachers = () => {
   return (
     <div>
-      <h1 className="font-bold text-center text-gray-800 text-7xl">Our Teachers</h1>
+      <h1 className="font-bold text-center text-gray-800 text-7xl">Our Teacher</h1>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 p-4 max-w-[400px] md:max-w-6xl place-items-center mx-auto">
       <div className="relative group">
         <Image

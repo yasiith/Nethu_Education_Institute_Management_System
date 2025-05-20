@@ -133,7 +133,7 @@ const TeacherDashboard = () => {
       <div className="bg-gradient-to-br from-green-50 to-teal-50 text-black shadow-sm">
         <div className="container px-4 py-8 mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold">
-            Welcome, {teacherName}
+            Welcome
           </h1>
           <p className="mt-2 text-green-600">Teacher Dashboard</p>
         </div>

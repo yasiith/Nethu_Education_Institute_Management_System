@@ -5,7 +5,6 @@ import Header from '@components/Live/Header';
 import Sidebar from '@components/Live/Sidebar';
 import Recordings from '@components/Live/Recordings/page';
 
-
 const Layout = () => {
   const [activeTab, setActiveTab] = useState('Home');
   const [isSidebarOpen, setSidebarOpen] = useState(false);

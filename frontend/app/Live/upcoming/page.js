@@ -5,7 +5,6 @@ import Header from '@components/Live/Header';
 import Sidebar from '@components/Live/Sidebar';
 import Upcoming from '@components/Live/Upcoming/page';
 
-
 const Layout = () => {
   const [activeTab, setActiveTab] = useState('Home');
   const [isSidebarOpen, setSidebarOpen] = useState(false);

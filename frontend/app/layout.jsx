@@ -1,7 +1,7 @@
 "use client"; // Mark this as a client component
 
 import "@styles/globals.css";
-import Chatbot from '@/components/Chatbot';
+import Chatbot from '@components/Chatbot';
 import { usePathname } from 'next/navigation';
 
 const Rootlayout = ({ children }) => {
